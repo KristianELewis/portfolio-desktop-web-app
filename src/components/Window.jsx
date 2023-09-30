@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+//import TextEditor from './programs/TextEditor'
 
 const Window = (props) => {
 
@@ -7,14 +7,19 @@ const Window = (props) => {
     const [left, setLeft] = useState(50)
     const [top, setTop] = useState(50)
     //these should be a state
-    let width = 100;
-    let height = 100;
+    let width = 200;
+    let height = 200;
  
     /*========================================================
 
     MOUSE TRACKING AND WINDOW POSITIONING
 
     a priority is to reduce unecessary renders
+
+
+    would html drag events be better here?
+    drag might fix problems with mouse leaving the window edge
+    drag doesnt seem to work for this actually
 
     ========================================================*/
     
@@ -42,24 +47,26 @@ const Window = (props) => {
     };
     const handleMouseup = (e) => {
         props.removeFunction()
-
     }
     const handleMouseDown = (e) => {
         props.changeFunction( updateMousePosition )
 
     }
-
-
+    
+    //mouse up my be redundant
     return (
-        <div className = "testWindow" 
-            onMouseDown = {handleMouseDown} 
-            onMouseUp = {handleMouseup} 
-            style = {{
-                position: "relative",
-                left : left + "px",
-                top : top + "px"
-            }}
-            >
+        <div className = "window"
+        style = {{
+            position: "relative",
+            left : left + "px",
+            top : top + "px"
+        }}>
+
+            <div className = "windowEdge" 
+                onMouseDown = {handleMouseDown} 
+                onMouseUp = {handleMouseup} 
+            />
+
         </div>
     )
 }
