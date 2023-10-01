@@ -2,14 +2,17 @@ import React, {useState} from 'react';
 
 //materialUI stuff
 //need to switch to import paths
-import { AppBar, Button, Toolbar, Typography, IconButton} from '@mui/material'
+import  AppBar from '@mui/material/AppBar'
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-
 import MenuIcon from '@mui/icons-material/Menu';
 
+import Button from '@mui/material/Button'
+import Toolbar from '@mui/material/Toolbar'
 
+import Typography from '@mui/material/Typography'
+import IconButton from '@mui/material/IconButton'
 
 //need to make the app bar smaller, very annoying right now though
 const DesktopMenu = (props) => {
