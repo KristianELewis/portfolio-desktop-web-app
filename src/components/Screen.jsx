@@ -6,6 +6,13 @@ import DesktopMenu from './DesktopMenu'
 function Screen() {
     //console.log("screen render")
 
+
+    /*=================================================
+
+        MULTIPLE PROGRAM FUNCTIONALITY
+
+    ==================================================*/
+
     const [programs, setPrograms] = useState([]);
     //useRef??
     //const [programCount, setProgramCount] = useState(0);
@@ -56,6 +63,9 @@ function Screen() {
 
     MOUSE TRACKING AND WINDOW POSITIONING
 
+    TODO
+    clean up these comments, put them in here. This code is hard to read
+
     a priority is to reduce unecessary renders
 
     ========================================================*/
@@ -65,7 +75,6 @@ function Screen() {
     //it will call a windows positioning function and move that window. If the mouse is let go or the mouse leaves the screen, it will stop tracking
     const changeFunction = (newFunc) => {
         //console.log("changeFunction")
-
         //see explanation in removeFunction. It is necessary here aswell
         window.getSelection().empty()
         setMouseMove(() => newFunc);

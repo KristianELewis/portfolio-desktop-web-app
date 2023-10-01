@@ -9,8 +9,9 @@ const Window = (props) => {
     const [left, setLeft] = useState(50)
     const [top, setTop] = useState(50)
     //these should be a state
-    let width = 200;
-    let height = 200;
+    const [width, setWidth] = useState(300)
+    const [height, setHeight] = useState(300)
+
  
     /*========================================================
 
@@ -47,6 +48,7 @@ const Window = (props) => {
             return newState
         })
     };
+    //not really necesasry
     const handleMouseup = (e) => {
         props.removeFunction()
     }
@@ -68,6 +70,95 @@ const Window = (props) => {
         props.focusWindow(props.id)
     }
 
+    /*-------------------------------------------------
+        RESIZING
+    -------------------------------------------------*/
+
+    const handleResizeRight = () => {
+        props.changeFunction((e) => setWidth((prevState) => {
+            const newState = prevState + e.movementX
+            if(newState < 50)
+            {
+                return 50
+            }
+            if (newState > 1280)
+            {
+                return 1280
+            }
+            return newState
+        }))
+    }
+    const handleResizeBottom = () => {
+        props.changeFunction((e) => setHeight((prevState) => {
+            const newState = prevState + e.movementY
+            if(newState < 50)
+            {
+                return 50
+            }
+            if (newState > 720)
+            {
+                return 720
+            }
+            return newState
+        }))
+    }
+
+    const handleResizeTop = () => {
+        props.changeFunction((e) =>{ 
+        
+            setHeight((prevState) => {
+                const newState = prevState + (e.movementY*-1)
+                if(newState <= 50)
+                {
+                    return 50
+                }
+                if(newState >= 720)
+                {
+                    return 720
+                }
+                setTop((prevState) => {
+                    const newState = prevState + e.movementY
+                    if(newState < 0){
+                        return 0
+                    }
+                    if(newState > (720- height)){
+                        return (720-height)
+                    }
+                    return newState
+                })
+                return newState
+            })
+        })
+    }
+
+    const handleResizeleft = () => {
+        props.changeFunction((e) =>{ 
+            setWidth((prevState) => {
+                const newState = prevState + (e.movementX*-1)
+                if(newState <= 50)
+                {
+                    return 50
+                }
+                if(newState >= 1280)
+                {
+                    return 1280
+                }
+                setLeft((prevState) => {
+                    const newState = prevState + e.movementX
+                    if(newState < 0){
+                        return 0
+                    }
+                    if(newState > (1280 - width)){
+                        return (1280 - width)
+                    }
+                    return newState
+                })
+                return newState
+            })
+        })
+    }
+
+
     return (
         <div className = "window"
             onMouseDown = {focusWindow}
@@ -75,24 +166,41 @@ const Window = (props) => {
                 position: "absolute",
                 left : left + "px",
                 top : top + "px",
-                padding : "3px",
+                height: height + "px",
+                width: width + "px",
                 zIndex : props.zLevel
         }}>
 
-            <div className = "windowEdge" 
-                onMouseDown = {handleMouseDown} 
-                onMouseUp = {handleMouseup} 
+            {/*can't tell if preformance got significantly worse after adding resizer or not. Before adding the code */}
+            <div className = "left-right-resizer" onMouseDown = {handleResizeleft}/>
+            <div className = "windowMidContainer"
+                style = {{
+                    /*I spent an annoying amount of time messing around with this and just gave up and did this 
+                    width is having trouble being calculated correctly due to the 5px things on the left and right and 
+                    i cant get flex box to cooperate. Will probably change this in the future
+                    
+                    */
+                    width: (width - 10) + "px"
+                }}
             >
-                <CloseIcon 
-                    sx = {{
-                        color : "white",
-                        "&:hover": { backgroundColor: "black" }
-                    }}
-                    onClick = {handleExit}
-                />
+                <div className = "top-bottom-resizer" onMouseDown = {handleResizeTop}/>
+                <div className = "windowTopBar" 
+                    onMouseDown = {handleMouseDown} 
+                >
+                    <CloseIcon 
+                        sx = {{
+                            color : "white",
+                            "&:hover": { backgroundColor: "black" }
+                        }}
+                        onClick = {handleExit}
+                    />
+
+                </div>
+                <TextEditor></TextEditor>
+                <div className = "top-bottom-resizer" onMouseDown = {handleResizeBottom}/>
             </div>
-            <TextEditor></TextEditor>
-        
+            <div className= "left-right-resizer" onMouseDown={handleResizeRight}/>
+
         </div>
     )
 }

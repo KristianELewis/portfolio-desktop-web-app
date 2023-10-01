@@ -18,25 +18,52 @@ body {
     margin: auto;
 
 }
+/*should get renamed to inner screen or something */
 .innerWindow {
     position: relative;
     background-color: black;
     height: 720px;
 }
 
+
+
+
+/*window classes */
 .window {
-    height: 200px;
-    width: 200px;
-    padding : "3px";
-    background-color: darkslategrey;
+    background-color: purple;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: stretch;
+}
+.top-bottom-resizer{
+    min-height: 5px;
+    width: 100%;
+    background-color: darkslategray;
+}
+.top-bottom-resizer:hover{
+    cursor: row-resize;
 }
 
-.windowEdge {
-    height: 30px;
+.left-right-resizer{
+    height: 100%;
+    min-width: 5px;
+    background-color: darkslategray;
+
+}
+.left-right-resizer:hover{
+    cursor: col-resize;
+}
+.windowMidContainer {
+    display: flex;
+    flex-direction: column;
+    
+}
+.windowTopBar {
+    min-height: 30px;
+    width: 100%;
     background-color: gray;
     display: flex;
     flex-direction: row;
     justify-content: right;
 }
+
