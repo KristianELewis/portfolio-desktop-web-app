@@ -19,6 +19,7 @@ body {
 
 }
 .innerWindow {
+    position: relative;
     background-color: black;
     height: 720px;
 }
@@ -26,11 +27,16 @@ body {
 .window {
     height: 200px;
     width: 200px;
-    background-color: green;
+    padding : "3px";
+    background-color: darkslategrey;
+    display: flex;
+    flex-direction: column;
 }
 
 .windowEdge {
-    height: 20px;
+    height: 30px;
     background-color: gray;
-
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
 }

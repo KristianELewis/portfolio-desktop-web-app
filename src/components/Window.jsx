@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-//import TextEditor from './programs/TextEditor'
+import TextEditor from './programs/TextEditor'
+import CloseIcon from '@mui/icons-material/Close';
+
 
 const Window = (props) => {
 
@@ -53,20 +55,44 @@ const Window = (props) => {
 
     }
     
-    //mouse up my be redundant
+    //mouse up may be redundant
+
+    //position : "relative" must be placed in here. It is beinin overwritten
+    //padding also gets overwritten...
+
+
+    const handleExit = () => {
+        props.removeProgram(props.id)
+    }
+    const focusWindow = () => {
+        props.focusWindow(props.id)
+    }
+
     return (
         <div className = "window"
-        style = {{
-            position: "relative",
-            left : left + "px",
-            top : top + "px"
+            onMouseDown = {focusWindow}
+            style = {{
+                position: "absolute",
+                left : left + "px",
+                top : top + "px",
+                padding : "3px",
+                zIndex : props.zLevel
         }}>
 
             <div className = "windowEdge" 
                 onMouseDown = {handleMouseDown} 
                 onMouseUp = {handleMouseup} 
-            />
-
+            >
+                <CloseIcon 
+                    sx = {{
+                        color : "white",
+                        "&:hover": { backgroundColor: "black" }
+                    }}
+                    onClick = {handleExit}
+                />
+            </div>
+            <TextEditor></TextEditor>
+        
         </div>
     )
 }

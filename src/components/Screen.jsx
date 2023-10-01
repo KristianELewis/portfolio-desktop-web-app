@@ -1,18 +1,56 @@
 import React, { useState , useRef} from 'react'
 
-
-//materialUI stuff
-import { AppBar, Toolbar, IconButton} from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu';
-
-
 import Window from './Window'
-
-
+import DesktopMenu from './DesktopMenu'
 
 function Screen() {
-
     //console.log("screen render")
+
+    const [programs, setPrograms] = useState([]);
+    //useRef??
+    //const [programCount, setProgramCount] = useState(0);
+    let programCount = useRef(0)
+    let currentZLevel = useRef(0)
+
+    const addProgram = () => {
+        setPrograms((prevPrograms) => {
+            const tempProgramCount = programCount.current
+            const tempZlevel = currentZLevel.current;
+            currentZLevel.current += 1;
+            programCount.current +=1
+            return [...prevPrograms, { id: tempProgramCount, zLevel: tempZlevel}]
+        })
+        //setProgramCount((prevState) => {return prevState+1})
+
+    }
+
+    const removeProgram = (id) => {
+        //const newPrograms = programs
+        const newPrograms = programs.filter((program) => {
+            if (program.id != id)
+            {
+                return program;
+            }
+            return 
+        })
+        setPrograms(newPrograms)
+    }
+    //It needs to use zIndexes. zIndexes will  revent the user from selecting the windows behind. pushing the current window to the back of the programs list
+    //and therefore render later in the dom, will still allow the background elements to be selected
+    const focusWindow = (id) => {
+        const newPrograms = programs.map((program) => {
+            if(program.id === id)
+            {
+                return {
+                    id: program.id,
+                    zLevel: currentZLevel.current
+                }
+            }
+            return program
+        })
+        currentZLevel.current += 1;
+        setPrograms(newPrograms)
+    }
 
     /*========================================================
 
@@ -44,24 +82,35 @@ function Screen() {
         setMouseLeaveState(null);
     }
 
+
+
     return (
     <div className = "outterScreen">
-        <AppBar 
-            sx={{height: "40px", position: 'relative', unselectable:"on" }}
-            options={{
-                draggable: false,
-              }}
-        >
-        </AppBar>
+        <DesktopMenu addProgram = {addProgram}/>
+
         <div className = "innerWindow" onPointerMove = {mouseMove} onMouseLeave = {mouseLeaveState} onMouseUp = {mouseLeaveState}>
 
-            <Window
-                changeFunction = {changeFunction}
-                removeFunction = {removeFunction}
-            />
+            {programs.map(program => {
+                return <Window 
+                    changeFunction = {changeFunction}
+                    removeFunction = {removeFunction}
+                    key = {program.id}
+                    id = {program.id}
+                    zLevel = {program.zLevel}
+                    removeProgram = {removeProgram}
+                    focusWindow = {focusWindow}
+                />
+            })}
+
         </div>    
     </div>
     )
 }
 
 export default Screen
+
+/*
+            <Window
+                changeFunction = {changeFunction}
+                removeFunction = {removeFunction}
+            />*/
