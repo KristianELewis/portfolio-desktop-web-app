@@ -19,13 +19,13 @@ function Screen() {
     let programCount = useRef(0)
     let currentZLevel = useRef(0)
 
-    const addProgram = () => {
+    const addProgram = (name) => {
         setPrograms((prevPrograms) => {
             const tempProgramCount = programCount.current
             const tempZlevel = currentZLevel.current;
             currentZLevel.current += 1;
             programCount.current +=1
-            return [...prevPrograms, { id: tempProgramCount, zLevel: tempZlevel}]
+            return [...prevPrograms, { id: tempProgramCount, zLevel: tempZlevel, name: name}]
         })
         //setProgramCount((prevState) => {return prevState+1})
 
@@ -50,7 +50,8 @@ function Screen() {
             {
                 return {
                     id: program.id,
-                    zLevel: currentZLevel.current
+                    zLevel: currentZLevel.current,
+                    name: program.name
                 }
             }
             return program
@@ -106,6 +107,7 @@ function Screen() {
                     key = {program.id}
                     id = {program.id}
                     zLevel = {program.zLevel}
+                    name = {program.name}
                     removeProgram = {removeProgram}
                     focusWindow = {focusWindow}
                 />

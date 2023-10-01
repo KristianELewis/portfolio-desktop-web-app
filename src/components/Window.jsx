@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import TextEditor from './programs/TextEditor'
 import CloseIcon from '@mui/icons-material/Close';
-
+import Typography from '@mui/material/Typography'
 
 const Window = (props) => {
 
@@ -71,7 +71,12 @@ const Window = (props) => {
     }
 
     /*-------------------------------------------------
+        
         RESIZING
+    
+        does not include ne nw se sw resizers
+        style could use some work
+    
     -------------------------------------------------*/
 
     const handleResizeRight = () => {
@@ -158,7 +163,12 @@ const Window = (props) => {
         })
     }
 
-
+    const chooseProgram = () => {
+        if (props.name === "Text Editor")
+        {
+            return <TextEditor></TextEditor>
+        }
+    }
     return (
         <div className = "window"
             onMouseDown = {focusWindow}
@@ -187,6 +197,7 @@ const Window = (props) => {
                 <div className = "windowTopBar" 
                     onMouseDown = {handleMouseDown} 
                 >
+                    <Typography sx = {{userSelect: "none"}}>{props.name}</Typography>
                     <CloseIcon 
                         sx = {{
                             color : "white",
@@ -196,7 +207,7 @@ const Window = (props) => {
                     />
 
                 </div>
-                <TextEditor></TextEditor>
+                {chooseProgram()}
                 <div className = "top-bottom-resizer" onMouseDown = {handleResizeBottom}/>
             </div>
             <div className= "left-right-resizer" onMouseDown={handleResizeRight}/>

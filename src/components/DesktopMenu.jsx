@@ -21,7 +21,7 @@ const DesktopMenu = (props) => {
     }
 
     const handleAddTextEditor = () => {
-        props.addProgram()
+        props.addProgram("Text Editor")
         setFilesAnchor(null)
     }
 
