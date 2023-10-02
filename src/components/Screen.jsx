@@ -1,12 +1,45 @@
-import React, { useState , useRef} from 'react'
+import React, { useState , useRef, useEffect} from 'react'
 
 import Window from './Window'
 import DesktopMenu from './DesktopMenu'
 
+
+//Someone elses custom hook
+//https://stackoverflow.com/questions/71457792/resize-event-in-react
+function useWindowSize() {
+    // Initialize state with undefined width/height so server and client renders match
+    // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
+    const [windowSize, setWindowSize] = useState({
+      width: undefined,
+      height: undefined,
+    });
+    useEffect(() => {
+      // Handler to call on window resize
+      function handleResize() {
+        // Set window width/height to state
+        setWindowSize({
+          width: window.innerWidth,
+          height: window.innerHeight,
+        });
+      }
+      // Add event listener
+      window.addEventListener("resize", handleResize);
+      // Call handler right away so state gets updated with initial window size
+      handleResize();
+      // Remove event listener on cleanup
+      return () => window.removeEventListener("resize", handleResize);
+    }, []); // Empty array ensures that effect is only run on mount
+    return windowSize;
+  }
+
+
 function Screen() {
     //console.log("screen render")
 
+    const screenDimensions = useWindowSize();
 
+    //not sure if useEffect is a good choice for this
+   
     /*=================================================
 
         MULTIPLE PROGRAM FUNCTIONALITY
@@ -93,12 +126,33 @@ function Screen() {
     }
 
 
+    //This reactive part should be moved somewhere else
+    let outerBorderWidth = 20;
+    let menuHeight = 64;
+    let tempWidth = 300;
+    let tempHeight = (screenDimensions.height -outerBorderWidth -menuHeight);
+    if(screenDimensions.width > 1368)
+    {
+        tempWidth = 1368;
+    }
+    else if(screenDimensions.width > 1000){
+        tempWidth = 1000;
+    }
+    else if(screenDimensions.width > 500)
+    {
+        tempWidth = 500;
+    }
+
+    if (tempHeight < 300)
+    {
+        tempHeight = 300;
+    }
 
     return (
-    <div className = "outterScreen">
+    <div className = "outterScreen" style = {{width: tempWidth}}>
         <DesktopMenu addProgram = {addProgram}/>
 
-        <div className = "innerWindow" onPointerMove = {mouseMove} onMouseLeave = {mouseLeaveState} onMouseUp = {mouseLeaveState}>
+        <div className = "innerWindow" onPointerMove = {mouseMove} onMouseLeave = {mouseLeaveState} onMouseUp = {mouseLeaveState} style = {{height : tempHeight + "px"}}>
 
             {programs.map(program => {
                 return <Window 
@@ -108,6 +162,8 @@ function Screen() {
                     id = {program.id}
                     zLevel = {program.zLevel}
                     name = {program.name}
+                    screenWidth = {tempWidth}
+                    screenHeight = {tempHeight}
                     removeProgram = {removeProgram}
                     focusWindow = {focusWindow}
                 />
