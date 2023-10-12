@@ -1,0 +1,23 @@
+
+
+.editUser {
+    padding: 20px;
+}
+
+.editUserFields{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.editUserFieldsTextfield{
+    margin-bottom: 20px;
+}
+
+.editUserButtons{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+}

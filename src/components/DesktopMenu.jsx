@@ -23,11 +23,20 @@ const DesktopMenu = (props) => {
         setFilesAnchor(e.currentTarget)
     }
 
+    //Probably would be better to not have a separate function for each program choice
+    
     const handleAddTextEditor = () => {
         props.addProgram("Text Editor")
         setFilesAnchor(null)
     }
-
+    const handleAddCalculator = () => {
+        props.addProgram("Calculator")
+        setFilesAnchor(null)
+    }
+    const handleAddCalorieCounter = () => {
+        props.addProgram("Calorie Counter")
+        setFilesAnchor(null)
+    }
     const handleCloseFiles = () => {
         setFilesAnchor(null)
     }
@@ -42,6 +51,9 @@ const DesktopMenu = (props) => {
                     onClose ={handleCloseFiles}
                 >
                     <MenuItem onClick={handleAddTextEditor}>Text Editor</MenuItem>
+                    <MenuItem onClick={handleAddCalculator}>Calculator</MenuItem>
+                    <MenuItem onClick={handleAddCalorieCounter}>Calorie Counter</MenuItem>
+
                 </Menu>
             </Toolbar>
         </AppBar>

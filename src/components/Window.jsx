@@ -1,14 +1,22 @@
-import React, { useState, useEffect } from 'react'
-import TextEditor from './programs/TextEditor'
-import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography'
+import React, { useState, useEffect, useContext } from 'react'
 
+//Custom Components
+import TextEditor from './programs/TextEditor';
+import Calculator from './programs/Calculator';
+import CalorieCounter from './programs/CalorieCounter/CalorieCounter';
+
+//materialUI
+import CloseIcon from '@mui/icons-material/Close';
+import Typography from '@mui/material/Typography';
+
+import { windowWidthContext } from './Context';
 const Window = (props) => {
 
+    const screenDimensions = props.screenDimensions
     //console.log("rendering Window")
-
     const [position, setPosition] = useState({left: 50, top: 50, width: 300, height: 300})
-
+    //not sure about this, might be a better way to do this other than using a state
+    const [program, setProgram] = useState(null)
     //maybe move if statements inside set position?
     /*=======================================================
 
@@ -41,6 +49,64 @@ const Window = (props) => {
             })
         }
     }, [props.screenHeight])
+
+    /*=======================================================
+
+        SETTING DEFAULT VALUES 
+        if the dimensions of the screen change, these two useEffects will make sure the window is still contained within the screens boundries
+
+    =======================================================*/
+
+    /*const displayInfo = () => {
+        console.log("left: " + position.left)
+        console.log("width: " + position.width)
+        console.log("top: " + position.top)
+        console.log("height: " + position.height)
+    }*/
+
+    //this should be an effect
+    useEffect(() => {
+        if (props.name === "Text Editor")
+        {
+            //return <TextEditor></TextEditor>
+        }
+        else if (props.name === "Calculator")
+        {
+            //return <Calculator></Calculator>
+        }
+        else if (props.name === "Calorie Counter")
+        {
+            //When saving the file, this will reset position, not sure if it has a similar effect in normal use in anyway.
+            //If it becomes an issue I can set this to use a previous state
+            setPosition({left: 50, top: 50, width: 720, height: 500})
+            setProgram(<CalorieCounter></CalorieCounter>)
+        }
+        else{
+
+        }
+    }, [])
+
+
+    //seems a little laggy, this will be re evaluating this on each rerender, There may be a better way to handle this
+    //The best way may be to set on an intial load. Then have a context for window dimensions.
+    
+    const chooseProgram = () => {
+        if (props.name === "Text Editor")
+        {
+            return <TextEditor></TextEditor>
+        }
+        else if (props.name === "Calculator")
+        {
+            return <Calculator></Calculator>
+        }
+        else if (props.name === "Calorie Counter")
+        {
+            return <CalorieCounter width = {position.width}></CalorieCounter>
+        }
+        else{
+
+        }
+    }
     /*========================================================
 
     MOUSE TRACKING AND WINDOW POSITIONING
@@ -55,6 +121,7 @@ const Window = (props) => {
     ========================================================*/
     
     const updateMousePosition = e => {
+        e.preventDefault();
         setPosition((prevState) => {
             let newLeft = prevState.left + e.movementX
             if(newLeft < 0){
@@ -114,7 +181,8 @@ const Window = (props) => {
     -------------------------------------------------*/
 
     const handleResizeRight = () => {
-        props.changeFunction((e) => 
+        props.changeFunction((e) =>{
+            e.preventDefault();
             setPosition((prevState) => {
                 let newWidth = prevState.width + e.movementX
                 if(newWidth < 150)
@@ -126,10 +194,11 @@ const Window = (props) => {
                     newWidth = props.screenWidth - prevState.left
                 }
                 return {...prevState, width : newWidth}
-        }))
+        })})
     }
     const handleResizeBottom = () => {
-        props.changeFunction((e) => 
+        props.changeFunction((e) => {
+            e.preventDefault();
             setPosition((prevState) => {
                 let newHeight = prevState.height + e.movementY
                 if(newHeight < 100)
@@ -141,11 +210,12 @@ const Window = (props) => {
                     newHeight = props.screenHeight - prevState.top
                 }
                 return {...prevState, height : newHeight}
-        }))
+        })})
     }
 
     const handleResizeTop = () => {
         props.changeFunction((e) =>{ 
+            e.preventDefault();
             setPosition((oldState) => {
                 let newTop = oldState.top + e.movementY;
                 let newHeight = oldState.height + (e.movementY * -1);
@@ -171,6 +241,7 @@ const Window = (props) => {
 
     const handleResizeleft = () => {
         props.changeFunction((e) =>{ 
+            e.preventDefault();
             setPosition((oldState) => {
                 let newLeft = oldState.left + e.movementX;
                 let newWidth = oldState.width + (e.movementX * -1);
@@ -194,18 +265,7 @@ const Window = (props) => {
         })
     }
 
-    /*const displayInfo = () => {
-        console.log("left: " + position.left)
-        console.log("width: " + position.width)
-        console.log("top: " + position.top)
-        console.log("height: " + position.height)
-    }*/
-    const chooseProgram = () => {
-        if (props.name === "Text Editor")
-        {
-            return <TextEditor></TextEditor>
-        }
-    }
+
     return (
         <div className = "window"
             onMouseDown = {focusWindow}
@@ -244,7 +304,10 @@ const Window = (props) => {
                     />
 
                 </div>
-                {chooseProgram()}
+                <windowWidthContext.Provider value = {position.width}>
+                    {program}
+                    {/*chooseProgram()*/}
+                </windowWidthContext.Provider>
                 <div className = "top-bottom-resizer" onMouseDown = {handleResizeBottom}/>
             </div>
             <div className= "left-right-resizer" onMouseDown={handleResizeRight}/>

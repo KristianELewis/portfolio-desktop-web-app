@@ -1,0 +1,11 @@
+
+
+.changeAmountBackdrop {
+    padding: 20px;
+}
+
+.changeAmountButtons {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+}

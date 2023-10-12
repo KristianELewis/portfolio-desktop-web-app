@@ -3,7 +3,7 @@ import React, { useState , useRef, useEffect} from 'react'
 import Window from './Window'
 import DesktopMenu from './DesktopMenu'
 
-
+//This custom hook is so good
 //Someone elses custom hook
 //https://stackoverflow.com/questions/71457792/resize-event-in-react
 function useWindowSize() {
@@ -37,7 +37,6 @@ function Screen() {
     //console.log("screen render")
 
     const screenDimensions = useWindowSize();
-
     //not sure if useEffect is a good choice for this
    
     /*=================================================
@@ -126,11 +125,14 @@ function Screen() {
     }
 
 
-    //This reactive part should be moved somewhere else
+    //This responsive part should be moved somewhere else
+    //Height and widths should just fill the screen I think
     let outerBorderWidth = 20;
     let menuHeight = 64;
-    let tempWidth = 300;
+    //let tempWidth = 300;
     let tempHeight = (screenDimensions.height -outerBorderWidth -menuHeight);
+    let tempWidth = (screenDimensions.width)
+    /*
     if(screenDimensions.width > 1368)
     {
         tempWidth = 1368;
@@ -146,27 +148,33 @@ function Screen() {
     if (tempHeight < 300)
     {
         tempHeight = 300;
-    }
+    }*/
 
+    //css baseline sets boxsizing to border-box in html, which was causing issues when calorie counter was being loaded.
+    //To fix this, I set border sizing to border box here and supply the innderwindow width with the borders removed
     return (
-    <div className = "outterScreen" style = {{width: tempWidth}}>
+    <div className = "outterScreen" style = {{width: tempWidth, boxSizing : "border-box"}}>
         <DesktopMenu addProgram = {addProgram}/>
 
         <div className = "innerWindow" onPointerMove = {mouseMove} onMouseLeave = {mouseLeaveState} onMouseUp = {mouseLeaveState} style = {{height : tempHeight + "px"}}>
 
             {programs.map(program => {
-                return <Window 
-                    changeFunction = {changeFunction}
-                    removeFunction = {removeFunction}
-                    key = {program.id}
-                    id = {program.id}
-                    zLevel = {program.zLevel}
-                    name = {program.name}
-                    screenWidth = {tempWidth}
-                    screenHeight = {tempHeight}
-                    removeProgram = {removeProgram}
-                    focusWindow = {focusWindow}
-                />
+                
+                return (
+                        <Window 
+                            changeFunction = {changeFunction}
+                            removeFunction = {removeFunction}
+                            key = {program.id}
+                            id = {program.id}
+                            zLevel = {program.zLevel}
+                            name = {program.name}
+                            screenWidth = {tempWidth - outerBorderWidth}
+                            screenHeight = {tempHeight}
+                            screenDimensions = {screenDimensions}
+                            removeProgram = {removeProgram}
+                            focusWindow = {focusWindow}
+                        />
+                )
             })}
 
         </div>    

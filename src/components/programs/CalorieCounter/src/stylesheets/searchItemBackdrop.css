@@ -1,0 +1,10 @@
+
+
+.searchItemBackdrop {
+    padding: 20px;
+}
+.searchItemButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}

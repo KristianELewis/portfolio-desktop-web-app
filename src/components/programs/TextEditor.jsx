@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 
+import  useMediaQuery  from '@mui/material/useMediaQuery';
 
 const initialValue = [
     {
@@ -35,7 +36,7 @@ const TextEditor = () => {
     //perhaps move this div into the window
     //draftjs will not allow overflow on x
     return(
-        <div style = {{height: "100%", overflow: 'auto'}}>
+        <div style = {{height: "100%", overflow: 'auto', color : "black"}}>
             <MyComponent> </MyComponent>
         </div>
     )
