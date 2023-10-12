@@ -37,8 +37,9 @@ function Screen() {
     //console.log("screen render")
 
     const screenDimensions = useWindowSize();
-    //not sure if useEffect is a good choice for this
-   
+    const outerBorderWidth = 20;
+    const menuHeight = 64;
+
     /*=================================================
 
         MULTIPLE PROGRAM FUNCTIONALITY
@@ -60,7 +61,6 @@ function Screen() {
             return [...prevPrograms, { id: tempProgramCount, zLevel: tempZlevel, name: name}]
         })
         //setProgramCount((prevState) => {return prevState+1})
-
     }
 
     const removeProgram = (id) => {
@@ -124,42 +124,21 @@ function Screen() {
         setMouseLeaveState(null);
     }
 
-
-    //This responsive part should be moved somewhere else
-    //Height and widths should just fill the screen I think
-    let outerBorderWidth = 20;
-    let menuHeight = 64;
-    //let tempWidth = 300;
-    let tempHeight = (screenDimensions.height -outerBorderWidth -menuHeight);
-    let tempWidth = (screenDimensions.width)
-    /*
-    if(screenDimensions.width > 1368)
-    {
-        tempWidth = 1368;
-    }
-    else if(screenDimensions.width > 1000){
-        tempWidth = 1000;
-    }
-    else if(screenDimensions.width > 500)
-    {
-        tempWidth = 500;
-    }
-
-    if (tempHeight < 300)
-    {
-        tempHeight = 300;
-    }*/
-
     //css baseline sets boxsizing to border-box in html, which was causing issues when calorie counter was being loaded.
     //To fix this, I set border sizing to border box here and supply the innderwindow width with the borders removed
     return (
-    <div className = "outterScreen" style = {{width: tempWidth, boxSizing : "border-box"}}>
+    <div className = "outterScreen" style = {{width: screenDimensions.width, boxSizing : "border-box"}}>
         <DesktopMenu addProgram = {addProgram}/>
 
-        <div className = "innerWindow" onPointerMove = {mouseMove} onMouseLeave = {mouseLeaveState} onMouseUp = {mouseLeaveState} style = {{height : tempHeight + "px"}}>
-
+        <div 
+            className = "innerWindow" 
+            onPointerMove = {mouseMove} 
+            onMouseLeave = {mouseLeaveState} 
+            onMouseUp = {mouseLeaveState} 
+            style = {{height : (screenDimensions.height - outerBorderWidth - menuHeight) + "px"}}
+            >
+            {/* WHen desktop Icons are implemented they should be placed here in a map function */}
             {programs.map(program => {
-                
                 return (
                         <Window 
                             changeFunction = {changeFunction}
@@ -168,8 +147,8 @@ function Screen() {
                             id = {program.id}
                             zLevel = {program.zLevel}
                             name = {program.name}
-                            screenWidth = {tempWidth - outerBorderWidth}
-                            screenHeight = {tempHeight}
+                            screenWidth = {screenDimensions.width - outerBorderWidth}
+                            screenHeight = {screenDimensions.height - outerBorderWidth - menuHeight}
                             screenDimensions = {screenDimensions}
                             removeProgram = {removeProgram}
                             focusWindow = {focusWindow}
@@ -181,11 +160,4 @@ function Screen() {
     </div>
     )
 }
-
 export default Screen
-
-/*
-            <Window
-                changeFunction = {changeFunction}
-                removeFunction = {removeFunction}
-            />*/

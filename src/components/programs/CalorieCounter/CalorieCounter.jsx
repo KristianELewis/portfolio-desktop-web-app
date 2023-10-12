@@ -3,10 +3,7 @@ import { windowWidthContext } from '../../Context';
 
 //need to make it so there is only one instance of the calorie counter running at the same time
 
-//need a lazy import here
 const App = lazy(() => import('./src/App'))
-
-//import App from './src/App'
 //At the moment, I am just copying and pasting the source folder into this project.
 //There are probably other ways to do it, something about packing and using npm, but I don't really want to worry about managing 
 //dependencie versions between the two projects like that right now. Just need to make it work after pasting it in and make a few minor adjustments
@@ -22,17 +19,12 @@ const mediaQueryDecider = (width, minWidth) => {
 const CalorieCounter = (props) => {
 
     const width = useContext(windowWidthContext);
-    //const {width} = props;
-    console.log("re- render")
-    console.log("from top: " + width)
     const media700W = mediaQueryDecider(width, 700);
     const media600W = mediaQueryDecider(width, 600);
     const media500W = mediaQueryDecider(width, 500);
 
-    //resizing any program still gives issues with selecting things inside the program. There might besomething I can do with prevent default?
-    //for now though I set userSelect "none"
     //this can probably be re arranged differently, but for now this works
-
+    
     //info button should allow the user to navigate to the standalone version
     //need minimum height and widths
     return (

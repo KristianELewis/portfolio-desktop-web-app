@@ -68,11 +68,11 @@ const Window = (props) => {
     useEffect(() => {
         if (props.name === "Text Editor")
         {
-            //return <TextEditor></TextEditor>
+            setProgram(<TextEditor></TextEditor>)
         }
         else if (props.name === "Calculator")
         {
-            //return <Calculator></Calculator>
+            setProgram(<Calculator></Calculator>)
         }
         else if (props.name === "Calorie Counter")
         {
@@ -85,28 +85,6 @@ const Window = (props) => {
 
         }
     }, [])
-
-
-    //seems a little laggy, this will be re evaluating this on each rerender, There may be a better way to handle this
-    //The best way may be to set on an intial load. Then have a context for window dimensions.
-    
-    const chooseProgram = () => {
-        if (props.name === "Text Editor")
-        {
-            return <TextEditor></TextEditor>
-        }
-        else if (props.name === "Calculator")
-        {
-            return <Calculator></Calculator>
-        }
-        else if (props.name === "Calorie Counter")
-        {
-            return <CalorieCounter width = {position.width}></CalorieCounter>
-        }
-        else{
-
-        }
-    }
     /*========================================================
 
     MOUSE TRACKING AND WINDOW POSITIONING
@@ -152,7 +130,7 @@ const Window = (props) => {
     
     //mouse up may be redundant
 
-    //position : "relative" must be placed in here. It is beinin overwritten
+    //position : "relative" must be placed in here. It is beining overwritten
     //padding also gets overwritten...
 
 
