@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 
 //materialUI stuff
 //need to switch to import paths
@@ -16,6 +16,24 @@ import IconButton from '@mui/material/IconButton'
 
 //need to make the app bar smaller, very annoying right now though
 const DesktopMenu = (props) => {
+    const {setBackgroundImageUrl} = props
+    
+    const [file, setFile] = useState(null);
+    const fileInput = useRef();
+    
+    async function verifyImage() {
+        return new Promise((resolve) => 
+        {
+            let image = new Image();
+            image.onload = function() {
+                resolve( {valid : true, url : image.src})
+            }
+            image.onerror = function() {
+                resolve({valid : false, url : null})
+            }
+            image.src = URL.createObjectURL(file)
+        })
+    }
 
     const [filesAnchor, setFilesAnchor] = useState(null);
     const fileOpen = Boolean(filesAnchor);
@@ -37,6 +55,12 @@ const DesktopMenu = (props) => {
         props.addProgram("Calorie Counter")
         setFilesAnchor(null)
     }
+    const handleChangeDesktopBackground = (e) => {
+        console.log("Changeing background picture")
+        setBackgroundImageUrl(URL.createObjectURL(e.target.files[0]))
+        //props.addProgram("Calorie Counter")
+        setFilesAnchor(null)
+    }
     const handleCloseFiles = () => {
         setFilesAnchor(null)
     }
@@ -53,6 +77,20 @@ const DesktopMenu = (props) => {
                     <MenuItem onClick={handleAddTextEditor}>Text Editor</MenuItem>
                     <MenuItem onClick={handleAddCalculator}>Calculator</MenuItem>
                     <MenuItem onClick={handleAddCalorieCounter}>Calorie Counter</MenuItem>
+                    <MenuItem onClick={()=>{
+                        fileInput.current.click()
+                        /*setting files anchor to null here wont let the background picture get chosen.
+                        right now it choses from the users computer. When I implement file system it will change to using that. There will need to be an upload files
+                        button to move files from the users computer into the website
+                        */
+                        }}>Change Desktop Background
+                        <input
+                            ref ={fileInput}
+                            type="file"
+                            onChange = {handleChangeDesktopBackground}
+                            hidden
+                        />
+                    </MenuItem>
 
                 </Menu>
             </Toolbar>

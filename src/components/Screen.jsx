@@ -34,6 +34,9 @@ function useWindowSize() {
 
 
 function Screen() {
+
+    const [backgroundImageUrl, setBackgroundImageUrl] = useState(null)
+
     //console.log("screen render")
 
     const screenDimensions = useWindowSize();
@@ -128,14 +131,17 @@ function Screen() {
     //To fix this, I set border sizing to border box here and supply the innderwindow width with the borders removed
     return (
     <div className = "outterScreen" style = {{width: screenDimensions.width, boxSizing : "border-box"}}>
-        <DesktopMenu addProgram = {addProgram}/>
+        <DesktopMenu addProgram = {addProgram} setBackgroundImageUrl = {setBackgroundImageUrl}/>
 
         <div 
             className = "innerWindow" 
             onPointerMove = {mouseMove} 
             onMouseLeave = {mouseLeaveState} 
             onMouseUp = {mouseLeaveState} 
-            style = {{height : (screenDimensions.height - outerBorderWidth - menuHeight) + "px"}}
+            style = {{
+                height : (screenDimensions.height - outerBorderWidth - menuHeight) + "px",
+                backgroundImage : `url('${backgroundImageUrl}')`
+            }}
             >
             {/* WHen desktop Icons are implemented they should be placed here in a map function */}
             {programs.map(program => {
