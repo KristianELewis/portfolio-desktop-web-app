@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 
 //materialUI stuff
 //need to switch to import paths
@@ -6,16 +6,42 @@ import  AppBar from '@mui/material/AppBar'
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import MenuIcon from '@mui/icons-material/Menu';
+//import MenuIcon from '@mui/icons-material/Menu';
 
 import Button from '@mui/material/Button'
 import Toolbar from '@mui/material/Toolbar'
 
 import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
+//import IconButton from '@mui/material/IconButton'
+
+import dayjs from 'dayjs'
+
+
+
 
 //need to make the app bar smaller, very annoying right now though
 const DesktopMenu = (props) => {
+
+
+    /*
+        This doesnt seem to effect preformance much. Can change the interval if it starts to, but 1 second keeps it pretty accurate and really shouldnt be a big deal
+        Still not sure if I'm using useEffect correctly. Not sure if useEffect is the right choice here, I guess this is getting info from an outside source.
+    */
+    const currentTimeAndDate = () => {
+        let currentDate = new Date()
+        console.log(dayjs(currentDate).format('dddd, MMMM D, YYYY h:mm A'))
+        return (dayjs(currentDate).format('dddd, MMMM D, YYYY h:mm A'));
+    }
+
+    const [dateTime, setDateTime] = useState(currentTimeAndDate);
+
+    useEffect(() => {
+
+        const interval = setInterval(() => setDateTime(currentTimeAndDate), 1000);
+        return () => clearInterval(interval);
+    }, [dateTime])
+
+
     const {setBackgroundImageUrl} = props
     
     const [file, setFile] = useState(null);
@@ -70,8 +96,8 @@ const DesktopMenu = (props) => {
     }
 
     return (
-        <AppBar position = "relative">
-            <Toolbar sx ={{flexGrow : 1}}>
+        <AppBar position = "relative" sx ={{display : "grid", gridTemplateColumns: "1fr 1fr 1fr"}}>
+            <Toolbar sx ={{boxSizing: "border-box"}}>
                 <Button color = 'inherit' onClick = {handleFilesClick}>Programs</Button>
                 <Menu
                     anchorEl={filesAnchor}
@@ -99,6 +125,8 @@ const DesktopMenu = (props) => {
 
                 </Menu>
             </Toolbar>
+            <Typography variant = "body1"sx = {{margin: "auto", textAlign: "center"}}>{dateTime}</Typography>
+            <div>{/*maybe this will be a settings/ logout section */}</div>
         </AppBar>
     )
 }
