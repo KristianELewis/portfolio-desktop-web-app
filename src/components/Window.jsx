@@ -4,7 +4,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import TextEditor from './programs/TextEditor';
 import Calculator from './programs/Calculator';
 import CalorieCounter from './programs/CalorieCounter/CalorieCounter';
-
+import PdfReader from './programs/PdfReader';
 //materialUI
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import { windowWidthContext } from './Context';
 const Window = (props) => {
 
-    const screenDimensions = props.screenDimensions
+    const {screenDimensions, windowPositioningInUse} = props;
     //console.log("rendering Window")
     const [position, setPosition] = useState({left: 50, top: 50, width: 300, height: 300})
     //not sure about this, might be a better way to do this other than using a state
@@ -73,6 +73,12 @@ const Window = (props) => {
         else if (props.name === "Calculator")
         {
             setProgram(<Calculator></Calculator>)
+        }
+        else if (props.name === "PDF Viewer")
+        {
+            //this is coppied from below. I should find a width and height that works better than this
+            setPosition({left: 50, top: 50, width: 720, height: 500})
+            setProgram(<PdfReader></PdfReader>)
         }
         else if (props.name === "Calorie Counter")
         {
@@ -282,7 +288,8 @@ const Window = (props) => {
                     />
 
                 </div>
-                <windowWidthContext.Provider value = {position.width}>
+                {/* this context should be renamed, and it can have a broader use */}
+                <windowWidthContext.Provider value = {{width : position.width, windowPositioningInUse : windowPositioningInUse}}>
                     {program}
                     {/*chooseProgram()*/}
                 </windowWidthContext.Provider>

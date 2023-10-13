@@ -37,6 +37,12 @@ function Screen() {
 
     const [backgroundImageUrl, setBackgroundImageUrl] = useState(null)
 
+
+    //Right now this is only used in the pdf reader. This lets the window know that a movement operation is in place. This puts a transparent div over the iframe
+    //This will stop the iframe from interupting movement and resizing operations.
+    //This could potentially move into window. It may also be completely uncessary, but for the sake of time and to reduce the programs overhead, I just want a working pdf reader
+    const [windowPositioningInUse, setWindowPositioningInUse] = useState(false);
+
     //console.log("screen render")
 
     const screenDimensions = useWindowSize();
@@ -112,9 +118,10 @@ function Screen() {
     const changeFunction = (newFunc) => {
         //console.log("changeFunction")
         //see explanation in removeFunction. It is necessary here aswell
-        window.getSelection().empty()
+        window.getSelection().empty();
         setMouseMove(() => newFunc);
-        setMouseLeaveState(() => removeFunction)
+        setMouseLeaveState(() => removeFunction);
+        setWindowPositioningInUse(true);
     }
     //this function will stop tracking the mouse
     const removeFunction = () =>{
@@ -122,9 +129,10 @@ function Screen() {
         //if the user is dragging a window, and the mouse moves beyond the windowEdge, it will begin selecting text, or elements undeneath the mouse
         //this will happen when trying to drag a window beyond the screen boundries. The browser will think the user was selecting something.
         //if the user tries to move a window again, they will instead begin to drag the selection. This sets the selection to null, so no draggin operation will occur
-        window.getSelection().empty()
+        window.getSelection().empty();
         setMouseMove(null);
         setMouseLeaveState(null);
+        setWindowPositioningInUse(false);
     }
 
     //css baseline sets boxsizing to border-box in html, which was causing issues when calorie counter was being loaded.
@@ -158,7 +166,10 @@ function Screen() {
                             screenDimensions = {screenDimensions}
                             removeProgram = {removeProgram}
                             focusWindow = {focusWindow}
+                            windowPositioningInUse = {windowPositioningInUse}
                         />
+                        /*Okay windowPositioningInUse should probably just be placed elsewhere */
+
                 )
             })}
 

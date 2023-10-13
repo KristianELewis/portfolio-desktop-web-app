@@ -55,6 +55,10 @@ const DesktopMenu = (props) => {
         props.addProgram("Calorie Counter")
         setFilesAnchor(null)
     }
+    const handleAddPdfReader = () => {
+        props.addProgram("PDF Viewer")
+        setFilesAnchor(null)
+    }
     const handleChangeDesktopBackground = (e) => {
         console.log("Changeing background picture")
         setBackgroundImageUrl(URL.createObjectURL(e.target.files[0]))
@@ -77,6 +81,7 @@ const DesktopMenu = (props) => {
                     <MenuItem onClick={handleAddTextEditor}>Text Editor</MenuItem>
                     <MenuItem onClick={handleAddCalculator}>Calculator</MenuItem>
                     <MenuItem onClick={handleAddCalorieCounter}>Calorie Counter</MenuItem>
+                    <MenuItem onClick={handleAddPdfReader}>PDF Reader</MenuItem>
                     <MenuItem onClick={()=>{
                         fileInput.current.click()
                         /*setting files anchor to null here wont let the background picture get chosen.

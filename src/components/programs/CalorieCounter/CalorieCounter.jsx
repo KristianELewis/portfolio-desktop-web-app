@@ -18,7 +18,7 @@ const mediaQueryDecider = (width, minWidth) => {
 
 const CalorieCounter = (props) => {
 
-    const width = useContext(windowWidthContext);
+    const {width} = useContext(windowWidthContext);
     const media700W = mediaQueryDecider(width, 700);
     const media600W = mediaQueryDecider(width, 600);
     const media500W = mediaQueryDecider(width, 500);

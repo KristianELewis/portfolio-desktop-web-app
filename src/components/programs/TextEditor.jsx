@@ -1,10 +1,8 @@
 import React, {useState}from 'react'
-import ReactDOM from 'react-dom';
 
 import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 
-import  useMediaQuery  from '@mui/material/useMediaQuery';
 
 const initialValue = [
     {
