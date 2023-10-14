@@ -2,6 +2,7 @@ import React, { useState , useRef, useEffect} from 'react'
 
 import Window from './Window'
 import DesktopMenu from './DesktopMenu'
+import { Folder, File } from './programs/fileSystem';
 
 //This custom hook is so good
 //Someone elses custom hook
@@ -37,13 +38,16 @@ function Screen() {
 
     const [backgroundImageUrl, setBackgroundImageUrl] = useState(null)
 
+    const [file, setFile] = useState(null);
+
+    const FileSystem = useRef(new Folder("Home", null, 0, ""))
+    const [fileSystemState, setFileSystemState] = useState(1);
+    //console.log("from screen: " + fileSystemState)
 
     //Right now this is only used in the pdf reader. This lets the window know that a movement operation is in place. This puts a transparent div over the iframe
     //This will stop the iframe from interupting movement and resizing operations.
     //This could potentially move into window. It may also be completely uncessary, but for the sake of time and to reduce the programs overhead, I just want a working pdf reader
     const [windowPositioningInUse, setWindowPositioningInUse] = useState(false);
-
-    //console.log("screen render")
 
     const screenDimensions = useWindowSize();
     const outerBorderWidth = 20;
@@ -61,13 +65,13 @@ function Screen() {
     let programCount = useRef(0)
     let currentZLevel = useRef(0)
 
-    const addProgram = (name) => {
+    const addProgram = (name, file) => {
         setPrograms((prevPrograms) => {
             const tempProgramCount = programCount.current
             const tempZlevel = currentZLevel.current;
             currentZLevel.current += 1;
             programCount.current +=1
-            return [...prevPrograms, { id: tempProgramCount, zLevel: tempZlevel, name: name}]
+            return [...prevPrograms, { id: tempProgramCount, zLevel: tempZlevel, name: name, file : file}]
         })
         //setProgramCount((prevState) => {return prevState+1})
     }
@@ -161,12 +165,17 @@ function Screen() {
                             id = {program.id}
                             zLevel = {program.zLevel}
                             name = {program.name}
+                            file = {program.file}
                             screenWidth = {screenDimensions.width - outerBorderWidth}
                             screenHeight = {screenDimensions.height - outerBorderWidth - menuHeight}
                             screenDimensions = {screenDimensions}
                             removeProgram = {removeProgram}
                             focusWindow = {focusWindow}
                             windowPositioningInUse = {windowPositioningInUse}
+                            FileSystem = {FileSystem}
+                            fileSystemState = {fileSystemState}
+                            setFileSystemState = {setFileSystemState}
+                            addProgram = {addProgram}
                         />
                         /*Okay windowPositioningInUse should probably just be placed elsewhere */
 

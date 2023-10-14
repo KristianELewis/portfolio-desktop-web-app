@@ -29,7 +29,7 @@ const DesktopMenu = (props) => {
     */
     const currentTimeAndDate = () => {
         let currentDate = new Date()
-        console.log(dayjs(currentDate).format('dddd, MMMM D, YYYY h:mm A'))
+        //console.log(dayjs(currentDate).format('dddd, MMMM D, YYYY h:mm A'))
         return (dayjs(currentDate).format('dddd, MMMM D, YYYY h:mm A'));
     }
 
@@ -70,19 +70,23 @@ const DesktopMenu = (props) => {
     //Probably would be better to not have a separate function for each program choice
     
     const handleAddTextEditor = () => {
-        props.addProgram("Text Editor")
+        props.addProgram("Text Editor", null)
         setFilesAnchor(null)
     }
     const handleAddCalculator = () => {
-        props.addProgram("Calculator")
+        props.addProgram("Calculator", null)
         setFilesAnchor(null)
     }
     const handleAddCalorieCounter = () => {
-        props.addProgram("Calorie Counter")
+        props.addProgram("Calorie Counter", null)
         setFilesAnchor(null)
     }
     const handleAddPdfReader = () => {
-        props.addProgram("PDF Viewer")
+        props.addProgram("PDF Viewer", null)
+        setFilesAnchor(null)
+    }
+    const handleAddFileManager = () => {
+        props.addProgram("File Manager", null)
         setFilesAnchor(null)
     }
     const handleChangeDesktopBackground = (e) => {
@@ -108,6 +112,8 @@ const DesktopMenu = (props) => {
                     <MenuItem onClick={handleAddCalculator}>Calculator</MenuItem>
                     <MenuItem onClick={handleAddCalorieCounter}>Calorie Counter</MenuItem>
                     <MenuItem onClick={handleAddPdfReader}>PDF Reader</MenuItem>
+                    <MenuItem onClick={handleAddFileManager}>File Manager</MenuItem>
+
                     <MenuItem onClick={()=>{
                         fileInput.current.click()
                         /*setting files anchor to null here wont let the background picture get chosen.

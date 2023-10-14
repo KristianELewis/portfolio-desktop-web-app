@@ -1,18 +1,26 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 
-//Custom Components
+//Programs
 import TextEditor from './programs/TextEditor';
 import Calculator from './programs/Calculator';
 import CalorieCounter from './programs/CalorieCounter/CalorieCounter';
 import PdfReader from './programs/PdfReader';
+import FileManager from './programs/FileManager';
+
 //materialUI
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 
-import { windowWidthContext } from './Context';
-const Window = (props) => {
+import { windowWidthContext, fileContext } from './Context';
 
-    const {screenDimensions, windowPositioningInUse} = props;
+import { Folder, File } from './programs/fileSystem';
+
+const Window = (props) => {
+    //const [file, setFile] = useState(null)
+
+    const {screenDimensions, windowPositioningInUse, file, setFile, FileSystem, fileSystemState, setFileSystemState, addProgram} = props;
+    //console.log("Window Render: " + file)
+
     //console.log("rendering Window")
     const [position, setPosition] = useState({left: 50, top: 50, width: 300, height: 300})
     //not sure about this, might be a better way to do this other than using a state
@@ -68,7 +76,7 @@ const Window = (props) => {
     useEffect(() => {
         if (props.name === "Text Editor")
         {
-            setProgram(<TextEditor></TextEditor>)
+            setProgram(<TextEditor file = {file} ></TextEditor>)
         }
         else if (props.name === "Calculator")
         {
@@ -79,6 +87,13 @@ const Window = (props) => {
             //this is coppied from below. I should find a width and height that works better than this
             setPosition({left: 50, top: 50, width: 720, height: 500})
             setProgram(<PdfReader></PdfReader>)
+        }
+        else if (props.name === "File Manager")
+        {
+            //this is coppied from below. I should find a width and height that works better than this
+            setPosition({left: 50, top: 50, width: 720, height: 500})
+            //not using file and setfile at the moment or maybe at all. Remove from program?
+            setProgram(<FileManager addProgram = {addProgram}></FileManager>)
         }
         else if (props.name === "Calorie Counter")
         {
@@ -290,8 +305,10 @@ const Window = (props) => {
                 </div>
                 {/* this context should be renamed, and it can have a broader use */}
                 <windowWidthContext.Provider value = {{width : position.width, windowPositioningInUse : windowPositioningInUse}}>
+                <fileContext.Provider value = {{FileSystem : FileSystem.current, fileSystemState : fileSystemState, setFileSystemState : setFileSystemState}}>
                     {program}
                     {/*chooseProgram()*/}
+                </fileContext.Provider>
                 </windowWidthContext.Provider>
                 <div className = "top-bottom-resizer" onMouseDown = {handleResizeBottom}/>
             </div>

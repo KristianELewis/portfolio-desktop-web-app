@@ -17,6 +17,10 @@ Whenm no pdf is loaded, I need to have some sort of menu system to load a pdf fr
 import file from './Resume.pdf'
 //This shouldnt load files like this in the future. need to get the files from public or local storage when I figure out how that works
 
+
+
+// see if you can do an onlick for the iframe, if yes then make that focus it
+
 const PdfReader = () => {
     const {windowPositioningInUse }= useContext(windowWidthContext)
     return(
