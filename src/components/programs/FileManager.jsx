@@ -17,6 +17,11 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Paper from '@mui/material/Paper'
 
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Backdrop from '@mui/material/Backdrop';
+
+
 import { fileContext } from '../Context';
 
 //import { Folder, File } from './fileSystem';
@@ -102,7 +107,7 @@ const FileManager = (props) => {
             setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
             setFileSystemState((prevState) => {return prevState * -1})
         }
-        handleClose();
+        setFolderNameInput("");
     }
     const addNewTxtFile = () => {
         if (folderNameInput !== ""){
@@ -111,8 +116,60 @@ const FileManager = (props) => {
             setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
             setFileSystemState((prevState) => {return prevState * -1})
         }
-        handleClose();
+        setFolderNameInput("");
     }
+/*===============================================================================
+    ---------------------------------------------------------------------------------
+    ===============================================================================*/
+    const [modalState, setModalState] = useState({open : false, type : null})
+
+    const newFolderModal = () => {
+        handleClose();
+        setModalState({open : true, type : "Folder"})
+    }
+    const newTXTModal = () => {
+        handleClose();
+        setModalState({open : true, type : "TXT"})
+    }
+    const handleNewFolderClose =() => {
+        setModalState({open : false, type : null})
+        addNewFolder()
+    }
+    const handleNewTXTClose =() => {
+        setModalState({open : false, type : null})
+        addNewTxtFile()
+    }
+    const chooseModalType = () => {
+        if(modalState.type === "Folder")
+        {
+            return( 
+                <div>
+                    <p>New Folder Name</p>
+                    <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
+                    <button onClick = {handleNewFolderClose}>close</button>
+                </div>
+            )
+        }
+        else if(modalState.type === "TXT")
+        {
+            return( 
+                <div>
+                    <p>New Text File Name</p>
+                    <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
+                    <button onClick = {handleNewTXTClose}>close</button>
+                </div>
+            )
+        }
+        else if(modalState.type === null)
+        {
+            return( 
+                <div width = {"100px"}>
+
+                </div>
+            )
+        }
+    }
+    const modalContents = chooseModalType();
 
     /*===============================================================================
     ---------------------------------------------------------------------------------
@@ -168,8 +225,6 @@ const FileManager = (props) => {
         }
     }
     const fileClickHandler = decideFileClickHandler()
-
-    
     /*===============================================================================
     ---------------------------------------------------------------------------------
     /*===============================================================================
@@ -206,14 +261,18 @@ const FileManager = (props) => {
     ---------------------------------------------------------------------------------
     ===============================================================================*/
 
+    
 
     return(
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
             
-                <Paper style = {{height: "100%", position: "relative", overflow: "auto"}}>
+                {/* The overflow auto should be moved further down soon.
+                    Will need to get window dimensions and set the max height of the content based on that - the top bar height
+                */}
+                <Paper style = {{height: "100%", position: "relative", display: "flex", flexDirection : "column", overflow : "auto"}}>
                     {/* flex really necesarry here? */}
-                    <div style = {{margin : "5px"}}>
+                    <div style = {{margin : "5px", flexGrow: 0}}>
                         <IconButton size = "small" onClick = {handleBackwardButton} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
                         <IconButton size = "small" onClick = {handleForwardButton} sx = {{marginLeft : "5px", borderRadius : "5px"}} disabled = {forwardList.length === 0 ? true : false}><ChevronRightIcon/></IconButton>
                         <span style = {{marginLeft : "5px", userSelect : "none"}}>
@@ -228,14 +287,18 @@ const FileManager = (props) => {
                         
                         Or maybe Ill just use flex box again. Flex box is better for dynamic sizes.
                     */}
-                    <div onContextMenu={handleContextMenu} style ={{display : "grid", gridTemplateColumns : "100px auto"}}>
+                    <div onContextMenu={handleContextMenu} style ={{display : "grid", gridTemplateColumns : "100px auto", flexGrow : 1, boxSizing : "border-box"}}>
                         <div style = {{borderTop: "grey solid 1px", borderBottom: "grey solid 1px"}}>
                             {/* this will be the important folders section thing. quick menu */}
                         </div>
-                        <div style = {{border: "grey solid 1px", display : "grid", gridTemplateColumns : "100px 100px", gridTemplateRows : "100px 100px"}}>
+                        <div style = {{border: "grey solid 1px", display : "flex", flexBasis : "100px", flexFlow : "row wrap", flexGrow : 0, alignContent : "start", minHeight : "100%"}}>
                             {/*
                                 There Might be a better/faster way to filter and map. Reduce is aparently faster
                                 Could maybe filter before hand? First filter out folders. A files array will have faster subseqent filters right?
+                                
+                                Actually it might be better to have a if statement/switch statment to decide what the files should be.
+                                
+                                Might want these files arranged in alphabetic order as well. Maybe I can add some filtering options in the future
                             */}
                             {currentFolderView.children.filter(child => {
                                 if(child.type === "Folder")
@@ -270,7 +333,6 @@ const FileManager = (props) => {
                             })}
                         </div>
                     </div>
-                    <label>New Folder Name: </label><input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
 
                     {/*From the material ui demo */}
                     <Menu
@@ -283,11 +345,17 @@ const FileManager = (props) => {
                             : undefined
                         }
                     >
-                        <MenuItem onClick={addNewFolder}>New Folder</MenuItem>
-                        <MenuItem onClick={addNewTxtFile}>New Text File</MenuItem>
+                        <MenuItem onClick={newFolderModal}>New Folder</MenuItem>
+                        <MenuItem onClick={newTXTModal}>New Text File</MenuItem>
                     </Menu>
 
                 </Paper>
+                {/* Didn't see the point of Modal, and it was harder to use */}
+                <Backdrop open = {modalState.open} sx = {{position : "absolute"}}>
+                    <Paper sx = {{width : "250px", height : "100px", margin : "auto", textAlign : "center"}}>
+                        {modalContents}
+                    </Paper>
+                </Backdrop>
         </ThemeProvider>
     )
 }
