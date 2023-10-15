@@ -38,7 +38,7 @@ const darkTheme = createTheme({
 
 const FileManager = (props) => {
 
-    const { version, loadFile } = props;
+    const { version, clickFunction } = props;
     const { addProgram } = useContext(processManagmentContext)
 
 
@@ -155,12 +155,16 @@ const FileManager = (props) => {
         setForwardList([]);
     }
 
+    //not so sure about this seems unecessary the way its implemented atm
     const decideFileClickHandler = () => {
         if(version === "Standalone"){
             return addProgram
         }
         else if(version === "Load"){
-            return loadFile;
+            return clickFunction;
+        }
+        else if(version === "Save"){
+            return clickFunction;
         }
     }
     const fileClickHandler = decideFileClickHandler()

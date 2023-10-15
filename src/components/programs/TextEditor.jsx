@@ -11,17 +11,19 @@ import Backdrop from '@mui/material/Backdrop'
 
 import FileManager from './FileManager';
 
-import { programContext } from '../Context';
+import { programContext,processManagmentContext } from '../Context';
 /*
 
-  */
+*/
 
 const TextEditor = (props) => {
-    const {editProgram} = props;
+    //const {editProgram} = props;
 
+    const processManagmentInfo = useContext(processManagmentContext);
     const programInfo = useContext(programContext);
 
     const { file, id } = programInfo;
+    const {editProgram} = processManagmentInfo;
 
     const loadData = () => {
         if(file){
@@ -44,10 +46,21 @@ const TextEditor = (props) => {
     const [fileManagerState, setFileManagerState] = useState({open: false, type : null})
 
     //file management will be a backdrop I think. Might as well just have it freeze the whole screen
+    const handleSaveData = (type, file) => {
+        if(type === "Text Editor")
+        {
+            file.data = value;
+            editProgram(id, file);
+            setFileManagerState({open : false, type : null})
+        }
+    }
     const saveData = () => {
         if(file)
         {
             file.data = value;
+        }
+        else{
+            setFileManagerState({open : true, type : "Save"})
         }
         //need to open file managment
     }
@@ -84,7 +97,11 @@ const TextEditor = (props) => {
     const chooseFileManager = () => {
         if(fileManagerState.type === "Load")
         {
-            return <FileManager version = "Load" loadFile = {handleLoadFile}/>
+            return <FileManager version = "Load" clickFunction = {handleLoadFile}/>
+        }
+        if(fileManagerState.type === "Save")
+        {
+            return <FileManager version = "Save" clickFunction = {handleSaveData}/>
         }
         else {
             return <></>
@@ -103,6 +120,8 @@ const TextEditor = (props) => {
                     <Button onClick = {saveData} size = "small">save</Button>
                     <Button onClick = {loadFile} size = "small">load</Button>
                     <Typography>{file ? file.name : "new file"}</Typography>
+                    <Typography>{id}</Typography>
+
                 </ButtonGroup>
             </AppBar>
             {/*just put the slate shit here */}

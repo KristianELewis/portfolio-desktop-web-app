@@ -184,7 +184,7 @@ function Screen() {
             >
             {/* WHen desktop Icons are implemented they should be placed here in a map function */}
             
-            <processManagmentContext.Provider value = {{addProgram : addProgram, removeProgram : removeProgram, editProgram : editProgram, }}>
+            <processManagmentContext.Provider value = {{addProgram : addProgram, removeProgram : removeProgram, editProgram : editProgram, programs :programs}}>
             {programs.map(program => {
                 return (
                         <Window 
