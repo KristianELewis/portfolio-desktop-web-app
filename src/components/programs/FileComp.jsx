@@ -1,29 +1,31 @@
 import React, {useState} from 'react'
 
-import FolderIcon from '@mui/icons-material/Folder';
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 //import IconButton from '@mui/material/IconButton';
 
 
 
 const Folder = (props) => {
-    const { traverse, file} = props;
+    const { clickHandler, file} = props;
 
     const {id, name, type} = file
 
     const [isHovering, setIsHovering] = useState(false);
 
-    //a lot of these things feel like they could just be apart of the file itself
+    //instead of addProgram, it could be "clickFunction"
+    //depending on the type of file manager we are using, it could be a load function, an add program function, or a save function
     const handleClick = () => {
-        traverse(id);
+        clickHandler(type, file)
     }
-
 
     const handleMouseEnter = () => {
         setIsHovering(true)
     }
+
     const handleMouseLeave = () => {
         setIsHovering(false)
     }
+    
 
     return (
         <div
@@ -40,7 +42,7 @@ const Folder = (props) => {
             onClick={handleClick}
             >
 
-            <FolderIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
+            <TextSnippetIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
             
             <p style = {{margin: "0px", userSelect: "none"}}>{ name }</p>
         </div>
@@ -49,9 +51,7 @@ const Folder = (props) => {
 
 export default Folder;
 
-
-/*Don't think I need this anymore.
-    //maybe in the future I can use this functionality to display an empty folder, vs a filled folder
+/* Might bring this back. Files are close enough that they probably could share the same component
     const iconDecider = (type) => {
         if(type === "Folder")
         {
@@ -59,9 +59,8 @@ export default Folder;
         }
         else if(type === "TXT")
         {
-            return <TextSnippetIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
+            return 
         }
     }
     const icon = iconDecider(type);
 */
-//<div style ={{width : "50px", height : "50px", backgroundColor :  margin : "auto", marginTop : "10px"}}></div>

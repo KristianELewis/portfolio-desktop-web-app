@@ -1,3 +1,12 @@
+/*========================================================================
+
+TODO
+
+    -In the future the top bar path should have each folder as a clickable element. Then the program will traverse to that folder
+    -Probably I should remove the dark theme here and put it further up. Also remove the dark theme from calorie counter
+
+========================================================================*/
+
 import React, {useState, useContext, useRef, useEffect} from 'react'
 
 import Menu from '@mui/material/Menu';
@@ -13,39 +22,28 @@ import { fileContext } from '../Context';
 //import { Folder, File } from './fileSystem';
 
 import FolderComp from './FolderComp';
-
+import FileComp from './FileComp'
 
 //temporary
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
+import { processManagmentContext } from '../Context'
 
 const darkTheme = createTheme({
     palette: {
       mode: 'dark',
     },
   });
-/*========================================================================
-
-TODO
-
-for now I will just use an iframe, It seems to work well. Just need to put a transparent div in front of the iframe when moving or resizing 
-
-This file should be improved whem a file/folder system is implemented
-
-Whenm no pdf is loaded, I need to have some sort of menu system to load a pdf from the programs local files
-
-========================================================================*/
-
-
-//This shouldnt load files like this in the future. need to get the files from public or local storage when I figure out how that works
 
 const FileManager = (props) => {
 
-    const {addProgram} = props;
-    /*From the material ui demo */
-    const [contextMenu, setContextMenu] = React.useState(null);
+    const { version, loadFile } = props;
+    const { addProgram } = useContext(processManagmentContext)
 
+
+    /*From the material ui demo ---------------------------------------*/
+    const [contextMenu, setContextMenu] = React.useState(null);
     const handleContextMenu = (event) => {
       event.preventDefault();
       setContextMenu(
@@ -60,20 +58,21 @@ const FileManager = (props) => {
             null,
       );
     };
-  
     const handleClose = () => {
       setContextMenu(null);
     };
+    /* End of material ui demo stuff -----------------------------------*/
 
 
     const [backList, setBackList] = useState([]);
-
     const [forwardList, setForwardList] = useState([]);
 
-    //console.log("render")
     const [folderNameInput, setFolderNameInput] = useState("");
+    const handleFolderNameInputChange = (e) => {
+        setFolderNameInput(e.target.value)
+    }
+
     const {FileSystem, fileSystemState, setFileSystemState} = useContext(fileContext)
-    //console.log(fileSystemState)
 
     const currentFolder = useRef(FileSystem)
     const [currentFolderView, setCurrentFolderView] = useState({name: FileSystem.name, fullPath: currentFolder.current.fullPath, children : FileSystem.children});
@@ -92,6 +91,11 @@ const FileManager = (props) => {
         setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
     }, [fileSystemState])
 
+    /*===============================================================================
+
+        ADDING NEW FILES AND FOLDERS
+
+    ===============================================================================*/
     const addNewFolder = () => {
         if (folderNameInput !== ""){
             currentFolder.current.addNewFolder(folderNameInput);
@@ -100,32 +104,75 @@ const FileManager = (props) => {
         }
         handleClose();
     }
-
     const addNewTxtFile = () => {
         if (folderNameInput !== ""){
-            currentFolder.current.addNewTxtFile(folderNameInput, "TXT");
+            //I have to figure something else out about this. File types and process types should not be separated
+            currentFolder.current.addNewTxtFile(folderNameInput, "Text Editor");
             setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
             setFileSystemState((prevState) => {return prevState * -1})
         }
         handleClose();
     }
 
-    const handleFolderNameInputChange = (e) => {
-        setFolderNameInput(e.target.value)
-    }
+    /*===============================================================================
+    ---------------------------------------------------------------------------------
+    /*===============================================================================
 
-    const traverse = (ID) => {
-        //console.log("traversing")
+        CLICK FUNCTIONS
+
+        These can get sent down to the folder or files as the click function.
+
+        Folders will always traverse.
+
+        STANDALONE FILE MANAGER
+        ---------------------------------------
+        
+        -files should create a new program, providing the file type and file data
+
+        ---------------------------------------
+        LOAD FILE MANAGER
+        ---------------------------------------
+
+        -files should provide file type and file data. File type will verify if its a valid type. Data will then be loaded into the calling process
+
+        ---------------------------------------
+        SAVE FILE MANAGER
+        ---------------------------------------
+
+        -files will provide file type and file data. File type will verify if its a valid type. Data wont be sent, but instead over written
+
+        ---------------------------------------
+    ===============================================================================*/
+    
+    //traverse a folder. It would be nice to not send this down to files
+    const traverse = (id) => {
         const nextFolder = currentFolder.current
         setBackList((prevState) => {
             return [...prevState, nextFolder];
         })
-        currentFolder.current = currentFolder.current.traverse(ID);
+        currentFolder.current = currentFolder.current.traverse(id);
         setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children});
         setForwardList([]);
-        //setFileSystemState((prevState) => {return prevState * -1})
     }
 
+    const decideFileClickHandler = () => {
+        if(version === "Standalone"){
+            return addProgram
+        }
+        else if(version === "Load"){
+            return loadFile;
+        }
+    }
+    const fileClickHandler = decideFileClickHandler()
+
+    
+    /*===============================================================================
+    ---------------------------------------------------------------------------------
+    /*===============================================================================
+
+        FORWARD AND BACKWARD BUTTONS
+
+    ===============================================================================*/
     //raverse is the reverse of traverse. Probably should not keep this name
     const handleBackwardButton = () => {
         const nextFolder = currentFolder.current
@@ -139,7 +186,6 @@ const FileManager = (props) => {
             return prevState.slice(0, -1);
         })
     }
-
     const handleForwardButton = () => {
         const nextFolder = currentFolder.current
         setBackList((prevState) => {
@@ -152,6 +198,11 @@ const FileManager = (props) => {
             return prevState.slice(0, -1);
         })
     }
+    /*===============================================================================
+    ---------------------------------------------------------------------------------
+    ===============================================================================*/
+
+
     return(
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
@@ -170,22 +221,46 @@ const FileManager = (props) => {
                     {/* 
                         for grid rows and columns Ill send down the width and height do a modulus operation
                         And then make a string based of that
+                        
+                        Or maybe Ill just use flex box again. Flex box is better for dynamic sizes.
                     */}
                     <div onContextMenu={handleContextMenu} style ={{display : "grid", gridTemplateColumns : "100px auto"}}>
                         <div style = {{borderTop: "grey solid 1px", borderBottom: "grey solid 1px"}}>
                             {/* this will be the important folders section thing. quick menu */}
                         </div>
                         <div style = {{border: "grey solid 1px", display : "grid", gridTemplateColumns : "100px 100px", gridTemplateRows : "100px 100px"}}>
-                            {currentFolderView.children.map((child) => {
+                            {/*
+                                There Might be a better/faster way to filter and map. Reduce is aparently faster
+                                Could maybe filter before hand? First filter out folders. A files array will have faster subseqent filters right?
+                            */}
+                            {currentFolderView.children.filter(child => {
+                                if(child.type === "Folder")
+                                {
+                                    return child;
+                                }
+                                return
+                            }).map((child) => {
                                 return (
                                     <FolderComp 
-                                        key = {child.ID} 
-                                        ID = {child.ID} 
-                                        name = {child.name} 
-                                        traverse = {traverse} 
-                                        type = {child.type} 
-                                        addProgram = {addProgram}
+                                        key = {child.id} 
                                         file = {child}
+                                        traverse = {traverse} 
+                                        />
+                                )
+                            })}
+                            {/*Files Gettin non no ids for files?>*/}
+                            {currentFolderView.children.filter(child => {
+                                if(child.type !== "Folder")
+                                {
+                                    return child;
+                                }
+                                return
+                            }).map((child) => {
+                                return (
+                                    <FileComp 
+                                        key = {child.id} 
+                                        file = {child}
+                                        clickHandler = {fileClickHandler}
                                         />
                                 )
                             })}
@@ -206,13 +281,10 @@ const FileManager = (props) => {
                     >
                         <MenuItem onClick={addNewFolder}>New Folder</MenuItem>
                         <MenuItem onClick={addNewTxtFile}>New Text File</MenuItem>
-
                     </Menu>
 
                 </Paper>
         </ThemeProvider>
-
-
     )
 }
 

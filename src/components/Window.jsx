@@ -11,14 +11,26 @@ import FileManager from './programs/FileManager';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 
-import { windowWidthContext, fileContext } from './Context';
+import { windowWidthContext, fileContext, programContext } from './Context';
 
 import { Folder, File } from './programs/fileSystem';
 
 const Window = (props) => {
     //const [file, setFile] = useState(null)
 
-    const {screenDimensions, windowPositioningInUse, file, setFile, FileSystem, fileSystemState, setFileSystemState, addProgram} = props;
+    const {
+        screenDimensions, 
+        windowPositioningInUse, 
+        setFile, 
+        FileSystem, 
+        fileSystemState, 
+        setFileSystemState, 
+        addProgram, 
+        editProgram, 
+        id,
+        file,
+        name 
+    } = props;
     //console.log("Window Render: " + file)
 
     //console.log("rendering Window")
@@ -76,7 +88,7 @@ const Window = (props) => {
     useEffect(() => {
         if (props.name === "Text Editor")
         {
-            setProgram(<TextEditor file = {file} ></TextEditor>)
+            setProgram(<TextEditor editProgram = {editProgram}></TextEditor>)
         }
         else if (props.name === "Calculator")
         {
@@ -93,7 +105,8 @@ const Window = (props) => {
             //this is coppied from below. I should find a width and height that works better than this
             setPosition({left: 50, top: 50, width: 720, height: 500})
             //not using file and setfile at the moment or maybe at all. Remove from program?
-            setProgram(<FileManager addProgram = {addProgram}></FileManager>)
+            //Pretty sure I can use context to pass setters and getters. I should probably do that isntead of using props
+            setProgram(<FileManager addProgram = {addProgram} version = "Standalone"></FileManager>)
         }
         else if (props.name === "Calorie Counter")
         {
@@ -305,9 +318,12 @@ const Window = (props) => {
                 </div>
                 {/* this context should be renamed, and it can have a broader use */}
                 <windowWidthContext.Provider value = {{width : position.width, windowPositioningInUse : windowPositioningInUse}}>
+                {/* I think file system context can be brought up a level */}
                 <fileContext.Provider value = {{FileSystem : FileSystem.current, fileSystemState : fileSystemState, setFileSystemState : setFileSystemState}}>
+                <programContext.Provider value = {{id: id, file : file, name : name}}>
                     {program}
                     {/*chooseProgram()*/}
+                </programContext.Provider>
                 </fileContext.Provider>
                 </windowWidthContext.Provider>
                 <div className = "top-bottom-resizer" onMouseDown = {handleResizeBottom}/>

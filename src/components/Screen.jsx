@@ -4,6 +4,9 @@ import Window from './Window'
 import DesktopMenu from './DesktopMenu'
 import { Folder, File } from './programs/fileSystem';
 
+
+import { processManagmentContext } from './Context';
+
 //This custom hook is so good
 //Someone elses custom hook
 //https://stackoverflow.com/questions/71457792/resize-event-in-react
@@ -57,6 +60,9 @@ function Screen() {
 
         MULTIPLE PROGRAM FUNCTIONALITY
 
+
+        This would be great for redux I think
+        I think thi stuff can be provided with context?
     ==================================================*/
 
     const [programs, setPrograms] = useState([]);
@@ -65,6 +71,10 @@ function Screen() {
     let programCount = useRef(0)
     let currentZLevel = useRef(0)
 
+    //instead of this being file, it could be data/metaData or something.
+    //for folderManager the "file" variable wouldn't hold a file, it could hold the current file manager function
+    //so within text editor when you click save or load it would make a new program with that function as data.
+    //although file manager withing the text file should probably be its own thing
     const addProgram = (name, file) => {
         setPrograms((prevPrograms) => {
             const tempProgramCount = programCount.current
@@ -96,7 +106,8 @@ function Screen() {
                 return {
                     id: program.id,
                     zLevel: currentZLevel.current,
-                    name: program.name
+                    name: program.name,
+                    file : program.file
                 }
             }
             return program
@@ -105,6 +116,22 @@ function Screen() {
         setPrograms(newPrograms)
     }
 
+    const editProgram = (id, file) => {
+        const newPrograms = programs.map((program) => {
+            if(program.id === id)
+            {
+                return {
+                    id: program.id,
+                    zLevel: program.zLevel,
+                    name: program.name,
+                    file : file
+
+                }
+            }
+            return program
+        })
+        setPrograms(newPrograms)
+    }
     /*========================================================
 
     MOUSE TRACKING AND WINDOW POSITIONING
@@ -156,6 +183,8 @@ function Screen() {
             }}
             >
             {/* WHen desktop Icons are implemented they should be placed here in a map function */}
+            
+            <processManagmentContext.Provider value = {{addProgram : addProgram, removeProgram : removeProgram, editProgram : editProgram, }}>
             {programs.map(program => {
                 return (
                         <Window 
@@ -169,19 +198,26 @@ function Screen() {
                             screenWidth = {screenDimensions.width - outerBorderWidth}
                             screenHeight = {screenDimensions.height - outerBorderWidth - menuHeight}
                             screenDimensions = {screenDimensions}
-                            removeProgram = {removeProgram}
-                            focusWindow = {focusWindow}
                             windowPositioningInUse = {windowPositioningInUse}
                             FileSystem = {FileSystem}
                             fileSystemState = {fileSystemState}
                             setFileSystemState = {setFileSystemState}
                             addProgram = {addProgram}
+                            editProgram= {editProgram}
+                            removeProgram = {removeProgram}
+                            focusWindow = {focusWindow}
                         />
+                        /* 
+                            remove addProgram removeProgram focuswindow and editProgram, put them in context 
+                            screen dimensions can be put in a context 
+                            just send program over and destructure it in the window
+
+                        */
                         /*Okay windowPositioningInUse should probably just be placed elsewhere */
 
                 )
             })}
-
+        </processManagmentContext.Provider>
         </div>    
     </div>
     )

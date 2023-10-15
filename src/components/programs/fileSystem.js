@@ -2,11 +2,11 @@
 
 
 export class File {
-    constructor(name, parent, ID, prevPath, type) {
+    constructor(name, parent, id, prevPath, type) {
         this.name = name;
         this.parent = parent;
         this.type = type;
-        this.ID = ID;
+        this.id = id;
         this.fullPath = prevPath + "/" + name;
         this.data = [
             {
@@ -16,6 +16,7 @@ export class File {
           ]
     }
 
+    //don't think I need this anymore
     assignID (ID)
     {
         this.ID = ID;
@@ -31,45 +32,41 @@ export class File {
 //parent folder needed?
 
 export class Folder {
-    constructor(name, parent, ID, prevPath) {
+    constructor(name, parent, id, prevPath) {
         this.name = name;
         this.parent = parent;
-        this.ID = ID;
+        this.id = id;
         this.children = [];
         this.type = "Folder";
-        this.nextID = 0;
+        this.nextId = 0;
         this.fullPath = prevPath + "/" + name;
     }
 
     addNewFolder (name) {
-        let child = new Folder(name, this, this.nextID, this.fullPath)
+        let child = new Folder(name, this, this.nextId, this.fullPath)
         this.children = [...this.children, child]
-        this.nextID =  this.nextID += 1;
+        this.nextId =  this.nextId += 1;
     }
 
     addNewTxtFile (name, type) {
-        let child = new File(name, this, this.nextID, this.fullPath, type)
+        let child = new File(name, this, this.nextId, this.fullPath, type)
         this.children = [...this.children, child]
-        this.nextID =  this.nextID += 1;
+        this.nextId =  this.nextId += 1;
     }
 
-    assignID (ID)
-    {
-        this.ID = ID;
-    } 
 
-    traverse(ID)
+    traverse(id)
     {
         for(let i = 0; i < this.children.length; i++)
         {
-            if(this.children[i].ID  === ID)
+            if(this.children[i].id  === id)
             {
                 return this.children[i]
             }
         }
     }
 
-    raverse()
+    raverse() //don't think this is being used any more
     {
         return this.parent;
     }
