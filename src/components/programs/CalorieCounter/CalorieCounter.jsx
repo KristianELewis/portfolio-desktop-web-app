@@ -1,9 +1,13 @@
 import React, {lazy, Suspense, useContext} from 'react'
-import { windowWidthContext } from '../../Context';
+import { windowWidthContext, programContext } from '../../Context';
 
-//need to make it so there is only one instance of the calorie counter running at the same time
+
+import Paper from '@mui/material/Paper'
+import Typography from '@mui/material/Paper'
+import CloseIcon from '@mui/icons-material/Close';
 
 const App = lazy(() => import('./src/App'))
+
 //At the moment, I am just copying and pasting the source folder into this project.
 //There are probably other ways to do it, something about packing and using npm, but I don't really want to worry about managing 
 //dependencie versions between the two projects like that right now. Just need to make it work after pasting it in and make a few minor adjustments
@@ -16,6 +20,9 @@ const mediaQueryDecider = (width, minWidth) => {
     return false;
 }
 
+//need to make it so there is only one instance of the calorie counter running at the same time
+//Actually not sure about this anymore
+
 const CalorieCounter = (props) => {
 
     const {width} = useContext(windowWidthContext);
@@ -27,7 +34,41 @@ const CalorieCounter = (props) => {
     
     //info button should allow the user to navigate to the standalone version
     //need minimum height and widths
+
+
+    const programInfo = useContext(programContext);
+
+    const { file, id, name, handleMouseDown, handleExit } = programInfo;
+
+    const preventPositioning = (e) =>{
+        e.stopPropagation()
+    }
+
     return (
+        <>
+        <Paper position = "relative" sx = {{height : "40px", display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+            {/* <Button color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning}>Files</Button>
+            <Menu
+                anchorEl={filesAnchor}
+                open = {fileOpen}
+                onClose ={handleCloseFiles}
+                onMouseDown = {preventPositioning}
+            >
+                <MenuItem onClick={newFile}>New File</MenuItem>
+                <MenuItem onClick={saveData}>Save File</MenuItem>
+                <MenuItem onClick={loadFile}>Load File</MenuItem>
+            </Menu> */}
+
+            <Typography sx = {{userSelect : "none", paddingLeft : "10px"}}>{ name }</Typography>
+            <CloseIcon 
+                sx = {{
+                    color : "white",
+                    "&:hover": { backgroundColor: "black" }
+                }}
+                onClick = {handleExit}
+                onMouseDown = {preventPositioning}
+            />
+        </Paper>
         <div style = {{height: "100%", overflow: 'auto', backgroundColor: "#242424"}}>
             <div style = {{display: "flex", placeItems: "center",  minHeight: "100%", position : "relative"}}>
                 <div style = {{ margin : "auto", textAlign : "center", userSelect: "none"}}>
@@ -37,6 +78,7 @@ const CalorieCounter = (props) => {
                 </div>
             </div>
         </div>
+        </>
     )
 }
 

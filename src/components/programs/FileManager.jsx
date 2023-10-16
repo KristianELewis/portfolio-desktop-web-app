@@ -20,6 +20,7 @@ import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Backdrop from '@mui/material/Backdrop';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 import { fileContext } from '../Context';
@@ -30,22 +31,20 @@ import FolderComp from './FolderComp';
 import FileComp from './FileComp'
 
 //temporary
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 
-import { processManagmentContext } from '../Context'
 
-const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  });
+import { processManagmentContext, programContext } from '../Context'
+
+
 
 const FileManager = (props) => {
 
     const { version, clickFunction } = props;
     const { addProgram } = useContext(processManagmentContext)
 
+    const programInfo = useContext(programContext);
+
+    const { file, id, name, handleMouseDown, handleExit } = programInfo;
 
     /*From the material ui demo ---------------------------------------*/
     const [contextMenu, setContextMenu] = React.useState(null);
@@ -261,25 +260,38 @@ const FileManager = (props) => {
     ---------------------------------------------------------------------------------
     ===============================================================================*/
 
-    
-
+    //used for preventing un wanted repositions
+    const preventPositioning = (e) =>{
+        e.stopPropagation()
+    }
     return(
-        <ThemeProvider theme={darkTheme}>
-            <CssBaseline />
+        <>
             
                 {/* The overflow auto should be moved further down soon.
                     Will need to get window dimensions and set the max height of the content based on that - the top bar height
+
+                    not sure if its more cursed but I could send the top bar up a level instead
                 */}
                 <Paper style = {{height: "100%", position: "relative", display: "flex", flexDirection : "column", overflow : "auto"}}>
                     {/* flex really necesarry here? */}
-                    <div style = {{margin : "5px", flexGrow: 0}}>
-                        <IconButton size = "small" onClick = {handleBackwardButton} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
-                        <IconButton size = "small" onClick = {handleForwardButton} sx = {{marginLeft : "5px", borderRadius : "5px"}} disabled = {forwardList.length === 0 ? true : false}><ChevronRightIcon/></IconButton>
+                    <div style = {{margin : "5px", flexGrow: 0, display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+                        <div>
+                        <IconButton size = "small" onClick = {handleBackwardButton} onMouseDown = {preventPositioning} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
+                        <IconButton size = "small" onClick = {handleForwardButton} onMouseDown = {preventPositioning} sx = {{marginLeft : "5px", borderRadius : "5px"}} disabled = {forwardList.length === 0 ? true : false}><ChevronRightIcon/></IconButton>
+                        
                         <span style = {{marginLeft : "5px", userSelect : "none"}}>
                             {/* menu item? govering diabled?*/}
                             {currentFolderView.fullPath}
                         </span>
-
+                        </div>
+                        <CloseIcon 
+                            sx = {{
+                                color : "white",
+                                "&:hover": { backgroundColor: "black" }
+                            }}
+                            onClick = {handleExit}
+                            onMouseDown = {preventPositioning}
+                        />
                     </div>
                     {/* 
                         for grid rows and columns Ill send down the width and height do a modulus operation
@@ -356,7 +368,7 @@ const FileManager = (props) => {
                         {modalContents}
                     </Paper>
                 </Backdrop>
-        </ThemeProvider>
+                </>
     )
 }
 

@@ -5,6 +5,16 @@ import DesktopMenu from './DesktopMenu'
 import { Folder, File } from './programs/fileSystem';
 
 
+
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
+
 import { processManagmentContext } from './Context';
 
 //This custom hook is so good
@@ -169,6 +179,8 @@ function Screen() {
     //css baseline sets boxsizing to border-box in html, which was causing issues when calorie counter was being loaded.
     //To fix this, I set border sizing to border box here and supply the innderwindow width with the borders removed
     return (
+    <ThemeProvider theme={darkTheme}>
+    <CssBaseline />
     <div className = "outterScreen" style = {{width: screenDimensions.width, boxSizing : "border-box"}}>
         <DesktopMenu addProgram = {addProgram} setBackgroundImageUrl = {setBackgroundImageUrl}/>
 
@@ -220,6 +232,8 @@ function Screen() {
         </processManagmentContext.Provider>
         </div>    
     </div>
+    </ThemeProvider>
+
     )
 }
 export default Screen

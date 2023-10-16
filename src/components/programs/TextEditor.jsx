@@ -8,15 +8,18 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Typography from '@mui/material/Typography';
 import Backdrop from '@mui/material/Backdrop'
 
+import Paper from '@mui/material/Paper'
 import Toolbar from '@mui/material/Toolbar'
 import AppBar from '@mui/material/AppBar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 //import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 import FileManager from './FileManager';
 
-import { programContext,processManagmentContext } from '../Context';
+import { programContext, processManagmentContext } from '../Context';
 /*
     TODO
 
@@ -34,7 +37,7 @@ const TextEditor = (props) => {
     const processManagmentInfo = useContext(processManagmentContext);
     const programInfo = useContext(programContext);
 
-    const { file, id } = programInfo;
+    const { file, id, name, handleMouseDown, handleExit } = programInfo;
     const {editProgram} = processManagmentInfo;
 
     const loadData = () => {
@@ -135,29 +138,58 @@ const TextEditor = (props) => {
     const handleCloseFiles = () => {
         setFilesAnchor(null)
     }
-    return(
-        <div style = {{height: "100%", overflow: 'auto', color : "black"}}>
-            <AppBar position = "relative" >
-                <Toolbar>
-                    <Button color = 'inherit' onClick = {handleFilesClick}>Files</Button>
-                    <Menu
-                        anchorEl={filesAnchor}
-                        open = {fileOpen}
-                        onClose ={handleCloseFiles}
-                    >
-                        <MenuItem onClick={newFile}>New File</MenuItem>
-                        <MenuItem onClick={saveData}>Save File</MenuItem>
-                        <MenuItem onClick={loadFile}>Load File</MenuItem>
-                    </Menu>
 
-                    <Typography>{file ? file.name : "new file"}</Typography>
-                    <Typography>{id}</Typography>
-                </Toolbar>
-            </AppBar>
+    //I dont need this in its own function really., it more to remind myself. Putting this in on mouse downs in topbar buttons and such will prevent unwanted repositions
+    const preventPositioning = (e) =>{
+        e.stopPropagation()
+    }
+    return(
+        <>
+        {/* <div className = "windowTopBar" 
+            onMouseDown = {handleMouseDown} 
+        >
+            <Typography sx = {{userSelect: "none"}}>{name}</Typography>
+            <CloseIcon 
+                sx = {{
+                    color : "white",
+                    "&:hover": { backgroundColor: "black" }
+                }}
+                onClick = {handleExit}
+            />
+        ;
+
+        </div> */}
+        <Paper position = "relative" sx = {{height : "40px", display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+                <Button color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning}>Files</Button>
+                <Menu
+                    anchorEl={filesAnchor}
+                    open = {fileOpen}
+                    onClose ={handleCloseFiles}
+                    onMouseDown = {preventPositioning}
+                >
+                    <MenuItem onClick={newFile}>New File</MenuItem>
+                    <MenuItem onClick={saveData}>Save File</MenuItem>
+                    <MenuItem onClick={loadFile}>Load File</MenuItem>
+                </Menu>
+
+                <Typography sx = {{userSelect : "none"}}>{file ? file.name : "new file"}</Typography>
+                <Typography sx = {{userSelect : "none"}}>{id}</Typography>
+                <CloseIcon 
+                    sx = {{
+                        color : "white",
+                        "&:hover": { backgroundColor: "black" }
+                    }}
+                    onClick = {handleExit}
+                    onMouseDown = {preventPositioning}
+                />
+        </Paper>
+        <div style = {{height: "100%", overflow: 'auto', color : "black"}}>
+
             {/*just put the slate shit here */}
             <Slate editor={editor} initialValue={value} value={value} onChange = {handleChange}>
                 <Editable style = {{
-                    backgroundColor : "white", 
+                    color : "white",
+                    backgroundColor : "rgb(18, 18, 18)", 
                     minHeight : "100%", 
                     minWidth : "100%", 
                     padding: "3px", 
@@ -169,7 +201,7 @@ const TextEditor = (props) => {
 
             {/* definetly needs some styleing but its working so far */}
             <Backdrop open = {fileManagerState.open}>
-                <div>
+                <div style ={{width : "500px", height : "500px"}}>
                     <AppBar position = "relative" >
 
                         <ButtonGroup variant="contained">
@@ -182,6 +214,7 @@ const TextEditor = (props) => {
                 </div>
             </Backdrop> 
       </div>
+      </>
     )
 }
 

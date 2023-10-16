@@ -303,7 +303,7 @@ const Window = (props) => {
                 }}
             >
                 <div className = "top-bottom-resizer" onMouseDown = {handleResizeTop}/>
-                <div className = "windowTopBar" 
+                {/* <div className = "windowTopBar" 
                     onMouseDown = {handleMouseDown} 
                 >
                     <Typography sx = {{userSelect: "none"}}>{props.name}</Typography>
@@ -315,12 +315,12 @@ const Window = (props) => {
                         onClick = {handleExit}
                     />
 
-                </div>
+                </div> */}
                 {/* this context should be renamed, and it can have a broader use */}
                 <windowWidthContext.Provider value = {{width : position.width, windowPositioningInUse : windowPositioningInUse}}>
                 {/* I think file system context can be brought up a level */}
                 <fileContext.Provider value = {{FileSystem : FileSystem.current, fileSystemState : fileSystemState, setFileSystemState : setFileSystemState}}>
-                <programContext.Provider value = {{id: id, file : file, name : name}}>
+                <programContext.Provider value = {{id: id, file : file, name : name, handleMouseDown : handleMouseDown, handleExit : handleExit}}>
                     {program}
                     {/*chooseProgram()*/}
                 </programContext.Provider>
