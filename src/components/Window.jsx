@@ -5,7 +5,7 @@ import TextEditor from './programs/TextEditor';
 import Calculator from './programs/Calculator';
 import CalorieCounter from './programs/CalorieCounter/CalorieCounter';
 import PdfReader from './programs/PdfReader';
-import FileManager from './programs/FileManager';
+import FileManager from './programs/FileManager/FileManager';
 
 //materialUI
 import CloseIcon from '@mui/icons-material/Close';
@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 
 import { windowWidthContext, fileContext, programContext } from './Context';
 
-import { Folder, File } from './programs/fileSystem';
+import { Folder, File } from './programs/FileManager/fileSystem';
 
 const Window = (props) => {
     //const [file, setFile] = useState(null)

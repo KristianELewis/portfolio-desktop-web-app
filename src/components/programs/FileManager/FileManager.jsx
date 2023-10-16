@@ -23,7 +23,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CloseIcon from '@mui/icons-material/Close';
 
 
-import { fileContext } from '../Context';
+import { fileContext } from '../../Context';
 
 //import { Folder, File } from './fileSystem';
 
@@ -33,7 +33,7 @@ import FileComp from './FileComp'
 //temporary
 
 
-import { processManagmentContext, programContext } from '../Context'
+import { processManagmentContext, programContext } from '../../Context'
 
 
 
@@ -110,13 +110,23 @@ const FileManager = (props) => {
     }
     const addNewTxtFile = () => {
         if (folderNameInput !== ""){
-            //I have to figure something else out about this. File types and process types should not be separated
-            currentFolder.current.addNewTxtFile(folderNameInput, "Text Editor");
+            //I have to figure something else out about this. File types and process types should be separated
+            currentFolder.current.addNewFile(folderNameInput, "Text Editor");
             setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
             setFileSystemState((prevState) => {return prevState * -1})
         }
         setFolderNameInput("");
     }
+    const addNewPDFFile = () => {
+        if (folderNameInput !== ""){
+            //I have to figure something else out about this. File types and process types should be separated
+            currentFolder.current.addNewFile(folderNameInput, "PDF Viewer");
+            setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
+            setFileSystemState((prevState) => {return prevState * -1})
+        }
+        setFolderNameInput("");
+    }
+    
 /*===============================================================================
     ---------------------------------------------------------------------------------
     ===============================================================================*/
@@ -138,6 +148,10 @@ const FileManager = (props) => {
         setModalState({open : false, type : null})
         addNewTxtFile()
     }
+    const handleNewPDFClose =() => {
+        setModalState({open : false, type : null})
+        addNewPDFFile()
+    }
     const chooseModalType = () => {
         if(modalState.type === "Folder")
         {
@@ -156,6 +170,16 @@ const FileManager = (props) => {
                     <p>New Text File Name</p>
                     <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
                     <button onClick = {handleNewTXTClose}>close</button>
+                </div>
+            )
+        }
+        else if(modalState.type === "PDF")
+        {
+            return( 
+                <div>
+                    <p>New PDF File Name</p>
+                    <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
+                    <button onClick = {handleNewPDFClose}>close</button>
                 </div>
             )
         }

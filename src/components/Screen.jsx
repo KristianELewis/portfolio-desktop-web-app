@@ -2,7 +2,7 @@ import React, { useState , useRef, useEffect} from 'react'
 
 import Window from './Window'
 import DesktopMenu from './DesktopMenu'
-import { Folder, File } from './programs/fileSystem';
+import { Folder, File } from './programs/FileManager/fileSystem';
 
 
 

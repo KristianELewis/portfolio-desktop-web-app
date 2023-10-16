@@ -48,7 +48,8 @@ export class Folder {
         this.nextId =  this.nextId += 1;
     }
 
-    addNewTxtFile (name, type) {
+    //this can just be generic file
+    addNewFile (name, type) {
         let child = new File(name, this, this.nextId, this.fullPath, type)
         this.children = [...this.children, child]
         this.nextId =  this.nextId += 1;

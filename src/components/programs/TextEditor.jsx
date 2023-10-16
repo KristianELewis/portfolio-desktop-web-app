@@ -17,7 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import CloseIcon from '@mui/icons-material/Close';
 
 
-import FileManager from './FileManager';
+import FileManager from './FileManager/FileManager';
 
 import { programContext, processManagmentContext } from '../Context';
 /*
