@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import ImageIcon from '@mui/icons-material/Image';
 //import IconButton from '@mui/material/IconButton';
 
 
@@ -22,6 +23,10 @@ const Folder = (props) => {
         else if(type === "PDF Viewer")
         {
             return <PictureAsPdfIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
+        }
+        else if(type === "Image Viewer")
+        {
+            return <ImageIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
         }
     }
     const icon = iconDecider();

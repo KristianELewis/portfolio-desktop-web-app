@@ -100,6 +100,7 @@ const FileManager = (props) => {
 
         ADDING NEW FILES AND FOLDERS
 
+        So much of this is generic and the same, This can be cutdown for sure
     ===============================================================================*/
     const addNewFolder = () => {
         if (folderNameInput !== ""){
@@ -128,6 +129,16 @@ const FileManager = (props) => {
         }
         setFolderNameInput("");
     }
+    const addNewImageFile = () => {
+        if (folderNameInput !== "" && uploadFile){
+            const data = URL.createObjectURL(uploadFile)
+            //I have to figure something else out about this. File types and process types should be separated
+            currentFolder.current.addNewFile(folderNameInput, "Image Viewer", data);
+            setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
+            setFileSystemState((prevState) => {return prevState * -1})
+        }
+        setFolderNameInput("");
+    }
     
 /*===============================================================================
     ---------------------------------------------------------------------------------
@@ -146,6 +157,10 @@ const FileManager = (props) => {
         handleClose();
         setModalState({open : true, type : "PDF"})
     }
+    const newImageModal = () => {
+        handleClose();
+        setModalState({open : true, type : "IMAGE"})
+    }
     const handleNewFolderClose =() => {
         setModalState({open : false, type : null})
         addNewFolder()
@@ -157,6 +172,10 @@ const FileManager = (props) => {
     const handleNewPDFClose =() => {
         setModalState({open : false, type : null})
         addNewPDFFile()
+    }
+    const handleNewImageClose =() => {
+        setModalState({open : false, type : null})
+        addNewImageFile()
     }
     const chooseModalType = () => {
         if(modalState.type === "Folder")
@@ -187,6 +206,17 @@ const FileManager = (props) => {
                     <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
                     <input type = "file" onChange = {(e) => {setUploadFile(e.target.files[0])}}></input>
                     <button onClick = {handleNewPDFClose}>close</button>
+                </div>
+            )
+        }
+        else if(modalState.type === "IMAGE")
+        {
+            return( 
+                <div>
+                    <p>New Image File Name</p>
+                    <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
+                    <input type = "file" onChange = {(e) => {setUploadFile(e.target.files[0])}}></input>
+                    <button onClick = {handleNewImageClose}>close</button>
                 </div>
             )
         }
@@ -391,6 +421,7 @@ const FileManager = (props) => {
                         <MenuItem onClick={newFolderModal}>New Folder</MenuItem>
                         <MenuItem onClick={newTXTModal}>New Text File</MenuItem>
                         <MenuItem onClick={newPDFModal}>New PDF File</MenuItem>
+                        <MenuItem onClick={newImageModal}>New Image File</MenuItem>
                     </Menu>
 
                 </Paper>

@@ -16,7 +16,12 @@ export class File {
                 },
             ]
         }
+        //Porobably should just use an else statement here or something. Maybe eventually just git rid of this
+        //if else block. Just pass init data down
         else if(type === "PDF Viewer") {
+            this.data = data
+        }
+        else if(type === "Image Viewer") {
             this.data = data
         }
         else{

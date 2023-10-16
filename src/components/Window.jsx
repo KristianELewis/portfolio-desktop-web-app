@@ -5,7 +5,10 @@ import TextEditor from './programs/TextEditor';
 import Calculator from './programs/Calculator';
 import CalorieCounter from './programs/CalorieCounter/CalorieCounter';
 import PdfReader from './programs/PdfReader';
+import ImageViewer from './programs/ImageViewer';
+
 import FileManager from './programs/FileManager/FileManager';
+
 
 //materialUI
 import CloseIcon from '@mui/icons-material/Close';
@@ -99,6 +102,12 @@ const Window = (props) => {
             //this is coppied from below. I should find a width and height that works better than this
             setPosition({left: 50, top: 50, width: 720, height: 500})
             setProgram(<PdfReader></PdfReader>)
+        }
+        else if (props.name === "Image Viewer")
+        {
+            //this is coppied from below. I should find a width and height that works better than this
+            setPosition({left: 50, top: 50, width: 720, height: 500})
+            setProgram(<ImageViewer></ImageViewer>)
         }
         else if (props.name === "File Manager")
         {

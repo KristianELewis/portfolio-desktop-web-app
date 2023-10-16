@@ -85,6 +85,10 @@ const DesktopMenu = (props) => {
         props.addProgram("PDF Viewer", null)
         setFilesAnchor(null)
     }
+    const handleAddImageViewer = () => {
+        props.addProgram("Image Viewer", null)
+        setFilesAnchor(null)
+    }
     const handleAddFileManager = () => {
         props.addProgram("File Manager", null)
         setFilesAnchor(null)
@@ -112,6 +116,7 @@ const DesktopMenu = (props) => {
                     <MenuItem onClick={handleAddCalculator}>Calculator</MenuItem>
                     <MenuItem onClick={handleAddCalorieCounter}>Calorie Counter</MenuItem>
                     <MenuItem onClick={handleAddPdfReader}>PDF Reader</MenuItem>
+                    <MenuItem onClick={handleAddImageViewer}>Image Viewer</MenuItem>
                     <MenuItem onClick={handleAddFileManager}>File Manager</MenuItem>
 
                     <MenuItem onClick={()=>{
