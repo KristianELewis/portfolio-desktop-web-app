@@ -3,16 +3,28 @@ import React, {useState, useContext}from 'react'
 import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 
-import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Typography from '@mui/material/Typography';
 import Backdrop from '@mui/material/Backdrop'
 
+import Toolbar from '@mui/material/Toolbar'
+import AppBar from '@mui/material/AppBar';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+//import MenuIcon from '@mui/icons-material/Menu';
+
 import FileManager from './FileManager';
 
 import { programContext,processManagmentContext } from '../Context';
 /*
+    TODO
+
+    App Bar doesnt really work the way I want it to. It might be better to use a Paper component and just set a good height.
+
+    I don't like the color scheme either I dont think. Its comming out blue, not sure if dark mode will make a difference
+
+    This drop down menu goes outside of the window if the height is too short. I'm pretty sure i can eith confine it or use a different dropdown menu
 
 */
 
@@ -62,7 +74,7 @@ const TextEditor = (props) => {
         else{
             setFileManagerState({open : true, type : "Save"})
         }
-        //need to open file managment
+        setFilesAnchor(null)
     }
 
     const handleLoadFile = (type, file) => {
@@ -76,7 +88,7 @@ const TextEditor = (props) => {
     }
     const loadFile = () => {
         setFileManagerState({open : true, type : "Load"})
-        //Will need to load in the file manager
+        setFilesAnchor(null)
     }
 
     const [editor] = useState(() => withReact(createEditor()))
@@ -89,6 +101,7 @@ const TextEditor = (props) => {
             }
         ];
         editProgram(id, null) //But this will. Not sure If its a problem or not. Seems fine to me
+        setFilesAnchor(null)
     }
     //perhaps move this div into the window
     //draftjs will not allow overflow on x
@@ -112,17 +125,34 @@ const TextEditor = (props) => {
     const handleCancel = () => {
         setFileManagerState({open : false, type : null})
     }
+
+
+    const [filesAnchor, setFilesAnchor] = useState(null);
+    const fileOpen = Boolean(filesAnchor);
+    const handleFilesClick = (e) => {
+        setFilesAnchor(e.currentTarget)
+    }
+    const handleCloseFiles = () => {
+        setFilesAnchor(null)
+    }
     return(
         <div style = {{height: "100%", overflow: 'auto', color : "black"}}>
             <AppBar position = "relative" >
-                <ButtonGroup variant="contained">
-                    <Button onClick = {newFile} size = "small">new</Button>
-                    <Button onClick = {saveData} size = "small">save</Button>
-                    <Button onClick = {loadFile} size = "small">load</Button>
+                <Toolbar>
+                    <Button color = 'inherit' onClick = {handleFilesClick}>Files</Button>
+                    <Menu
+                        anchorEl={filesAnchor}
+                        open = {fileOpen}
+                        onClose ={handleCloseFiles}
+                    >
+                        <MenuItem onClick={newFile}>New File</MenuItem>
+                        <MenuItem onClick={saveData}>Save File</MenuItem>
+                        <MenuItem onClick={loadFile}>Load File</MenuItem>
+                    </Menu>
+
                     <Typography>{file ? file.name : "new file"}</Typography>
                     <Typography>{id}</Typography>
-
-                </ButtonGroup>
+                </Toolbar>
             </AppBar>
             {/*just put the slate shit here */}
             <Slate editor={editor} initialValue={value} value={value} onChange = {handleChange}>
