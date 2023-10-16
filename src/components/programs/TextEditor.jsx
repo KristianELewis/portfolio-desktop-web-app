@@ -35,10 +35,10 @@ const TextEditor = (props) => {
     //const {editProgram} = props;
 
     const processManagmentInfo = useContext(processManagmentContext);
-    const programInfo = useContext(programContext);
-
-    const { file, id, name, handleMouseDown, handleExit } = programInfo;
     const {editProgram} = processManagmentInfo;
+
+    const programInfo = useContext(programContext);
+    const { file, id, name, handleMouseDown, handleExit } = programInfo;
 
     const loadData = () => {
         if(file){

@@ -77,6 +77,7 @@ const FileManager = (props) => {
     }
 
     const {FileSystem, fileSystemState, setFileSystemState} = useContext(fileContext)
+    const [uploadFile, setUploadFile] = useState(null);
 
     const currentFolder = useRef(FileSystem)
     const [currentFolderView, setCurrentFolderView] = useState({name: FileSystem.name, fullPath: currentFolder.current.fullPath, children : FileSystem.children});
@@ -111,16 +112,17 @@ const FileManager = (props) => {
     const addNewTxtFile = () => {
         if (folderNameInput !== ""){
             //I have to figure something else out about this. File types and process types should be separated
-            currentFolder.current.addNewFile(folderNameInput, "Text Editor");
+            currentFolder.current.addNewFile(folderNameInput, "Text Editor", null);
             setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
             setFileSystemState((prevState) => {return prevState * -1})
         }
         setFolderNameInput("");
     }
     const addNewPDFFile = () => {
-        if (folderNameInput !== ""){
+        if (folderNameInput !== "" && uploadFile){
+            const data = URL.createObjectURL(uploadFile)
             //I have to figure something else out about this. File types and process types should be separated
-            currentFolder.current.addNewFile(folderNameInput, "PDF Viewer");
+            currentFolder.current.addNewFile(folderNameInput, "PDF Viewer", data);
             setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
             setFileSystemState((prevState) => {return prevState * -1})
         }
@@ -139,6 +141,10 @@ const FileManager = (props) => {
     const newTXTModal = () => {
         handleClose();
         setModalState({open : true, type : "TXT"})
+    }
+    const newPDFModal = () => {
+        handleClose();
+        setModalState({open : true, type : "PDF"})
     }
     const handleNewFolderClose =() => {
         setModalState({open : false, type : null})
@@ -179,6 +185,7 @@ const FileManager = (props) => {
                 <div>
                     <p>New PDF File Name</p>
                     <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
+                    <input type = "file" onChange = {(e) => {setUploadFile(e.target.files[0])}}></input>
                     <button onClick = {handleNewPDFClose}>close</button>
                 </div>
             )
@@ -383,6 +390,7 @@ const FileManager = (props) => {
                     >
                         <MenuItem onClick={newFolderModal}>New Folder</MenuItem>
                         <MenuItem onClick={newTXTModal}>New Text File</MenuItem>
+                        <MenuItem onClick={newPDFModal}>New PDF File</MenuItem>
                     </Menu>
 
                 </Paper>

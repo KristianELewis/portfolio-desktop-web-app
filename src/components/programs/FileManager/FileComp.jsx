@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 //import IconButton from '@mui/material/IconButton';
 
 
@@ -11,6 +12,19 @@ const Folder = (props) => {
     const {id, name, type} = file
 
     const [isHovering, setIsHovering] = useState(false);
+
+
+    const iconDecider = () => {
+        if(type === "Text Editor")
+        {
+            return <TextSnippetIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
+        }
+        else if(type === "PDF Viewer")
+        {
+            return <PictureAsPdfIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
+        }
+    }
+    const icon = iconDecider();
 
     //instead of addProgram, it could be "clickFunction"
     //depending on the type of file manager we are using, it could be a load function, an add program function, or a save function
@@ -42,7 +56,7 @@ const Folder = (props) => {
             onClick={handleClick}
             >
 
-            <TextSnippetIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
+            {icon}
             
             <p style = {{margin: "0px", userSelect: "none"}}>{ name }</p>
         </div>
@@ -52,15 +66,5 @@ const Folder = (props) => {
 export default Folder;
 
 /* Might bring this back. Files are close enough that they probably could share the same component
-    const iconDecider = (type) => {
-        if(type === "Folder")
-        {
-            return <FolderIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
-        }
-        else if(type === "TXT")
-        {
-            return 
-        }
-    }
-    const icon = iconDecider(type);
+
 */

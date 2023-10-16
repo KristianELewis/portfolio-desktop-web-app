@@ -2,18 +2,26 @@
 
 
 export class File {
-    constructor(name, parent, id, prevPath, type) {
+    constructor(name, parent, id, prevPath, type, data) {
         this.name = name;
         this.parent = parent;
         this.type = type;
         this.id = id;
         this.fullPath = prevPath + "/" + name;
-        this.data = [
-            {
-              type: 'paragraph',
-              children: [{ text: 'init' }],
-            },
-          ]
+        if (type === "Text Editor"){
+            this.data = [
+                {
+                    type: 'paragraph',
+                    children: [{ text: 'init' }],
+                },
+            ]
+        }
+        else if(type === "PDF Viewer") {
+            this.data = data
+        }
+        else{
+            this.data = null
+        }
     }
 
     //don't think I need this anymore
@@ -49,8 +57,8 @@ export class Folder {
     }
 
     //this can just be generic file
-    addNewFile (name, type) {
-        let child = new File(name, this, this.nextId, this.fullPath, type)
+    addNewFile (name, type, data) {
+        let child = new File(name, this, this.nextId, this.fullPath, type, data)
         this.children = [...this.children, child]
         this.nextId =  this.nextId += 1;
     }
