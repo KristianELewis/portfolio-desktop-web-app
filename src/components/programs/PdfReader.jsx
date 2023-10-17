@@ -38,7 +38,7 @@ import pdfFile from './Resume.pdf'
 const PdfReader = () => {
     //CONTEXT, PROPS, INTIALIZATION
     const processManagmentInfo = useContext(processManagmentContext);
-    const {editProgram} = processManagmentInfo;
+    const {editProgram, addProgram, removeProgram, programs} = processManagmentInfo;
 
 
     const { windowPositioningInUse, }= useContext(windowWidthContext)
@@ -58,7 +58,82 @@ const PdfReader = () => {
         e.stopPropagation()
     }
 
-    //FILE MANAGER BACKDROP
+/*===========================================================================
+
+    FILE MANAGEMENT
+
+    -any meaningfull notes are in text editor, this is just a simplier implementation
+
+===========================================================================*/
+
+    const [currentFolderId, setCurrentFolderId] = useState(null)
+
+    const requestCanceler = () => {
+        setCurrentFolderId(null)
+    }
+    const handleLoadFile = (type, file) => {
+        // if(type === "PDF Viewer")
+        // {
+        //     editProgram(id, file);
+        // }
+        //removeProgram(currentFolderId)
+        setCurrentFolderId(null)
+    }
+    const loadFile = () => {
+        if(currentFolderId === null){
+            //setCurrentFolderId(addProgram("File Manager", {version : "Load", clickFunction : handleLoadFile}))
+            setCurrentFolderId(addProgram("File Manager", {
+                version : "Load", 
+                requestID : id, 
+                requestData : null, 
+                acceptableType : "PDF Viewer", 
+                programHandler : handleLoadFile,
+                requestCanceler : requestCanceler
+            }))
+
+        }
+        setFilesAnchor(null)
+    }
+
+//============================================================================================
+    return(
+        <>
+        <Paper position = "relative" sx = {{height : "40px", display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+            <Button color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning}>Files</Button>
+            <Menu
+                anchorEl={filesAnchor}
+                open = {fileOpen}
+                onClose ={handleCloseFiles}
+                onMouseDown = {preventPositioning}
+            >
+                <MenuItem onClick={loadFile}>Load File</MenuItem>
+            </Menu>
+
+            <Typography sx = {{userSelect : "none", paddingLeft : "10px"}}>{ name }</Typography>
+            <CloseIcon 
+                sx = {{
+                    color : "white",
+                    "&:hover": { backgroundColor: "black" }
+                }}
+                onClick = {handleExit}
+                onMouseDown = {preventPositioning}
+            />
+        </Paper>
+        <div style = {{height: "100%", color : "black", position: "relative"}}>
+            {windowPositioningInUse && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>}
+            {!file && <Paper sx = {{width : "100%", height : "100%", boxSizing : "border-box"}}></Paper>}
+            {file && <iframe src = {file.data} height = {"100%"} width = {"100%"} style = {{boxSizing : "border-box"}}></iframe>}
+        </div>
+        </>
+    )
+}
+
+export default PdfReader;
+
+/*
+
+    OLD FILE MANAGER STUFF, WILL PROBABLY BE DELETED VERY SOON
+
     const [fileManagerState, setFileManagerState] = useState({open: false, type : null})
 
     const handleLoadFile = (type, file) => {
@@ -91,34 +166,8 @@ const PdfReader = () => {
     const handleCancel = () => {
         setFileManagerState({open : false, type : null})
     }
-    return(
-        <>
-        <Paper position = "relative" sx = {{height : "40px", display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
-            <Button color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning}>Files</Button>
-            <Menu
-                anchorEl={filesAnchor}
-                open = {fileOpen}
-                onClose ={handleCloseFiles}
-                onMouseDown = {preventPositioning}
-            >
-                <MenuItem onClick={loadFile}>Load File</MenuItem>
-            </Menu>
 
-            <Typography sx = {{userSelect : "none", paddingLeft : "10px"}}>{ name }</Typography>
-            <CloseIcon 
-                sx = {{
-                    color : "white",
-                    "&:hover": { backgroundColor: "black" }
-                }}
-                onClick = {handleExit}
-                onMouseDown = {preventPositioning}
-            />
-        </Paper>
-        <div style = {{height: "100%", color : "black", position: "relative"}}>
-            {windowPositioningInUse && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>}
-            {!file && <Paper sx = {{width : "100%", height : "100%", boxSizing : "border-box"}}></Paper>}
-            {file && <iframe src = {file.data} height = {"100%"} width = {"100%"} style = {{boxSizing : "border-box"}}></iframe>}
-        </div>
+
 
         <Backdrop open = {fileManagerState.open}>
                 <div style ={{width : "500px", height : "500px"}}>
@@ -134,9 +183,4 @@ const PdfReader = () => {
                 </div>
             </Backdrop> 
 
-        </>
-    )
-}
-
-export default PdfReader;
-
+*/

@@ -86,6 +86,7 @@ function Screen() {
     //so within text editor when you click save or load it would make a new program with that function as data.
     //although file manager withing the text file should probably be its own thing
     const addProgram = (name, file) => {
+        const programID = programCount.current;
         setPrograms((prevPrograms) => {
             const tempProgramCount = programCount.current
             const tempZlevel = currentZLevel.current;
@@ -94,6 +95,7 @@ function Screen() {
             return [...prevPrograms, { id: tempProgramCount, zLevel: tempZlevel, name: name, file : file}]
         })
         //setProgramCount((prevState) => {return prevState+1})
+        return programID
     }
 
     const removeProgram = (id) => {
@@ -130,6 +132,8 @@ function Screen() {
         const newPrograms = programs.map((program) => {
             if(program.id === id)
             {
+                console.log(program.name)
+                console.log(file)
                 return {
                     id: program.id,
                     zLevel: program.zLevel,
@@ -141,6 +145,30 @@ function Screen() {
             return program
         })
         setPrograms(newPrograms)
+    }
+
+    const editProgramFileManager = (id, fileManagerId, file) => {
+        const newPrograms = programs.map((program) => {
+            if(program.id === id)
+            {
+                return {
+                    id: program.id,
+                    zLevel: program.zLevel,
+                    name: program.name,
+                    file : file
+
+                }
+            }
+            return program
+        })
+        const newProgramsFileManagerRemoved = newPrograms.filter((program) => {
+            if (program.id != fileManagerId)
+            {
+                return program;
+            }
+            return 
+        })
+        setPrograms(newProgramsFileManagerRemoved)
     }
     /*========================================================
 
@@ -176,13 +204,16 @@ function Screen() {
         setWindowPositioningInUse(false);
     }
 
+    const displayPrograms = () => {
+        console.log(programs)
+    }
     //css baseline sets boxsizing to border-box in html, which was causing issues when calorie counter was being loaded.
     //To fix this, I set border sizing to border box here and supply the innderwindow width with the borders removed
     return (
     <ThemeProvider theme={darkTheme}>
     <CssBaseline />
     <div className = "outterScreen" style = {{width: screenDimensions.width, boxSizing : "border-box"}}>
-        <DesktopMenu addProgram = {addProgram} setBackgroundImageUrl = {setBackgroundImageUrl}/>
+        <DesktopMenu addProgram = {addProgram} removeProgram = {removeProgram} setBackgroundImageUrl = {setBackgroundImageUrl} displayPrograms = {displayPrograms}/>
 
         <div 
             className = "innerWindow" 
@@ -196,7 +227,7 @@ function Screen() {
             >
             {/* WHen desktop Icons are implemented they should be placed here in a map function */}
             
-            <processManagmentContext.Provider value = {{addProgram : addProgram, removeProgram : removeProgram, editProgram : editProgram, programs :programs}}>
+            <processManagmentContext.Provider value = {{addProgram : addProgram, removeProgram : removeProgram, editProgram : editProgram, editProgramFileManager : editProgramFileManager, programs :programs}}>
             {programs.map(program => {
                 return (
                         <Window 

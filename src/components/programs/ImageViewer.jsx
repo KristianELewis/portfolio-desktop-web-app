@@ -33,7 +33,7 @@ No point in Iframe here just use an image
 const ImageViewer = () => {
     //CONTEXT, PROPS, INTIALIZATION
     const processManagmentInfo = useContext(processManagmentContext);
-    const {editProgram} = processManagmentInfo;
+    const {editProgram, addProgram} = processManagmentInfo;
 
 
     const { windowPositioningInUse, }= useContext(windowWidthContext)
@@ -53,39 +53,45 @@ const ImageViewer = () => {
         e.stopPropagation()
     }
 
-    //FILE MANAGER BACKDROP
-    const [fileManagerState, setFileManagerState] = useState({open: false, type : null})
 
+    /*===========================================================================
+
+        FILE MANAGEMENT
+
+        -any meaningfull notes are in text editor, this is just a simplier implementation
+
+    ===========================================================================*/
+
+    const [currentFolderId, setCurrentFolderId] = useState(null)
+
+    const requestCanceler = () => {
+        setCurrentFolderId(null)
+    }
     const handleLoadFile = (type, file) => {
-        if(type === "Image Viewer")
-        {
-            editProgram(id, file);
-            setFileManagerState({open : false, type : null})
-        }
+        // if(type === "PDF Viewer")
+        // {
+        //     editProgram(id, file);
+        // }
+        //removeProgram(currentFolderId)
+        setCurrentFolderId(null)
     }
     const loadFile = () => {
-        setFileManagerState({open : true, type : "Load"})
+        if(currentFolderId === null){
+            //setCurrentFolderId(addProgram("File Manager", {version : "Load", clickFunction : handleLoadFile}))
+            setCurrentFolderId(addProgram("File Manager", {
+                version : "Load", 
+                requestID : id, 
+                requestData : null, 
+                acceptableType : "Image Viewer", 
+                programHandler : handleLoadFile,
+                requestCanceler : requestCanceler
+            }))
+
+        }
         setFilesAnchor(null)
     }
 
-    const chooseFileManager = () => {
-        if(fileManagerState.type === "Load")
-        {
-            return <FileManager version = "Load" clickFunction = {handleLoadFile}/>
-        }
-        // if(fileManagerState.type === "Save")
-        // {
-        //     return <FileManager version = "Save" clickFunction = {handleSaveData}/>
-        // }
-        else {
-            return <></>
-        }
-    };
-    const fileManager = chooseFileManager();
-
-    const handleCancel = () => {
-        setFileManagerState({open : false, type : null})
-    }
+    //================================================
     return(
         <>
         <Paper position = "relative" sx = {{height : "40px", display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
@@ -117,6 +123,49 @@ const ImageViewer = () => {
             */}
             {file && <img src = {file.data} height = {"100%"} width = {"100%"} style = {{boxSizing : "border-box"}}/>}
         </div>
+        </>
+    )
+}
+
+export default ImageViewer;
+
+/*
+
+    //FILE MANAGER BACKDROP
+
+
+        const [fileManagerState, setFileManagerState] = useState({open: false, type : null})
+
+    const handleLoadFile = (type, file) => {
+        if(type === "Image Viewer")
+        {
+            editProgram(id, file);
+            setFileManagerState({open : false, type : null})
+        }
+    }
+    const loadFile = () => {
+        setFileManagerState({open : true, type : "Load"})
+        setFilesAnchor(null)
+    }
+
+    const chooseFileManager = () => {
+        if(fileManagerState.type === "Load")
+        {
+            return <FileManager version = "Load" clickFunction = {handleLoadFile}/>
+        }
+        // if(fileManagerState.type === "Save")
+        // {
+        //     return <FileManager version = "Save" clickFunction = {handleSaveData}/>
+        // }
+        else {
+            return <></>
+        }
+    };
+    const fileManager = chooseFileManager();
+
+    const handleCancel = () => {
+        setFileManagerState({open : false, type : null})
+    }
 
         <Backdrop open = {fileManagerState.open}>
                 <div style ={{width : "500px", height : "500px"}}>
@@ -131,10 +180,4 @@ const ImageViewer = () => {
                     {fileManager}
                 </div>
             </Backdrop> 
-
-        </>
-    )
-}
-
-export default ImageViewer;
-
+*/

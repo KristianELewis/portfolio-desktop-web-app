@@ -39,13 +39,18 @@ import { processManagmentContext, programContext } from '../../Context'
 
 const FileManager = (props) => {
 
-    const { version, clickFunction } = props;
-    const { addProgram } = useContext(processManagmentContext)
+    //const { version, clickFunction } = props;
+    const { addProgram, editProgram, removeProgram, editProgramFileManager } = useContext(processManagmentContext)
 
     const programInfo = useContext(programContext);
 
     const { file, id, name, handleMouseDown, handleExit } = programInfo;
 
+
+    //this is the data passes to the addProgram function
+    
+    
+    
     /*From the material ui demo ---------------------------------------*/
     const [contextMenu, setContextMenu] = React.useState(null);
     const handleContextMenu = (event) => {
@@ -260,7 +265,9 @@ const FileManager = (props) => {
 
         ---------------------------------------
     ===============================================================================*/
-    
+    //may not need requestData
+    const { version, requestID, requestData, acceptableType, programHandler, requestCanceler } = file;
+
     //traverse a folder. It would be nice to not send this down to files
     const traverse = (id) => {
         const nextFolder = currentFolder.current
@@ -273,18 +280,23 @@ const FileManager = (props) => {
     }
 
     //not so sure about this seems unecessary the way its implemented atm
-    const decideFileClickHandler = () => {
-        if(version === "Standalone"){
-            return addProgram
-        }
-        else if(version === "Load"){
-            return clickFunction;
-        }
-        else if(version === "Save"){
-            return clickFunction;
-        }
-    }
-    const fileClickHandler = decideFileClickHandler()
+    //this does not work anymore
+    // const decideFileClickHandler = () => {
+    //     if(version === "Standalone"){
+    //         return addProgram
+    //     }
+    //     //save and load will always do editProgram, so thats unecessary
+    //     //They need the calling programs handlerFunction
+    //     else if(version === "Load"){
+    //         //return editProgram;
+    //         return programHandler;
+    //     }
+    //     else if(version === "Save"){
+    //         //return editProgram;
+    //         return programHandler;
+    //     }
+    // }
+    // const fileClickHandler = decideFileClickHandler()
     /*===============================================================================
     ---------------------------------------------------------------------------------
     /*===============================================================================
@@ -325,6 +337,14 @@ const FileManager = (props) => {
     const preventPositioning = (e) =>{
         e.stopPropagation()
     }
+
+    const fileManagerClose = () => {
+        if(requestCanceler !== null)
+        {
+            requestCanceler();
+        }
+        handleExit();
+    }
     return(
         <>
             
@@ -342,7 +362,7 @@ const FileManager = (props) => {
                         
                         <span style = {{marginLeft : "5px", userSelect : "none"}}>
                             {/* menu item? govering diabled?*/}
-                            {currentFolderView.fullPath}
+                            {currentFolderView.fullPath} : {id}
                         </span>
                         </div>
                         <CloseIcon 
@@ -350,7 +370,7 @@ const FileManager = (props) => {
                                 color : "white",
                                 "&:hover": { backgroundColor: "black" }
                             }}
-                            onClick = {handleExit}
+                            onClick = {fileManagerClose}
                             onMouseDown = {preventPositioning}
                         />
                     </div>
@@ -397,10 +417,20 @@ const FileManager = (props) => {
                                 return
                             }).map((child) => {
                                 return (
+                                    //clickHandler = {fileClickHandler}
                                     <FileComp 
                                         key = {child.id} 
                                         file = {child}
-                                        clickHandler = {fileClickHandler}
+                                        addProgram = {addProgram}
+                                        editProgram = {editProgram}
+                                        removeProgram = {removeProgram}
+                                        editProgramFileManager = {editProgramFileManager}
+                                        version = {version}
+                                        requestID = {requestID}
+                                        requestData = {requestData}
+                                        acceptableType = {acceptableType}
+                                        programHandler = {programHandler}
+                                        fileManagerId = {id}
                                         />
                                 )
                             })}

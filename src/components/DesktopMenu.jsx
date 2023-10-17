@@ -16,12 +16,12 @@ import Typography from '@mui/material/Typography'
 
 import dayjs from 'dayjs'
 
+import FileManager from "./programs/FileManager/FileManager"
 
 
 
 //need to make the app bar smaller, very annoying right now though
 const DesktopMenu = (props) => {
-
 
     /*
         This doesnt seem to effect preformance much. Can change the interval if it starts to, but 1 second keeps it pretty accurate and really shouldnt be a big deal
@@ -36,30 +36,9 @@ const DesktopMenu = (props) => {
     const [dateTime, setDateTime] = useState(currentTimeAndDate);
 
     useEffect(() => {
-
         const interval = setInterval(() => setDateTime(currentTimeAndDate), 1000);
         return () => clearInterval(interval);
     }, [dateTime])
-
-
-    const {setBackgroundImageUrl} = props
-    
-    const [file, setFile] = useState(null);
-    const fileInput = useRef();
-    
-    async function verifyImage() {
-        return new Promise((resolve) => 
-        {
-            let image = new Image();
-            image.onload = function() {
-                resolve( {valid : true, url : image.src})
-            }
-            image.onerror = function() {
-                resolve({valid : false, url : null})
-            }
-            image.src = URL.createObjectURL(file)
-        })
-    }
 
     const [filesAnchor, setFilesAnchor] = useState(null);
     const fileOpen = Boolean(filesAnchor);
@@ -67,7 +46,7 @@ const DesktopMenu = (props) => {
         setFilesAnchor(e.currentTarget)
     }
 
-    //Probably would be better to not have a separate function for each program choice
+    //These can be made more generic for sure
     
     const handleAddTextEditor = () => {
         props.addProgram("Text Editor", null)
@@ -89,16 +68,73 @@ const DesktopMenu = (props) => {
         props.addProgram("Image Viewer", null)
         setFilesAnchor(null)
     }
+
+    /*
+        for file managers, the file parameter will be just an object. It will hold the file manager version and clickehandler 
+    */
     const handleAddFileManager = () => {
-        props.addProgram("File Manager", null)
+        props.addProgram("File Manager", {
+            version : "Standalone", 
+            clickFunction : null, 
+            requestID : null, 
+            requestData : null, 
+            acceptableType : null, 
+            programHandler : null, 
+            requestCanceler : null
+        })
         setFilesAnchor(null)
+    }
+
+//===================================================
+
+
+
+/*===========================================================================
+
+    FILE MANAGEMENT
+
+    -any meaningfull notes are in text editor, this is just a simplier implementation
+
+===========================================================================*/
+
+const [currentFolderId, setCurrentFolderId] = useState(null)
+const {setBackgroundImageUrl, removeProgram, addProgram} = props
+
+    const requestCanceler = () => {
+        setCurrentFolderId(null)
+    }
+    const handleSetBackgroundImage = (type, file) => {
+        if(type === "Image Viewer")
+        {
+            setBackgroundImageUrl(file.data);
+        }
+        //removeProgram(currentFolderId)
+        setCurrentFolderId(null)
     }
     const handleChangeDesktopBackground = (e) => {
-        console.log("Changeing background picture")
-        setBackgroundImageUrl(URL.createObjectURL(e.target.files[0]))
-        //props.addProgram("Calorie Counter")
+        if (currentFolderId === null){
+            setCurrentFolderId(addProgram("File Manager", {
+                version : "SetBackground", 
+                requestID : null, 
+                requestData : null, 
+                acceptableType : "Image Viewer", 
+                programHandler : handleSetBackgroundImage,
+                requestCanceler : requestCanceler
+            }))
+            //setCurrentFolderId(props.addProgram("File Manager", {version : "Load", clickFunction : handleSetBackgroundImage}))
+        }
         setFilesAnchor(null)
     }
+
+
+//=============================================================================
+
+
+
+
+
+
+
     const handleCloseFiles = () => {
         setFilesAnchor(null)
     }
@@ -118,29 +154,54 @@ const DesktopMenu = (props) => {
                     <MenuItem onClick={handleAddPdfReader}>PDF Reader</MenuItem>
                     <MenuItem onClick={handleAddImageViewer}>Image Viewer</MenuItem>
                     <MenuItem onClick={handleAddFileManager}>File Manager</MenuItem>
-
-                    <MenuItem onClick={()=>{
-                        fileInput.current.click()
-                        /*setting files anchor to null here wont let the background picture get chosen.
-                        right now it choses from the users computer. When I implement file system it will change to using that. There will need to be an upload files
-                        button to move files from the users computer into the website
-                        */
-                        }}>Change Desktop Background
-                        <input
-                            ref ={fileInput}
-                            type="file"
-                            onChange = {handleChangeDesktopBackground}
-                            hidden
-                        />
-                    </MenuItem>
-
+                    <MenuItem onClick={handleChangeDesktopBackground} >Change Desktop Background </MenuItem>
                 </Menu>
             </Toolbar>
             <Typography variant = "body1"sx = {{margin: "auto", textAlign: "center"}}>{dateTime}</Typography>
-            <div>{/*maybe this will be a settings/ logout section */}</div>
+            <Button onClick = {props.displayPrograms}>Display Info</Button>
+            {/* <div>{/*maybe this will be a settings/ logout section }</div> */}
         </AppBar>
     )
 }
 
 
 export default DesktopMenu;
+
+
+
+/* ()=>{
+                        fileInput.current.click()
+                        /*setting files anchor to null here wont let the background picture get chosen.
+                        right now it choses from the users computer. When I implement file system it will change to using that. There will need to be an upload files
+                        button to move files from the users computer into the website
+                        
+                        }}>Change Desktop Background
+                        <input
+                            ref ={fileInput}
+                            type="file"
+                            onChange = {handleChangeDesktopBackground}
+                            hidden
+                        /> */
+
+                            /*
+    const [file, setFile] = useState(null);
+    const fileInput = useRef();
+    
+    async function verifyImage() {
+        return new Promise((resolve) => 
+        {
+            let image = new Image();
+            image.onload = function() {
+                resolve( {valid : true, url : image.src})
+            }
+            image.onerror = function() {
+                resolve({valid : false, url : null})
+            }
+            image.src = URL.createObjectURL(file)
+        })
+    }
+    */
+
+                //console.log("Changeing background picture")
+            //setBackgroundImageUrl(URL.createObjectURL(e.target.files[0]))
+            //props.addProgram("Calorie Counter")
