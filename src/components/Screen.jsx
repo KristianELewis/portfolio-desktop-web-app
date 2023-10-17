@@ -2,9 +2,10 @@ import React, { useState , useRef, useEffect} from 'react'
 
 import Window from './Window'
 import DesktopMenu from './DesktopMenu'
-import { Folder, File } from './programs/FileManager/fileSystem';
+import { Folder, File, defaultFileSystem } from './programs/FileManager/fileSystem';
 
-
+import FileComp from './programs/FileManager/FileComp'
+import FolderComp from './programs/FileManager/FolderComp'
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -52,8 +53,9 @@ function Screen() {
     const [backgroundImageUrl, setBackgroundImageUrl] = useState(null)
 
     const [file, setFile] = useState(null);
-
-    const FileSystem = useRef(new Folder("Home", null, 0, ""))
+    defaultFileSystem
+    //const FileSystem = useRef(new Folder("Home", null, 0, ""))
+    const FileSystem = useRef(defaultFileSystem())
     const [fileSystemState, setFileSystemState] = useState(1);
     //console.log("from screen: " + fileSystemState)
 
@@ -207,11 +209,34 @@ function Screen() {
     const displayPrograms = () => {
         console.log(programs)
     }
-    //css baseline sets boxsizing to border-box in html, which was causing issues when calorie counter was being loaded.
-    //To fix this, I set border sizing to border box here and supply the innderwindow width with the borders removed
+
+    /*================================================================================
+
+    DESKTOP STUFF
+
+    ================================================================================*/
+    const desktopFolder = FileSystem.current.children[0];
+
+    const handleFolderClick = (id) => {
+        //id would be the id of the starting folder inside the desktop folder
+        //this could be supplied to the filemanager and the file manager could navigate to that folder on startup
+        addProgram("File Manager", {
+            version : "Standalone", 
+            clickFunction : null, 
+            requestID : null, 
+            requestData : null, 
+            acceptableType : null, 
+            programHandler : null, 
+            requestCanceler : null
+        })
+    }
+
+
     return (
     <ThemeProvider theme={darkTheme}>
     <CssBaseline />
+    {/* css baseline sets boxsizing to border-box in html, which was causing issues when calorie counter was being loaded.
+    To fix this, I set border sizing to border box here and supply the innderwindow width with the borders removed */}
     <div className = "outterScreen" style = {{width: screenDimensions.width, boxSizing : "border-box"}}>
         <DesktopMenu addProgram = {addProgram} removeProgram = {removeProgram} setBackgroundImageUrl = {setBackgroundImageUrl} displayPrograms = {displayPrograms}/>
 
@@ -225,8 +250,51 @@ function Screen() {
                 backgroundImage : `url('${backgroundImageUrl}')`
             }}
             >
-            {/* WHen desktop Icons are implemented they should be placed here in a map function */}
-            
+
+            {/* This should be made into its own component at some point. When that is done right click functionality should be implemented */}
+            <div style = {{ display : "flex", flexBasis : "100px", flexDirection : "column",  flexFlow : "column wrap", flexGrow : 0, alignContent : "start", minHeight : "100%", maxHeight : "100%", overflow : "hidden"}}>
+                {desktopFolder.children.filter(child => {
+                    if(child.type === "Folder")
+                    {
+                        return child;
+                    }
+                    return
+                    }).map((child) => {
+                        return (
+                            <FolderComp 
+                                key = {child.id} 
+                                file = {child}
+                                traverse = {handleFolderClick} 
+                                />
+                        )
+                    })}
+                    {/*Files Gettin non no ids for files?>*/}
+                {desktopFolder.children.filter(child => {
+                    if(child.type !== "Folder")
+                    {
+                        return child;
+                    }
+                    return
+                }).map((child) => {
+                    return (
+                        //Most of this stuff is no necessary for desktop
+                        <FileComp 
+                            key = {child.id} 
+                            file = {child}
+                            addProgram = {addProgram}
+                            editProgram = {editProgram}
+                            removeProgram = {removeProgram}
+                            editProgramFileManager = {editProgramFileManager}
+                            version = {"Standalone"}
+                            requestID = {null}
+                            requestData = {null}
+                            acceptableType = {null}
+                            programHandler = {null}
+                            fileManagerId = {null}
+                            />
+                    )
+                })}
+            </div>
             <processManagmentContext.Provider value = {{addProgram : addProgram, removeProgram : removeProgram, editProgram : editProgram, editProgramFileManager : editProgramFileManager, programs :programs}}>
             {programs.map(program => {
                 return (
@@ -257,7 +325,6 @@ function Screen() {
 
                         */
                         /*Okay windowPositioningInUse should probably just be placed elsewhere */
-
                 )
             })}
         </processManagmentContext.Provider>

@@ -96,3 +96,18 @@ export class Folder {
 }
 
 
+export const defaultFileSystem = () => {
+    const home = new Folder("Home", null, 0, "")
+    home.addNewFolder("Desktop");
+    home.addNewFolder("Documents");
+    home.addNewFolder("Pictures");
+
+    //This will be implented when fileManager functionality is improved
+    //home.addNewFolder("Recent");
+    //This will be implemented if/when a File Downloader program is made
+    //home.addNewFolder("Downloads");
+    //This might be impleneted when deleting files is implemented
+    //home.addNewFolder("Trash");
+
+    return home;
+}
