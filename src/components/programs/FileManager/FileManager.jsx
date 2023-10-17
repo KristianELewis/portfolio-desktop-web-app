@@ -17,8 +17,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Paper from '@mui/material/Paper'
 
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+//import Button from '@mui/material/Button';
+//import Typography from '@mui/material/Typography';
 import Backdrop from '@mui/material/Backdrop';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -45,11 +45,6 @@ const FileManager = (props) => {
     const programInfo = useContext(programContext);
 
     const { file, id, name, handleMouseDown, handleExit } = programInfo;
-
-
-    //this is the data passes to the addProgram function
-    
-    
     
     /*From the material ui demo ---------------------------------------*/
     const [contextMenu, setContextMenu] = React.useState(null);
@@ -105,7 +100,9 @@ const FileManager = (props) => {
 
         ADDING NEW FILES AND FOLDERS
 
-        So much of this is generic and the same, This can be cutdown for sure
+        -So much of this is generic and the same, This can be cutdown for sure
+            -This is low priority at the moment but it should be done before any more file types are added
+    
     ===============================================================================*/
     const addNewFolder = () => {
         if (folderNameInput !== ""){
@@ -240,35 +237,16 @@ const FileManager = (props) => {
     ---------------------------------------------------------------------------------
     /*===============================================================================
 
-        CLICK FUNCTIONS
+        FILE MANAGER VERSIONS
 
-        These can get sent down to the folder or files as the click function.
+        This is explaned in depth in FileComp.jsx and TextEditor.jsx
 
-        Folders will always traverse.
-
-        STANDALONE FILE MANAGER
-        ---------------------------------------
-        
-        -files should create a new program, providing the file type and file data
-
-        ---------------------------------------
-        LOAD FILE MANAGER
-        ---------------------------------------
-
-        -files should provide file type and file data. File type will verify if its a valid type. Data will then be loaded into the calling process
-
-        ---------------------------------------
-        SAVE FILE MANAGER
-        ---------------------------------------
-
-        -files will provide file type and file data. File type will verify if its a valid type. Data wont be sent, but instead over written
-
-        ---------------------------------------
     ===============================================================================*/
+
     //may not need requestData
     const { version, requestID, requestData, acceptableType, programHandler, requestCanceler } = file;
 
-    //traverse a folder. It would be nice to not send this down to files
+    //traverse a folder
     const traverse = (id) => {
         const nextFolder = currentFolder.current
         setBackList((prevState) => {
@@ -279,24 +257,13 @@ const FileManager = (props) => {
         setForwardList([]);
     }
 
-    //not so sure about this seems unecessary the way its implemented atm
-    //this does not work anymore
-    // const decideFileClickHandler = () => {
-    //     if(version === "Standalone"){
-    //         return addProgram
-    //     }
-    //     //save and load will always do editProgram, so thats unecessary
-    //     //They need the calling programs handlerFunction
-    //     else if(version === "Load"){
-    //         //return editProgram;
-    //         return programHandler;
-    //     }
-    //     else if(version === "Save"){
-    //         //return editProgram;
-    //         return programHandler;
-    //     }
-    // }
-    // const fileClickHandler = decideFileClickHandler()
+    const fileManagerClose = () => {
+        if(requestCanceler !== null)
+        {
+            requestCanceler();
+        }
+        handleExit();
+    }
     /*===============================================================================
     ---------------------------------------------------------------------------------
     /*===============================================================================
@@ -338,13 +305,6 @@ const FileManager = (props) => {
         e.stopPropagation()
     }
 
-    const fileManagerClose = () => {
-        if(requestCanceler !== null)
-        {
-            requestCanceler();
-        }
-        handleExit();
-    }
     return(
         <>
             
@@ -466,40 +426,3 @@ const FileManager = (props) => {
 }
 
 export default FileManager;
-
-
-
-/*
-
- //const {setFile} = props;
-
-    console.log(FileSystem)
-
-    const handleUpload = () => {
-        console.log("url made")
-        setFile(URL.createObjectURL(thing));
-
-        //localStorage.setItem("file", file)
-    }
-    const handleDownload = () => {
-        console.log("display")
-        console.log(file)
-        console.log(thing)
-        //console.log(localStorage.getItem("file"))
-    }
-    const handleFileChange = (e) => {
-        setThing(e.target.files[0])
-        console.log("file changed")
-    }
-
-            {/* <input type = {"file"} onChange = {handleFileChange}/>
-            <button onClick = {handleUpload}>upload</button>
-            <button onClick = {handleDownload}>download</button>
-            <img src ={file}></img> 
-
-
-
-                //console.log("render")
-    //const [file, setFile] = useState(null)
-    const [thing, setThing] = useState(null)
-*/

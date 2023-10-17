@@ -1,10 +1,20 @@
+/*===========================================================================
+    TODO
+
+    -The drop down menu goes outside of the window if the height is too short. I'm pretty sure i can eith confine it or use a different dropdown menu
+
+    -FileManagement has a few things todo, they are described in its explanation
+
+===========================================================================*/
+
+
 import React, {useState, useContext}from 'react'
 
 import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 
 import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+//import ButtonGroup from '@mui/material/ButtonGroup';
 import Typography from '@mui/material/Typography';
 //import Backdrop from '@mui/material/Backdrop'
 
@@ -20,16 +30,6 @@ import CloseIcon from '@mui/icons-material/Close';
 //import FileManager from './FileManager/FileManager';
 
 import { programContext, processManagmentContext } from '../Context';
-/*
-    TODO
-
-    App Bar doesnt really work the way I want it to. It might be better to use a Paper component and just set a good height.
-
-    I don't like the color scheme either I dont think. Its comming out blue, not sure if dark mode will make a difference
-
-    This drop down menu goes outside of the window if the height is too short. I'm pretty sure i can eith confine it or use a different dropdown menu
-
-*/
 
 const TextEditor = (props) => {
     //const {editProgram} = props;
@@ -59,67 +59,51 @@ const TextEditor = (props) => {
     const handleChange = (newValue) => { setValue(newValue) }
     const [editor] = useState(() => withReact(createEditor()))
 
-    //console.log(programs)
-/*===========================================================================
+    /*===========================================================================
+
+    View fileComp.jsx for more explanation
+
 
     FILE MANAGEMENT
 
-    -this is working for the most part right now. There is some wonkiness when changing the text when a load or save file manager is up
-        specifically changing the inner text when a save file manager is loaded seems to break it. If there is a way to disable the text editor while
-        a file manager is active (currentFolderID !== null) that would be good.
-        A temporary fix would to just put a dim backdrop colored div overtop of the window when current folderID is not null
-        or maybe just making the files button disabled
+        EXPLANATION
 
-    -if you close the file manager with the x button it will break the program. currentFolderID wont be removed
-        A fix for this would to be to pass a "cancel handler"
-        cancel handler would be difined in the calling omponent, from the calling component the file manager would be deleted and also current foldder Id would be set to null
+        -A file manager program will be opened, it will be given the correct type (load, save, backgroundChange)
+            -Its id will be set the currentFolderId, which will prevent another filemanager from opening from the calling program
+        -The file manager will set the file of the calling function to a whichever file the user chooses
+        -The file manager will then call a function that was passed to it
+            -This function will handle the calling programs data management
+                -in the case of saving, the program will save its contents to the newly aquired files data
+                -in the case of loading, the program will load the data from the newly aquire file
+                -All functionality will set currentfolderId to null, which will allow it to open a new file manager
+        -The file manager will close its self
 
-    -when the editor closes the file maaager should also be removed
+        -The file manager also checks to make sure the file type and the program are compatible
+        -The file manager also is provided with a requestCanceler function
+            -This function will be called if the file manager is manually closed
+            -It will set the programs currentFolderId to null, allowing the program to open a new filemanager
 
-    -Using contexts and stuff is not working well maybe should stop
-        editing programs will remove anything made after the file manager was opened and also the file manager
-        trying to remove the file managger is also stuck in the past and will set this program to its old version, deleting the file info
+        THINGS TO ADD
 
-    -So its sort of working now, but its giving warnging about trying to render screen an texteditor at the same time
-        definitly from the if statment
+        -disable texteditor when filemanager is open
+            -changing text editor when file manager is open might cause problems,
+                it also may have been fixed with the new implemenation, but It should still be disabled anyway
 
+        -when the editor closes the file manager should also be removed
+            -this is probably a pretty easy fix, may do this before next commit
 
-
-        NEW IDEA    
-
-        Instead of sending down functions for the folder to enact, you send down this processes ID
-        Then from within the file manager you edit the program state of THIS TEXT EDITOR
-        You exit the file manager from there too
-
-        Inside here after that is done, we need to allow file manger to be accessed again
-        we need to set values if necessary
-
-        SO for save you need to send down the file information
-        The file manager will edit the data for the file, and then set this programs file to that file
-
-        Both load and save might need to rely on a use effect, When the file changes all the values and stuff change as well,
-        it also means that the currentfolder should change.
-
-
-        So I need to make specific file manager types I think, then I can come back here and fix this shit
-===========================================================================*/
+        -type parameter in the programHandler frunctions can be removed, file compatibilty is checked inside the File Comp
+            -It would also be nice if I could do something about the file being passed around
+                -it seems unecessary especially in the pdf and image viewers that do nothing with the passed file
+                -Something needs to change about it though, Im also  sending an unecessary programData down to the fileManager
+                    -This could be used by save functionality, but right now its useless
+    ===========================================================================*/
 
     const [currentFolderId, setCurrentFolderId] = useState(null)
-    //const [newFileInfo, setNewFileInfo] = useState(null)
-
-    // if(newFileInfo !== null)
-    // {
-    //     const {type, file} = newFileInfo
-    //     if(type === "Text Editor"){
-    //         editProgram(id, file);
-    //     }
-    //     //removeProgram(currentFolderId)
-    //     setCurrentFolderId(null)
-    //     setNewFileInfo(null)
-    // }
     const requestCanceler = () => {
         setCurrentFolderId(null)
     }
+ //------------------------------------------------------------------------------------------------------------------
     const newFile = () => {
         editor.children = [ //this won't cause a reRender
             {
@@ -131,20 +115,12 @@ const TextEditor = (props) => {
         setFilesAnchor(null)
     }
 //------------------------------------------------------------------------------------------------------------------
-    //The first part should still work
-
-    //I could likely remove the parameters, especially the type parameter.
-    //The only reason I wouldnt remove the file parameter is that its possible that the file for this program has not be set yet
     const handleSaveData = (type, file) => {
         if(type === "Text Editor")
         {
             file.data = value;
-            //editProgram(id, file);
         }
         setCurrentFolderId(null)
-        //setNewFileInfo({type: type, file : file})
-        //removeProgram(currentFolderId)
-        //setCurrentFolderId(null)
     }
     const saveData = () => {
         if(file)
@@ -156,8 +132,7 @@ const TextEditor = (props) => {
                 version : "Save", 
                 requestID : id, 
                 requestData : null, 
-                acceptableType : 
-                "Text Editor", 
+                acceptableType : "Text Editor", 
                 programHandler : handleSaveData,
                 requestCanceler : requestCanceler
             }))
@@ -168,19 +143,15 @@ const TextEditor = (props) => {
     const handleLoadFile = (type, file) => {
         if(type === "Text Editor")
         {
-            //editProgram(id, file);
             editor.children = file.data
             //I can see some possible issues arising here. We are changing the state of the program right before calling this function.
-            //setValue(file.data);
+            //It seems to be okay at the moment
+            setValue(file.data);
         }
         setCurrentFolderId(null)
-        //setNewFileInfo({type: type, file : file})
-        //removeProgram(currentFolderId)
-        //setCurrentFolderId(null)
     }
     const loadFile = () => {
         if(currentFolderId === null){
-            //setCurrentFolderId(addProgram("File Manager", {version : "Load", clickFunction : handleLoadFile}))
             setCurrentFolderId(addProgram("File Manager", {
                 version : "Load", 
                 requestID : id, 
@@ -189,7 +160,6 @@ const TextEditor = (props) => {
                 programHandler : handleLoadFile,
                 requestCanceler : requestCanceler
             }))
-
         }
         setFilesAnchor(null)
     }
@@ -202,9 +172,7 @@ const TextEditor = (props) => {
     //draftjs will not allow overflow on x
     //not sure if its neccesary to have these separated. I think It was causeing issues before. Ill look into later I just needd to get this working
 
-    //I no longer have any idea what these comments are talking abour
-
-
+    //I no longer have any idea what these comments are talking about
 
     const [filesAnchor, setFilesAnchor] = useState(null);
     const fileOpen = Boolean(filesAnchor);
@@ -215,13 +183,16 @@ const TextEditor = (props) => {
         setFilesAnchor(null)
     }
 
-    //I dont need this in its own function really., it more to remind myself. Putting this in on mouse downs in topbar buttons and such will prevent unwanted repositions
+    //I dont need this in its own function really, its more to remind myself.
+    //Putting this in on mouse downs in topbar buttons and such will prevent unwanted repositions
     const preventPositioning = (e) =>{
         e.stopPropagation()
     }
     return(
         <>
-        {/*currentFolderId !== null && <div style = {{height : "100%", width : "100%", backgroundColor : "black", position: "absolute"}}/>*/}
+        {/*currentFolderId !== null && <div style = {{height : "100%", width : "100%", backgroundColor : "black", position: "absolute"}}/>
+          The idea for this was to make the text editor disabled. Not a bad Idea to just implement it like this
+        */}
         <Paper position = "relative" sx = {{height : "40px", display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
                 <Button color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning}>Files</Button>
                 <Menu
@@ -265,60 +236,3 @@ const TextEditor = (props) => {
 }
 
 export default TextEditor;
-
-
-/*
-    old folder management bsck drop system
-            <Backdrop open = {fileManagerState.open}>
-                <div style ={{width : "500px", height : "500px"}}>
-                    <AppBar position = "relative" >
-
-                        <ButtonGroup variant="contained">
-                            <Button onClick = {handleCancel} size = "small">Cancel</Button>
-                            <Button onClick = {handleCancel} size = "small">Load</Button>
-                        </ButtonGroup>
-                    </AppBar>
-
-                    {fileManager}
-                </div>
-            </Backdrop> 
-
-            //file management will be a backdrop I think. Might as well just have it freeze the whole screen
-
-    const [fileManagerState, setFileManagerState] = useState({open: false, type : null})
-
-    const chooseFileManager = () => {
-        if(fileManagerState.type === "Load")
-        {
-            return <FileManager version = "Load" clickFunction = {handleLoadFile}/>
-        }
-        if(fileManagerState.type === "Save")
-        {
-            return <FileManager version = "Save" clickFunction = {handleSaveData}/>
-        }
-        else {
-            return <></>
-        }
-    };
-    const fileManager = chooseFileManager();
-    const handleCancel = () => {
-        setFileManagerState({open : false, type : null})
-    }
-
-
-
-    /* <div className = "windowTopBar" 
-            onMouseDown = {handleMouseDown} 
-        >
-            <Typography sx = {{userSelect: "none"}}>{name}</Typography>
-            <CloseIcon 
-                sx = {{
-                    color : "white",
-                    "&:hover": { backgroundColor: "black" }
-                }}
-                onClick = {handleExit}
-            />
-        ;
-
-        </div> 
-*/

@@ -14,6 +14,7 @@ import ImageIcon from '@mui/icons-material/Image';
 */
 
 const Folder = (props) => {
+    //some of these are useless, or could be condesed/cut down in some way
     const { 
         file, 
         addProgram, 
@@ -48,26 +49,34 @@ const Folder = (props) => {
     }
     const icon = iconDecider();
 
-    //instead of addProgram, it could be "clickFunction"
-    //depending on the type of file manager we are using, it could be a load function, an add program function, or a save function
 
-    /*
-        Both load and save from file will load this file into the calling program.
+    /*===========================================================================
 
-        Then load and save file will have separate functions from their own comonents that probably could just be called here
+        View textEditor.jsx for more explanation
 
-        Then this program will shut itself down
+        FILE MANAGER VERSION FUNCTIONALITY
 
+        -The file manager may be a few different versions
+            -standalone
+            -setbackground
+                -this is for desktop background picture
+            -save
+            -load
 
-    */
+        -standalone version will just open a new program corresponding to the file type, with the file as the file loaded in the program
 
-    // else if(version === "Load"){
-    //     programHandler();
-    // }
-    // else if(version === "Save"){
-    //     //return editProgram;
-    //    programHandler();
-    // }
+        -setbackground picture will send the file to the caller (should really only be DesktopMenu) and then closes itself
+            -maybe eventually I can have a right click option for files to do this as well
+
+        -Both save and load can be handled the same way here
+            -It calls the calling programs passed handler function with this file provided
+                -The program will set its internal state this if necessary
+                -It will also set its currentFileMangerId to null, allowing it to open another fileManger
+            -It will then call the the program state function, this There is a special program state function specifically for save and load functionality
+                -It will set the programs file to this file, it will then close this fileManager
+                -this needs to be done in the same state setter. editProgram and removeProgram will interfere with each othere if they are called one after another
+
+    ===========================================================================*/
     const handleClick = () => {
         if(version === "Standalone"){ //If this is a standalone file manager it should just add a new program
             addProgram(type, file)
@@ -76,21 +85,11 @@ const Folder = (props) => {
             programHandler(type, file);
             removeProgram(fileManagerId);
         }
-        else if(acceptableType === type) //If this filetype  is compatible with the calling program
+        else if(acceptableType === type) //If this filetype is compatible with the calling program
         {
-            /*
-                editProgram followed by removeProgram will cause issues.
-                The remove program will undo edit program.
-                The quick fix is to just make a new function specifically for this instance
-            */
-            programHandler(type, file); // then it should call the function inside the program which will take over from there
+            programHandler(type, file);
             editProgramFileManager(requestID, fileManagerId, file)
-            //editProgram(requestID, file) //This will set the calling functions file to this
-            //The parameters for programHandler could probably change
-            //removeProgram(fileManagerId);// then it should remove itself //This is screwing things up I'm pretty sure
-
         }
-        //clickHandler(type, file)
     }
 
     const handleMouseEnter = () => {
@@ -125,7 +124,3 @@ const Folder = (props) => {
 }
 
 export default Folder;
-
-/* Might bring this back. Files are close enough that they probably could share the same component
-
-*/
