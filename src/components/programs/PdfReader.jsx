@@ -76,7 +76,9 @@ const PdfReader = () => {
         }
         setFilesAnchor(null)
     }
-
+    const UnLoadFile =() =>{
+        editProgram(id, null)
+    }
     //============================================================================================
     return(
         <>
@@ -89,6 +91,7 @@ const PdfReader = () => {
                 onMouseDown = {preventPositioning}
             >
                 <MenuItem onClick={loadFile}>Load File</MenuItem>
+                <MenuItem onClick={UnLoadFile}>unLoad File</MenuItem>
             </Menu>
 
             <Typography sx = {{userSelect : "none", paddingLeft : "10px"}}>{ name }</Typography>

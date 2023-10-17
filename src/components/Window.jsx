@@ -300,18 +300,16 @@ const Window = (props) => {
         }}>
 
             {/*can't tell if preformance got significantly worse after adding resizer or not. Before adding the code */}
-            <div className = "left-right-resizer" onMouseDown = {handleResizeleft}/>
-            <div className = "windowMidContainer"
-                style = {{
+            {/* <div className = "left-right-resizer" onMouseDown = {handleResizeleft}/> */}
+            <div className = "windowMidContainer" style ={{width: position.width + "px"}}>
+            {/* style = {{
                     /*I spent an annoying amount of time messing around with this and just gave up and did this 
                     width is having trouble being calculated correctly due to the 5px things on the left and right and 
                     i cant get flex box to cooperate. Will probably change this in the future
                     
-                    */
+                    
                     width: (position.width - 10) + "px"
-                }}
-            >
-                <div className = "top-bottom-resizer" onMouseDown = {handleResizeTop}/>
+                }} */}
                 {/* <div className = "windowTopBar" 
                     onMouseDown = {handleMouseDown} 
                 >
@@ -335,14 +333,13 @@ const Window = (props) => {
                 </programContext.Provider>
                 </fileContext.Provider>
                 </windowWidthContext.Provider>
-                <div className = "top-bottom-resizer" onMouseDown = {handleResizeBottom}/>
-            </div>
-            <div className= "left-right-resizer" onMouseDown={handleResizeRight}/>
+                <div className= "left-right-resizer" style = {{height : "100%", width : "5px", backgroundColor : "transparent", position : "absolute"}} onMouseDown = {handleResizeleft}></div>
+                <div className= "left-right-resizer" style = {{height : "100%", width : "5px", backgroundColor : "transparent", position : "absolute", left : (position.width -5) + "px"}} onMouseDown = {handleResizeRight}></div>
+                <div className = "top-bottom-resizer" style = {{height : "5px", width : "100%", backgroundColor : "transparent", position : "absolute"}} onMouseDown = {handleResizeTop}/>
+                <div className = "top-bottom-resizer" style = {{height : "5px", width : "100%", backgroundColor : "transparent", position : "absolute", top : (position.height -5) + "px"}} onMouseDown = {handleResizeBottom}/>
 
+            </div>
         </div>
     )
 }
-
-
-
 export default Window;
