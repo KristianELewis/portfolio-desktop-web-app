@@ -28,7 +28,8 @@ import { fileContext } from '../../Context';
 //import { Folder, File } from './fileSystem';
 
 import FolderComp from './FolderComp';
-import FileComp from './FileComp'
+import FileComp from './FileComp';
+import QuickAccess from './QuickAccess';
 
 //temporary
 
@@ -78,8 +79,14 @@ const FileManager = (props) => {
 
     const {FileSystem, fileSystemState, setFileSystemState} = useContext(fileContext)
     const [uploadFile, setUploadFile] = useState(null);
-
     const currentFolder = useRef(FileSystem)
+    const quickAccessList = [
+        {location : FileSystem, key : FileSystem.fullPath + FileSystem.id, name : "Home"},
+        {location : FileSystem.children[0], key : FileSystem.children[0].fullPath + FileSystem.children[0].id, name : "Desktop"},
+        {location : FileSystem.children[1], key : FileSystem.children[1].fullPath + FileSystem.children[1].id, name : "Documents"},
+        {location : FileSystem.children[2], key : FileSystem.children[2].fullPath + FileSystem.children[2].id, name : "Pictures"}
+    ]
+
     const [currentFolderView, setCurrentFolderView] = useState({name: FileSystem.name, fullPath: currentFolder.current.fullPath, children : FileSystem.children});
     /*
         Not sure if this is the best way to implement a filesystem.
@@ -298,8 +305,39 @@ const FileManager = (props) => {
     }
     /*===============================================================================
     ---------------------------------------------------------------------------------
+    /*===============================================================================
+
+        QUICK ACCESS FUNCTIONALITY
+
     ===============================================================================*/
 
+    const traverseByFolder = (destinationFolder) =>{
+        currentFolder.current = destinationFolder;
+        setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children});
+    }
+
+    const quickAccess = (destinationFolder) => {
+        const prevFolder = currentFolder.current
+        if(currentFolder.current !== destinationFolder)
+        {
+            setBackList((prevState) => {
+                return [...prevState, prevFolder];
+            })
+            setForwardList([]);
+            traverseByFolder(destinationFolder)
+        }
+    }
+
+    useEffect(() => {
+        if(requestData !== null)
+        {
+            traverseByFolder(requestData);
+        }
+    }, [])
+
+    /*===============================================================================
+    ---------------------------------------------------------------------------------
+    ===============================================================================*/
     //used for preventing un wanted repositions
     const preventPositioning = (e) =>{
         e.stopPropagation()
@@ -340,11 +378,14 @@ const FileManager = (props) => {
                         
                         Or maybe Ill just use flex box again. Flex box is better for dynamic sizes.
                     */}
-                    <div onContextMenu={handleContextMenu} style ={{display : "grid", gridTemplateColumns : "100px auto", flexGrow : 1, boxSizing : "border-box"}}>
-                        <div style = {{borderTop: "grey solid 1px", borderBottom: "grey solid 1px"}}>
-                            {/* this will be the important folders section thing. quick menu */}
+                    <div onContextMenu={handleContextMenu} style ={{display : "grid", gridTemplateColumns : "125px auto", flexGrow : 1, boxSizing : "border-box"}}>
+                        <div style = {{borderTop: "grey solid 1px", borderRight: "grey solid 1px" , overflow : "auto"}}>
+                            <QuickAccess 
+                                quickAccessList = {quickAccessList}
+                                quickAccess = {quickAccess}
+                                />
                         </div>
-                        <div style = {{border: "grey solid 1px", display : "flex", flexBasis : "100px", flexFlow : "row wrap", flexGrow : 0, alignContent : "start", minHeight : "100%"}}>
+                        <div style = {{borderTop: "grey solid 1px", display : "flex", flexBasis : "100px", flexFlow : "row wrap", flexGrow : 0, alignContent : "start", minHeight : "100%"}}>
                             {/*
                                 There Might be a better/faster way to filter and map. Reduce is aparently faster
                                 Could maybe filter before hand? First filter out folders. A files array will have faster subseqent filters right?

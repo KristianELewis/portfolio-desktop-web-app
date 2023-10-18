@@ -218,19 +218,21 @@ function Screen() {
     const desktopFolder = FileSystem.current.children[0];
 
     const handleFolderClick = (id) => {
-        //id would be the id of the starting folder inside the desktop folder
-        //this could be supplied to the filemanager and the file manager could navigate to that folder on startup
+        //this is temporary to get it working
+        //requestData should be renamed to starting location
+        //all of this data should be rearranged for its version type, It should be called payload
+        //This is just too much shit to have here
+        const location = desktopFolder.children[id]
         addProgram("File Manager", {
             version : "Standalone", 
             clickFunction : null, 
             requestID : null, 
-            requestData : null, 
+            requestData : location, 
             acceptableType : null, 
             programHandler : null, 
             requestCanceler : null
         })
     }
-
 
     return (
     <ThemeProvider theme={darkTheme}>
