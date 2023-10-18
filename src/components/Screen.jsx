@@ -52,16 +52,33 @@ function Screen() {
 
     const [backgroundImageUrl, setBackgroundImageUrl] = useState(null)
 
-    const [file, setFile] = useState(null);
-    defaultFileSystem
-    //const FileSystem = useRef(new Folder("Home", null, 0, ""))
-    const FileSystem = useRef(defaultFileSystem())
-    const [fileSystemState, setFileSystemState] = useState(1);
-    //console.log("from screen: " + fileSystemState)
+    //const [file, setFile] = useState(null);
+    //defaulFileSystem was here with no parenthesis before, was an accident I assume
 
-    //Right now this is only used in the pdf reader. This lets the window know that a movement operation is in place. This puts a transparent div over the iframe
-    //This will stop the iframe from interupting movement and resizing operations.
-    //This could potentially move into window. It may also be completely uncessary, but for the sake of time and to reduce the programs overhead, I just want a working pdf reader
+    const FileSystem = useRef(defaultFileSystem());
+    const [fileSystemState, setFileSystemState] = useState(1);
+    //This could be combined with another state, maybe fileSystemState, as a regular state or maybe a reducer
+    const [quickAccessList, setQuickAccessList] = useState([
+        {location : FileSystem.current, key : FileSystem.current.fullPath + FileSystem.current.id, name : "Home"},
+        {location : FileSystem.current.children[0], key : FileSystem.current.children[0].fullPath + FileSystem.current.children[0].id, name : "Desktop"},
+        {location : FileSystem.current.children[1], key : FileSystem.current.children[1].fullPath + FileSystem.current.children[1].id, name : "Documents"},
+        {location : FileSystem.current.children[2], key : FileSystem.current.children[2].fullPath + FileSystem.current.children[2].id, name : "Pictures"}
+    ])
+    const addToQuickAccessList = (quickAccessItem) => {
+        setQuickAccessList((prevState) => {
+            if(prevState.findIndex(existingQuickItem => existingQuickItem.key === quickAccessItem.key) === -1){
+                return [...prevState, quickAccessItem]
+            }
+            else return prevState
+        })
+    }
+    const removeFromQuickAccessList = (key) => {
+        setQuickAccessList(prevState => prevState.filter(item => item.key !== key))
+    }
+
+    //WindowPositionInUse puts a transparent div over image and pdf viewer
+    //It is because Iframes will mess up css and js as its treated as a separate window
+    //Probably not needed in image viewer. Not sure if Ill keep this, it can atleast be moved from here to closer to where it is used
     const [windowPositioningInUse, setWindowPositioningInUse] = useState(false);
 
     const screenDimensions = useWindowSize();
@@ -141,7 +158,6 @@ function Screen() {
                     zLevel: program.zLevel,
                     name: program.name,
                     file : file
-
                 }
             }
             return program
@@ -315,6 +331,9 @@ function Screen() {
                             FileSystem = {FileSystem}
                             fileSystemState = {fileSystemState}
                             setFileSystemState = {setFileSystemState}
+                            quickAccessList = {quickAccessList}
+                            addToQuickAccessList = {addToQuickAccessList}
+                            removeFromQuickAccessList = {removeFromQuickAccessList}
                             addProgram = {addProgram}
                             editProgram= {editProgram}
                             removeProgram = {removeProgram}

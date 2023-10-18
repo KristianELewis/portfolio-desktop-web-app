@@ -77,16 +77,17 @@ const FileManager = (props) => {
         setFolderNameInput(e.target.value)
     }
 
-    const {FileSystem, fileSystemState, setFileSystemState} = useContext(fileContext)
+    const {
+        FileSystem, 
+        fileSystemState, 
+        setFileSystemState, 
+        quickAccessList, 
+        addToQuickAccessList, 
+        removeFromQuickAccessList
+    } = useContext(fileContext)
+
     const [uploadFile, setUploadFile] = useState(null);
     const currentFolder = useRef(FileSystem)
-    const quickAccessList = [
-        {location : FileSystem, key : FileSystem.fullPath + FileSystem.id, name : "Home"},
-        {location : FileSystem.children[0], key : FileSystem.children[0].fullPath + FileSystem.children[0].id, name : "Desktop"},
-        {location : FileSystem.children[1], key : FileSystem.children[1].fullPath + FileSystem.children[1].id, name : "Documents"},
-        {location : FileSystem.children[2], key : FileSystem.children[2].fullPath + FileSystem.children[2].id, name : "Pictures"}
-    ]
-
     //Hmmm these values are FileSystem except on e is currentFolder. This should be fixed
     //Maybe i can improve starting location functionality and have this use that as its default state
     const [currentFolderView, setCurrentFolderView] = useState({name: FileSystem.name, fullPath: currentFolder.current.fullPath, children : FileSystem.children});
@@ -370,15 +371,22 @@ const FileManager = (props) => {
         setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children});
     }
 
-    const quickAccess = (destinationFolder) => {
-        const prevFolder = currentFolder.current
-        if(currentFolder.current !== destinationFolder)
-        {
-            setBackList((prevState) => {
-                return [...prevState, prevFolder];
-            })
-            setForwardList([]);
-            traverseByFolder(destinationFolder)
+    const quickAccess = (destinationFolder, key) => {
+        if(destinationFolder.dirty === true){
+            //again probably should use a back drop for this
+            console.log("This file is deleted")
+            removeFromQuickAccessList(key)
+        }
+        else{
+            const prevFolder = currentFolder.current
+            if(currentFolder.current !== destinationFolder)
+            {
+                setBackList((prevState) => {
+                    return [...prevState, prevFolder];
+                })
+                setForwardList([]);
+                traverseByFolder(destinationFolder)
+            }
         }
     }
 
@@ -434,6 +442,7 @@ const FileManager = (props) => {
                             <QuickAccess 
                                 quickAccessList = {quickAccessList}
                                 quickAccess = {quickAccess}
+                                removeFromQuickAccessList = {removeFromQuickAccessList}
                                 />
                         </div>
                         <div 
@@ -456,6 +465,9 @@ const FileManager = (props) => {
                                 Might want these files arranged in alphabetic order as well. Maybe I can add some filtering options in the future
 
                                 No reason to filter and map this. Children should be sorted in whatever way it is and then just map children
+
+                                not sure if this filter is even done right, Should it even be return nothing?
+                                I will remove this empty return statement later, I want to do it while watching memory to see what effect it has on it
                             */}
                             {currentFolderView.children.filter(child => {
                                 if(child.type === "Folder")
@@ -471,6 +483,7 @@ const FileManager = (props) => {
                                         traverse = {traverse} 
                                         FileSystem = {FileSystem}
                                         setFileSystemState = {setFileSystemState}
+                                        addToQuickAccessList = {addToQuickAccessList}
                                         />
                                 )
                             })}

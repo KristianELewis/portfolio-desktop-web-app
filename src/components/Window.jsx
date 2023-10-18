@@ -32,7 +32,10 @@ const Window = (props) => {
         editProgram, 
         id,
         file,
-        name 
+        name,
+        quickAccessList, 
+        addToQuickAccessList, 
+        removeFromQuickAccessList
     } = props;
     //console.log("Window Render: " + file)
 
@@ -325,8 +328,23 @@ const Window = (props) => {
                 </div> */}
                 {/* this context should be renamed, and it can have a broader use */}
                 <windowWidthContext.Provider value = {{width : position.width, windowPositioningInUse : windowPositioningInUse}}>
-                {/* I think file system context can be brought up a level */}
-                <fileContext.Provider value = {{FileSystem : FileSystem.current, fileSystemState : fileSystemState, setFileSystemState : setFileSystemState}}>
+                {/* I think file system context can be brought up a level. 
+                
+                    You think? why the hell is this even in here. I need to bring this up a level. Desktop Icons aren't using this, I guess they're passed the values?
+                    I guess I see why I just passed it down, but this seems weird and unecessary.
+                    The use of context in this app is messy, I will need to deal with this
+
+                    I will refactor this when I make a desktop component, for now it will stay
+                
+                */}
+                <fileContext.Provider value = {{
+                    FileSystem : FileSystem.current, 
+                    fileSystemState : fileSystemState, 
+                    setFileSystemState : setFileSystemState, 
+                    quickAccessList : quickAccessList, 
+                    addToQuickAccessList : addToQuickAccessList, 
+                    removeFromQuickAccessList : removeFromQuickAccessList
+                    }}>
                 <programContext.Provider value = {{id: id, file : file, name : name, handleMouseDown : handleMouseDown, handleExit : handleExit}}>
                     {program}
                     {/*chooseProgram()*/}

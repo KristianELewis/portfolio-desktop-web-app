@@ -37,8 +37,6 @@ export class File {
             this.data = null
         }
     }
-
-
     toggleProtection () {
         if(this.protection === false){
             this.protection = true;
@@ -47,13 +45,6 @@ export class File {
             this.protection = false;
         }
     }
-
-    //don't think I need this anymore
-    /*assignID (ID)
-    {
-        this.ID = ID;
-    } */
-
     /*=====================================================================
 
         DELETION SECTION
@@ -61,10 +52,9 @@ export class File {
         This is a much simplier implementation of the Folders deletion section. See the folder deletion section explanation and notes
 
     =====================================================================*/
-
     //should have no children to delete 
     deleteSelf() {
-        console.log("Inside delete self, child: " + this.id + " " + this.name)
+        //console.log("Inside delete self, child: " + this.id + " " + this.name)
         this.dirty = true;
         this.parent = null
     }
@@ -95,13 +85,11 @@ export class Folder {
         this.protection = false;
         this.dirty = false;
     }
-
     addNewFolder (name) {
         let child = new Folder(name, this, this.nextId, this.fullPath)
         this.children = [...this.children, child]
         this.nextId =  this.nextId += 1;
     }
-
     //this can just be generic file
     addNewFile (name, type, data) {
         let child = new File(name, this, this.nextId, this.fullPath, type, data)
@@ -117,7 +105,6 @@ export class Folder {
             this.protection = false;
         }
     }
-
     traverse(id)
     {
         for(let i = 0; i < this.children.length; i++)
@@ -156,7 +143,7 @@ export class Folder {
         this.children = null
     }
     deleteSelf() {
-        console.log("Inside delete self, child: " + this.id + " " + this.name)
+        //console.log("Inside delete self, child: " + this.id + " " + this.name)
         this.deleteChildren()
         this.dirty = true;
         this.parent = null
@@ -164,7 +151,7 @@ export class Folder {
     deleteChild(id) {
 
         const index = this.children.findIndex((child) => {return child.id === id})
-        console.log("Inside delete child, parent: " + index)
+        //console.log("Inside delete child, parent: " + index)
         this.children[index].deleteSelf()
         
         const newChildren = this.children.filter((child) => {
@@ -188,16 +175,6 @@ export class Folder {
             return "This is a protected Folder and can not be deleted." //This could be sent to a future terminal program if the delete function was called from there
         }
     }
-
-    /*
-        raverse() //don't think this is being used any more
-        {
-            return this.parent;
-        }
-    */
-
-
-
 }
 
 export const defaultFileSystem = () => {
@@ -212,7 +189,6 @@ export const defaultFileSystem = () => {
     //home.addNewFolder("Downloads");
     //This might be impleneted when deleting files is implemented
     //home.addNewFolder("Trash");
-
 
     //Since not many things will be protected, its easier to just assume everything is not protected at first and then toggle its protection
     home.toggleProtection();
@@ -238,6 +214,14 @@ export const defaultFileSystem = () => {
         -Besides general bugs, this is likely causing memory issues. Again This is not a big deal at the moment and will be addressed after more important
             goals have been reached
 
+    -The dirty bool could potentially be removed. This might help with lingering data.
+        -When a folder or file is deleted all of its values should be set to null.
+            -This hasn't been done yet.
+            -Could probably find a common value shared by all folders and files, such as id.
+                If that value is null than the folder/file was deleted. This would remove the need for the dirty bit
+
+    -Quick access will still refer to deleted folders for some time.
+        -I could maybe do something to auto delete it from quick access, not too important at the moment
 ------------------------------------------------------------------------
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ------------------------------------------------------------------------

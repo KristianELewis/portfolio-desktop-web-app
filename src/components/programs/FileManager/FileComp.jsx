@@ -74,15 +74,15 @@ const FileComp = (props) => {
       setContextMenu(null);
     };
     const handleDelete = () => {
-        console.log("Delete File")
-        console.log("id: " + id)
-        console.log("name: " + id)
+        //console.log("Delete File")
+        //console.log("id: " + id)
+        //console.log("name: " + id)
         file.beginSelfDeletion()
         setFileSystemState((prevState) => {return prevState * -1})
         handleClose()
     }
     const addToQuickAccess = () => {
-        console.log("Quick Access")
+        //console.log("Quick Access")
         handleClose();
     }
     /*===========================================================

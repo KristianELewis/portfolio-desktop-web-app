@@ -7,8 +7,8 @@ import MenuItem from '@mui/material/MenuItem';
 
 
 const Folder = (props) => {
-    const { traverse, file, FileSystem, setFileSystemState } = props;
-    const {id, name, type} = file
+    const { traverse, file, FileSystem, setFileSystemState, addToQuickAccessList } = props;
+    const {id, name, type, fullPath} = file
     const [isHovering, setIsHovering] = useState(false);
 
     /*===========================================================
@@ -33,16 +33,17 @@ const Folder = (props) => {
       setContextMenu(null);
     };
     const handleDelete = () => {
-        console.log("Delete File")
-        console.log("id: " + id)
-        console.log("name: " + id)
-        console.log(FileSystem)
+        //console.log("Delete File")
+        //console.log("id: " + id)
+        //console.log("name: " + id)
+        //console.log(FileSystem)
         file.beginSelfDeletion()
         setFileSystemState((prevState) => {return prevState * -1})
         handleClose()
     }
     const addToQuickAccess = () => {
-        console.log("Quick Access")
+        //console.log("Quick Access")
+        addToQuickAccessList({location : file, key : fullPath + id, name : name})
         handleClose();
     }
     /*===========================================================
