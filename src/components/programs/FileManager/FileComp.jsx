@@ -3,6 +3,9 @@ import React, {useState} from 'react'
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ImageIcon from '@mui/icons-material/Image';
+
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 //import IconButton from '@mui/material/IconButton';
 
 /*
@@ -13,7 +16,7 @@ import ImageIcon from '@mui/icons-material/Image';
 
 */
 
-const Folder = (props) => {
+const FileComp = (props) => {
     //some of these are useless, or could be condesed/cut down in some way
     const { 
         file, 
@@ -26,7 +29,8 @@ const Folder = (props) => {
         requestData, 
         acceptableType, 
         programHandler,
-        fileManagerId
+        fileManagerId,
+        setFileSystemState
         } = props;
 
     const {id, name, type} = file
@@ -48,7 +52,42 @@ const Folder = (props) => {
         }
     }
     const icon = iconDecider();
+    /*===========================================================
 
+    CONTEXT MENU
+
+    ===========================================================*/
+    const [contextMenu, setContextMenu] = useState(null);
+    const handleContextMenu = (event) => {
+      event.preventDefault();
+      event.stopPropagation(); //prevents the file managers context menu
+      setContextMenu(
+        contextMenu === null ? {
+              mouseX: event.clientX,
+              mouseY: event.clientY,
+            }
+          : 
+            null,
+      );
+    };
+    const handleClose = () => {
+      setContextMenu(null);
+    };
+    const handleDelete = () => {
+        console.log("Delete File")
+        console.log("id: " + id)
+        console.log("name: " + id)
+        file.beginSelfDeletion()
+        setFileSystemState((prevState) => {return prevState * -1})
+        handleClose()
+    }
+    const addToQuickAccess = () => {
+        console.log("Quick Access")
+        handleClose();
+    }
+    /*===========================================================
+    -------------------------------------------------------------
+    ===========================================================*/
 
     /*===========================================================================
 
@@ -102,25 +141,46 @@ const Folder = (props) => {
     
 
     return (
-        <div
-            style = {{
-                textAlign : "center", 
-                width : "90px", 
-                height : "90px", 
-                borderRadius : "10px", 
-                margin: "10px",
-                backgroundColor : isHovering ? "rgba(255, 255, 255, 0.08)" : "transparent"
-            }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            onClick={handleClick}
-            >
+        <>
+            <div
+                style = {{
+                    textAlign : "center", 
+                    width : "90px", 
+                    height : "90px", 
+                    borderRadius : "10px", 
+                    margin: "10px",
+                    backgroundColor : isHovering ? "rgba(255, 255, 255, 0.08)" : "transparent"
+                }}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={handleClick}
+                onContextMenu={handleContextMenu}
+                >
 
-            {icon}
-            
-            <p style = {{margin: "0px", userSelect: "none"}}>{ name }</p>
-        </div>
+                {icon}
+                
+                <p style = {{margin: "0px", userSelect: "none"}}>{ name }</p>
+            </div>
+
+            <Menu
+                open={contextMenu !== null}
+                onClose={handleClose}
+                anchorReference="anchorPosition"
+                anchorPosition={
+                contextMenu !== null
+                    ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+                    : undefined
+                }
+                >
+                <MenuItem onClick={handleDelete}>Delete File</MenuItem>
+                {/* Not sure about adding files to quickAccess
+                    it also is not even implemented yet
+                    <MenuItem onClick={addToQuickAccess}>Add to quick access</MenuItem>
+                */}
+
+            </Menu>
+        </>
     )
 }
 
-export default Folder;
+export default FileComp;

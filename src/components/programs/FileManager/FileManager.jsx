@@ -48,7 +48,7 @@ const FileManager = (props) => {
     const { file, id, name, handleMouseDown, handleExit } = programInfo;
     
     /*From the material ui demo ---------------------------------------*/
-    const [contextMenu, setContextMenu] = React.useState(null);
+    const [contextMenu, setContextMenu] = useState(null);
     const handleContextMenu = (event) => {
       event.preventDefault();
       setContextMenu(
@@ -87,7 +87,11 @@ const FileManager = (props) => {
         {location : FileSystem.children[2], key : FileSystem.children[2].fullPath + FileSystem.children[2].id, name : "Pictures"}
     ]
 
+    //Hmmm these values are FileSystem except on e is currentFolder. This should be fixed
+    //Maybe i can improve starting location functionality and have this use that as its default state
     const [currentFolderView, setCurrentFolderView] = useState({name: FileSystem.name, fullPath: currentFolder.current.fullPath, children : FileSystem.children});
+    
+  
     /*
         Not sure if this is the best way to implement a filesystem.
 
@@ -103,6 +107,26 @@ const FileManager = (props) => {
         setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
     }, [fileSystemState])
 
+    /*
+    if(currentFolder.current === null)
+    {
+        console.log("I don't think this should happen")
+    }
+    */
+
+    //This fixes the issue of deleted folders being the currently viewed folder
+    if(currentFolder.current.dirty === true)
+    {
+        //console.log("Dirty")
+        //If the current folder has been deleted then reset to home. This should be enough
+        //I wonder if I should set the dirty bit to null at some point, or if it doesnt eally matter. Are Bools an object?
+        currentFolder.current = FileSystem;
+        setCurrentFolderView({name: FileSystem.name, fullPath: FileSystem.fullPath, children : FileSystem.children})
+    }
+    else
+    {
+        //console.log("Not Dirty")
+    }
     /*===============================================================================
 
         ADDING NEW FILES AND FOLDERS
@@ -277,6 +301,9 @@ const FileManager = (props) => {
 
         FORWARD AND BACKWARD BUTTONS
 
+
+        Need to make sure the previous or next folder is not deleted (null)
+
     ===============================================================================*/
     //raverse is the reverse of traverse. Probably should not keep this name
     const handleBackwardButton = () => {
@@ -285,11 +312,24 @@ const FileManager = (props) => {
             return [...prevState, nextFolder];
         })
         currentFolder.current = backList[backList.length - 1]
-        setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
-        setBackList((prevState) => {
-            //should remove last element in the arry
-            return prevState.slice(0, -1);
-        })
+        if(currentFolder.current.dirty === true){ //If the next folder is already deleted
+            //reset to home
+            currentFolder.current = FileSystem;
+            //this could probably be done outside the if statement, its the same for both branches
+            setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
+            //empty backList
+            setBackList([])
+            //This should probably inform the user with a backdrop in the future
+            console.log("BackwardButton: Folder was deleted")
+
+        }
+        else {
+            setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
+            setBackList((prevState) => {
+                //should remove last element in the arry
+                return prevState.slice(0, -1);
+            })
+        }
     }
     const handleForwardButton = () => {
         const nextFolder = currentFolder.current
@@ -297,11 +337,25 @@ const FileManager = (props) => {
             return [...prevState, nextFolder];
         })
         currentFolder.current = forwardList[forwardList.length - 1]
-        setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
-        setForwardList((prevState) => {
-            //should remove last element in the arry
-            return prevState.slice(0, -1);
-        })
+
+        if(currentFolder.current.dirty === true){ //If the next folder is already deleted
+            //reset to home
+            currentFolder.current = FileSystem;
+            //this could probably be done outside the if statement, its the same for both branches
+            setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
+            //empty forwardList
+            setForwardList([])
+            //This should probably inform the user with a backdrop in the future
+            console.log("ForwardButton: Folder was deleted")
+        }
+        else{
+            setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
+            setForwardList((prevState) => {
+                //should remove last element in the arry
+                return prevState.slice(0, -1);
+            })
+        }
+
     }
     /*===============================================================================
     ---------------------------------------------------------------------------------
@@ -373,19 +427,26 @@ const FileManager = (props) => {
                         />
                     </div>
                     {/* 
-                        for grid rows and columns Ill send down the width and height do a modulus operation
-                        And then make a string based of that
-                        
-                        Or maybe Ill just use flex box again. Flex box is better for dynamic sizes.
+                        Don't know if Im sticking with the grid here. I have to make the scroll bars better
                     */}
-                    <div onContextMenu={handleContextMenu} style ={{display : "grid", gridTemplateColumns : "125px auto", flexGrow : 1, boxSizing : "border-box"}}>
+                    <div style ={{display : "grid", gridTemplateColumns : "125px auto", flexGrow : 1, boxSizing : "border-box"}}>
                         <div style = {{borderTop: "grey solid 1px", borderRight: "grey solid 1px" , overflow : "auto"}}>
                             <QuickAccess 
                                 quickAccessList = {quickAccessList}
                                 quickAccess = {quickAccess}
                                 />
                         </div>
-                        <div style = {{borderTop: "grey solid 1px", display : "flex", flexBasis : "100px", flexFlow : "row wrap", flexGrow : 0, alignContent : "start", minHeight : "100%"}}>
+                        <div 
+                            onContextMenu={handleContextMenu} 
+                            style = {{
+                                borderTop: "grey solid 1px", 
+                                display : "flex", 
+                                flexBasis : "100px", 
+                                flexFlow : "row wrap", 
+                                flexGrow : 0, 
+                                alignContent : "start", 
+                                minHeight : "100%"
+                            }}>
                             {/*
                                 There Might be a better/faster way to filter and map. Reduce is aparently faster
                                 Could maybe filter before hand? First filter out folders. A files array will have faster subseqent filters right?
@@ -393,6 +454,8 @@ const FileManager = (props) => {
                                 Actually it might be better to have a if statement/switch statment to decide what the files should be.
                                 
                                 Might want these files arranged in alphabetic order as well. Maybe I can add some filtering options in the future
+
+                                No reason to filter and map this. Children should be sorted in whatever way it is and then just map children
                             */}
                             {currentFolderView.children.filter(child => {
                                 if(child.type === "Folder")
@@ -406,6 +469,8 @@ const FileManager = (props) => {
                                         key = {child.id} 
                                         file = {child}
                                         traverse = {traverse} 
+                                        FileSystem = {FileSystem}
+                                        setFileSystemState = {setFileSystemState}
                                         />
                                 )
                             })}
@@ -432,6 +497,7 @@ const FileManager = (props) => {
                                         acceptableType = {acceptableType}
                                         programHandler = {programHandler}
                                         fileManagerId = {id}
+                                        setFileSystemState = {setFileSystemState}
                                         />
                                 )
                             })}
