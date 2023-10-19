@@ -1,6 +1,7 @@
 import React, { useState , useRef, useEffect} from 'react'
 
 import Window from './Window'
+import Desktop from './Desktop';
 import DesktopMenu from './DesktopMenu'
 import { Folder, File, defaultFileSystem } from './programs/FileManager/fileSystem';
 
@@ -17,6 +18,7 @@ const darkTheme = createTheme({
   });
 
 import { processManagmentContext } from './Context';
+import { Desk } from '@mui/icons-material';
 
 //This custom hook is so good
 //Someone elses custom hook
@@ -269,50 +271,16 @@ function Screen() {
             }}
             >
 
-            {/* This should be made into its own component at some point. When that is done right click functionality should be implemented */}
-            <div style = {{ display : "flex", flexBasis : "100px", flexDirection : "column",  flexFlow : "column wrap", flexGrow : 0, alignContent : "start", minHeight : "100%", maxHeight : "100%", overflow : "hidden"}}>
-                {desktopFolder.children.filter(child => {
-                    if(child.type === "Folder")
-                    {
-                        return child;
-                    }
-                    return
-                    }).map((child) => {
-                        return (
-                            <FolderComp 
-                                key = {child.id} 
-                                file = {child}
-                                traverse = {handleFolderClick} 
-                                />
-                        )
-                    })}
-                    {/*Files Gettin non no ids for files?>*/}
-                {desktopFolder.children.filter(child => {
-                    if(child.type !== "Folder")
-                    {
-                        return child;
-                    }
-                    return
-                }).map((child) => {
-                    return (
-                        //Most of this stuff is no necessary for desktop
-                        <FileComp 
-                            key = {child.id} 
-                            file = {child}
-                            addProgram = {addProgram}
-                            editProgram = {editProgram}
-                            removeProgram = {removeProgram}
-                            editProgramFileManager = {editProgramFileManager}
-                            version = {"Standalone"}
-                            requestID = {null}
-                            requestData = {null}
-                            acceptableType = {null}
-                            programHandler = {null}
-                            fileManagerId = {null}
-                            />
-                    )
-                })}
-            </div>
+            <Desktop 
+                desktopFolder = {desktopFolder}
+                addProgram = {addProgram}
+                editProgram = {editProgram}
+                removeProgram = {removeProgram}
+                editProgramFileManager = {editProgramFileManager}
+                handleFolderClick = {handleFolderClick}
+                setFileSystemState = {setFileSystemState}
+                addToQuickAccessList = {addToQuickAccessList}
+            />
             <processManagmentContext.Provider value = {{addProgram : addProgram, removeProgram : removeProgram, editProgram : editProgram, editProgramFileManager : editProgramFileManager, programs :programs}}>
             {programs.map(program => {
                 return (

@@ -90,6 +90,7 @@ const FileManager = (props) => {
     const currentFolder = useRef(FileSystem)
     //Hmmm these values are FileSystem except on e is currentFolder. This should be fixed
     //Maybe i can improve starting location functionality and have this use that as its default state
+    //Do I even need this state here?
     const [currentFolderView, setCurrentFolderView] = useState({name: FileSystem.name, fullPath: currentFolder.current.fullPath, children : FileSystem.children});
     
   
@@ -139,6 +140,7 @@ const FileManager = (props) => {
     const addNewFolder = () => {
         if (folderNameInput !== ""){
             currentFolder.current.addNewFolder(folderNameInput);
+            //is this part right here really necessary? is Setting the fileSystemState enough?
             setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
             setFileSystemState((prevState) => {return prevState * -1})
         }
