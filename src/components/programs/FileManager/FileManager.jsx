@@ -22,21 +22,16 @@ import Paper from '@mui/material/Paper'
 import Backdrop from '@mui/material/Backdrop';
 import CloseIcon from '@mui/icons-material/Close';
 
-
 import { fileContext } from '../../Context';
 
 //import { Folder, File } from './fileSystem';
 
+import Path from './Path'
+import QuickAccess from './QuickAccess';
 import FolderComp from './FolderComp';
 import FileComp from './FileComp';
-import QuickAccess from './QuickAccess';
-
-//temporary
-
 
 import { processManagmentContext, programContext } from '../../Context'
-
-
 
 const FileManager = (props) => {
 
@@ -67,7 +62,6 @@ const FileManager = (props) => {
       setContextMenu(null);
     };
     /* End of material ui demo stuff -----------------------------------*/
-
 
     const [backList, setBackList] = useState([]);
     const [forwardList, setForwardList] = useState([]);
@@ -392,6 +386,23 @@ const FileManager = (props) => {
         }
     }
 
+    //this is almost exactly the same as quickAccess
+    const pathTraverse = (destinationFolder) => {
+        if(destinationFolder.dirty === true){
+            //again probably should use a back drop for this
+            //If this is true then the current path is probably deleted too, this should probably not even happen with the way deleted files are handled by fileManager
+            console.log("This file is deleted")
+        }
+        else{
+            const prevFolder = currentFolder.current
+            setBackList((prevState) => {
+                return [...prevState, prevFolder];
+            })
+            setForwardList([]);
+            traverseByFolder(destinationFolder)
+        }
+    }
+
     useEffect(() => {
         if(requestData !== null)
         {
@@ -415,21 +426,18 @@ const FileManager = (props) => {
 
                     not sure if its more cursed but I could send the top bar up a level instead
                 */}
-                <Paper style = {{height: "100%", position: "relative", display: "flex", flexDirection : "column", overflow : "auto"}}>
+                <Paper style = {{height: "100%", position: "relative", display: "flex", flexDirection : "column", width : "100%"}}>
                     {/* flex really necesarry here? */}
-                    <div style = {{margin : "5px", flexGrow: 0, display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
-                        <div>
-                        <IconButton size = "small" onClick = {handleBackwardButton} onMouseDown = {preventPositioning} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
-                        <IconButton size = "small" onClick = {handleForwardButton} onMouseDown = {preventPositioning} sx = {{marginLeft : "5px", borderRadius : "5px"}} disabled = {forwardList.length === 0 ? true : false}><ChevronRightIcon/></IconButton>
-                        
-                        <span style = {{marginLeft : "5px", userSelect : "none"}}>
-                            {/* menu item? govering diabled?*/}
-                            {currentFolderView.fullPath} : {id}
-                        </span>
-                        </div>
+                    <div style = {{margin : "5px", flexGrow: 0, display : "flex", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+                            <IconButton size = "small" onClick = {handleBackwardButton} onMouseDown = {preventPositioning} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
+                            <IconButton size = "small" onClick = {handleForwardButton} onMouseDown = {preventPositioning} sx = {{marginLeft : "5px", borderRadius : "5px"}} disabled = {forwardList.length === 0 ? true : false}><ChevronRightIcon/></IconButton>
+                            <div style = {{flexGrow : 1, overflow : "hidden"}}>
+                                <Path path = {currentFolderView.fullPath} id = {id} currentFolder = {currentFolder.current} pathTraverse = {pathTraverse}/>
+                            </div>
                         <CloseIcon 
                             sx = {{
                                 color : "white",
+                                marginLeft : "5px",
                                 "&:hover": { backgroundColor: "black" }
                             }}
                             onClick = {fileManagerClose}
@@ -437,10 +445,10 @@ const FileManager = (props) => {
                         />
                     </div>
                     {/* 
-                        Don't know if Im sticking with the grid here. I have to make the scroll bars better
+                        Need to get overflow working individually for each of these two containers
                     */}
-                    <div style ={{display : "grid", gridTemplateColumns : "125px auto", flexGrow : 1, boxSizing : "border-box"}}>
-                        <div style = {{borderTop: "grey solid 1px", borderRight: "grey solid 1px" , overflow : "auto"}}>
+                    <div style ={{display : "grid", gridTemplateColumns : "125px auto", flexGrow : 1, boxSizing : "border-box", overflow : "auto"}}>
+                        <div style = {{borderTop: "grey solid 1px", borderRight: "grey solid 1px", height : "100%"}}>
                             <QuickAccess 
                                 quickAccessList = {quickAccessList}
                                 quickAccess = {quickAccess}

@@ -277,4 +277,14 @@ export const defaultFileSystem = () => {
             -The file manager should check if the forward or backward folder is deleted
                 -if the forward or backward folder is deleted then it should set that array to an empty array and inform the user it is deleted
 
+------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------------------------------------------------------
+
+    PATHING SYSTEM/FILE LOCATION
+
+    -I think eventually this will be the way to navigate the file system
+        -I need to research file systems, specifically unix systems, and try to implement something similar
+        -I assume the way I will end up doing it here in unoptimized, I can already see ways it can be changed/improved
+            -But I can't refactor it right now. I need to get something working and then I can come back and refactor it later
 =====================================================================*/
