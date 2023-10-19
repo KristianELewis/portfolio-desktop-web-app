@@ -417,7 +417,6 @@ const FileManager = (props) => {
     const preventPositioning = (e) =>{
         e.stopPropagation()
     }
-
     return(
         <>
             
@@ -426,14 +425,20 @@ const FileManager = (props) => {
 
                     not sure if its more cursed but I could send the top bar up a level instead
                 */}
-                <Paper style = {{height: "100%", position: "relative", display: "flex", flexDirection : "column", width : "100%"}}>
+                <div style = {{height: "100%", position: "relative", display: "flex", flexDirection : "column", width : "100%"}}>
                     {/* flex really necesarry here? */}
-                    <div style = {{margin : "5px", flexGrow: 0, display : "flex", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+                    <Paper elevation = {2} sx = {{ flexGrow: 0, display : "flex", alignItems : "center", padding : "5px", borderBottom : "rgb(18, 18, 18) solid 1px", borderRadius : "5px 5px 0 0"}} onMouseDown = {handleMouseDown}>
                             <IconButton size = "small" onClick = {handleBackwardButton} onMouseDown = {preventPositioning} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
                             <IconButton size = "small" onClick = {handleForwardButton} onMouseDown = {preventPositioning} sx = {{marginLeft : "5px", borderRadius : "5px"}} disabled = {forwardList.length === 0 ? true : false}><ChevronRightIcon/></IconButton>
-                            <div style = {{flexGrow : 1, overflow : "hidden"}}>
-                                <Path path = {currentFolderView.fullPath} id = {id} currentFolder = {currentFolder.current} pathTraverse = {pathTraverse}/>
-                            </div>
+                           
+                            <Path 
+                                path = {currentFolderView.fullPath} 
+                                id = {id} 
+                                currentFolder = {currentFolder.current} 
+                                pathTraverse = {pathTraverse}
+                                preventPositioning = {preventPositioning}
+                                />
+                            
                         <CloseIcon 
                             sx = {{
                                 color : "white",
@@ -443,22 +448,31 @@ const FileManager = (props) => {
                             onClick = {fileManagerClose}
                             onMouseDown = {preventPositioning}
                         />
-                    </div>
+                    </Paper>
                     {/* 
                         Need to get overflow working individually for each of these two containers
+
+                        Okay before I start trying to get overflow working in here, I need to fix the "middle window" nonsense in window
+                        That file needs some serious refactor, and cleanup
+                        Overflow for left an right is broken, the widths arent growing correctly
+
+                        The flex box stuff here needs to be cleaened up. Theres too many flex containers
                     */}
                     <div style ={{display : "grid", gridTemplateColumns : "125px auto", flexGrow : 1, boxSizing : "border-box", overflow : "auto"}}>
-                        <div style = {{borderTop: "grey solid 1px", borderRight: "grey solid 1px", height : "100%"}}>
+                        {/*style = {{borderTop: "grey solid 1px", borderRight: "grey solid 1px", height : "100%"}} */}
+                        <Paper elevation = {1} sx = {{borderRadius : "0 0 0 5px", height : "100%"}}>
                             <QuickAccess 
                                 quickAccessList = {quickAccessList}
                                 quickAccess = {quickAccess}
                                 removeFromQuickAccessList = {removeFromQuickAccessList}
                                 />
-                        </div>
-                        <div 
+                        </Paper>
+                        <Paper 
                             onContextMenu={handleContextMenu} 
-                            style = {{
-                                borderTop: "grey solid 1px", 
+                            elevation={0}
+                            sx = {{
+                                /*borderTop: "grey solid 1px", */
+                                borderRadius : "0 0 5px 0",
                                 display : "flex", 
                                 flexBasis : "100px", 
                                 flexFlow : "row wrap", 
@@ -524,7 +538,7 @@ const FileManager = (props) => {
                                         />
                                 )
                             })}
-                        </div>
+                        </Paper>
                     </div>
 
                     {/*From the material ui demo */}
@@ -544,7 +558,7 @@ const FileManager = (props) => {
                         <MenuItem onClick={newImageModal}>New Image File</MenuItem>
                     </Menu>
 
-                </Paper>
+                </div>
                 {/* Didn't see the point of Modal, and it was harder to use */}
                 <Backdrop open = {modalState.open} sx = {{position : "absolute"}}>
                     <Paper sx = {{width : "250px", height : "100px", margin : "auto", textAlign : "center"}}>

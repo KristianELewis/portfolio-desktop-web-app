@@ -69,3 +69,11 @@ body {
     justify-content: space-between;
 }
 
+.Path{
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+.Path::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
