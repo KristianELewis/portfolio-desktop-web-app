@@ -98,6 +98,7 @@ const Window = (props) => {
         }
         else if (props.name === "Calculator")
         {
+            setPosition({left: 50, top: 50, width: 500, height: 600})
             setProgram(<Calculator></Calculator>)
         }
         else if (props.name === "PDF Viewer")

@@ -11,13 +11,45 @@ import FolderComp from './programs/FileManager/FolderComp'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
+/*======================================================================
+
+    -I think the themeing stuff can be moved elsewhere. Probably in app.jsx
+
+    -Colors can be auto generated with augmentColor, but it requires making themes twice or something
+        -Seems over complicated for what I'm trying to do right now
+        -This is described in the pallete section of the mui docs
+        -This is a potential thing to refactor in the future. If I start adding more colors it will be usefull to have this system in place
+            -It will be easier to just import colors from mui and have the light and dark versions auto made
+            -Maybe Ill do that when I make a light mode
+
+
+======================================================================*/
 const darkTheme = createTheme({
     palette: {
-      mode: 'dark',
-    },
+        mode: 'dark',
+        orange: {
+            main: "#ff3d00",
+            light: "#ff6333",
+            dark: "#b22a00", 
+            contrastText: '#fff'
+        },
+        lightGray : {
+            main: "#616161",
+            light: "#757575",
+            dark: "#424242", 
+            contrastText: '#fff'
+        },
+        darkGray : {
+            main: "#424242",
+            light: "#616161",
+            dark: "#212121", 
+            contrastText: '#fff'
+        },
+    }
   });
 
 import { processManagmentContext } from './Context';
+//Wtf is this?
 import { Desk } from '@mui/icons-material';
 
 //This custom hook is so good
