@@ -3,6 +3,7 @@ import React, { useState , useRef, useEffect} from 'react'
 import Window from './Window'
 import Desktop from './Desktop';
 import DesktopMenu from './DesktopMenu'
+import LoginScreen from './LoginScreen';
 import { Folder, File, defaultFileSystem } from './programs/FileManager/fileSystem';
 
 import FileComp from './programs/FileManager/FileComp'
@@ -85,6 +86,7 @@ function useWindowSize() {
 function Screen() {
 
     const [backgroundImageUrl, setBackgroundImageUrl] = useState(null)
+    const [loggedIn, setLoggedIn] = useState(false);
 
     //const [file, setFile] = useState(null);
     //defaulFileSystem was here with no parenthesis before, was an accident I assume
@@ -92,6 +94,9 @@ function Screen() {
     const FileSystem = useRef(defaultFileSystem());
     const [fileSystemState, setFileSystemState] = useState(1);
     //This could be combined with another state, maybe fileSystemState, as a regular state or maybe a reducer
+    
+
+    //QuickAccessList should be a part of the file system
     const [quickAccessList, setQuickAccessList] = useState([
         {location : FileSystem.current, key : FileSystem.current.fullPath + FileSystem.current.id, name : "Home"},
         {location : FileSystem.current.children[0], key : FileSystem.current.children[0].fullPath + FileSystem.current.children[0].id, name : "Desktop"},
@@ -289,9 +294,9 @@ function Screen() {
     <CssBaseline />
     {/* css baseline sets boxsizing to border-box in html, which was causing issues when calorie counter was being loaded.
     To fix this, I set border sizing to border box here and supply the innderwindow width with the borders removed */}
+    {!loggedIn ? <LoginScreen loggedIn = {loggedIn} setLoggedIn = {setLoggedIn}/> :
     <div className = "outterScreen" style = {{width: screenDimensions.width, boxSizing : "border-box"}}>
         <DesktopMenu addProgram = {addProgram} removeProgram = {removeProgram} setBackgroundImageUrl = {setBackgroundImageUrl} displayPrograms = {displayPrograms}/>
-
         <div 
             className = "innerWindow" 
             onPointerMove = {mouseMove} 
@@ -349,8 +354,8 @@ function Screen() {
                 )
             })}
         </processManagmentContext.Provider>
-        </div>    
-    </div>
+        </div>
+    </div>}
     </ThemeProvider>
 
     )

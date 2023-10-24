@@ -3,7 +3,7 @@ body {
     padding: 0px;
     margin: 0px;
 }
-
+/* Do I even need a main container?*/
 .mainContainer {
     background-color : black;
     padding: 0px;

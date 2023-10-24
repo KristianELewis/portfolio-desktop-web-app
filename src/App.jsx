@@ -5,10 +5,11 @@ import './App.css'
 
 function App() {
     return (
-    <div className = "mainContainer" >
         <Screen></Screen>
-    </div>
     )
 }
 
-export default App
+export default App;
+
+//<div className = "mainContainer" >
+//</div>
