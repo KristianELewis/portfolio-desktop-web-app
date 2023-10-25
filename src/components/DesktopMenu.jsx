@@ -124,11 +124,11 @@ const {setBackgroundImageUrl, removeProgram, addProgram} = props
     const handleCloseFiles = () => {
         setFilesAnchor(null)
     }
+//        <AppBar position = "relative" sx ={{display : "grid", gridTemplateColumns: "1fr 1fr 1fr"}}>
 
     return (
-        <AppBar position = "relative" sx ={{display : "grid", gridTemplateColumns: "1fr 1fr 1fr"}}>
-            <Toolbar sx ={{boxSizing: "border-box"}}>
-                <Button color = 'inherit' onClick = {handleFilesClick}>Programs</Button>
+        <AppBar position = "relative" sx ={{display : "flex", flexDirection : "row", justifyContent : "space-between"}}>
+            <Button color = 'inherit' onClick = {handleFilesClick}>Start</Button>
                 <Menu
                     anchorEl={filesAnchor}
                     open = {fileOpen}
@@ -142,10 +142,9 @@ const {setBackgroundImageUrl, removeProgram, addProgram} = props
                     <MenuItem onClick={handleAddFileManager}>File Manager</MenuItem>
                     <MenuItem onClick={handleChangeDesktopBackground} >Change Desktop Background </MenuItem>
                 </Menu>
-            </Toolbar>
-            <Typography variant = "body1"sx = {{margin: "auto", textAlign: "center"}}>{dateTime}</Typography>
-            <Button onClick = {props.displayPrograms}>Display Info</Button>
-            {/* <div>{/*maybe this will be a settings/ logout section }</div> */}
+            <Typography align = 'cetner' sx = {{ verticalAlign: "baseline", marginTop: "auto", marginBottom: "auto", marginRight: "10px"}}>{dateTime}</Typography>
+            {/*<Button onClick = {props.displayPrograms}>Display Info</Button>*/}
+            {/*maybe this will be a settings/ logout section */}
         </AppBar>
     )
 }

@@ -122,8 +122,8 @@ function Screen() {
 
     const screenDimensions = useWindowSize();
     const outerBorderWidth = 20;
-    const menuHeight = 64;
-
+    //const menuHeight = 64;
+    const menuHeight = 36.5;
     /*=================================================
 
         MULTIPLE PROGRAM FUNCTIONALITY
@@ -296,7 +296,6 @@ function Screen() {
     To fix this, I set border sizing to border box here and supply the innderwindow width with the borders removed */}
     {!loggedIn ? <LoginScreen loggedIn = {loggedIn} setLoggedIn = {setLoggedIn}/> :
     <div className = "outterScreen" style = {{width: screenDimensions.width, boxSizing : "border-box"}}>
-        <DesktopMenu addProgram = {addProgram} removeProgram = {removeProgram} setBackgroundImageUrl = {setBackgroundImageUrl} displayPrograms = {displayPrograms}/>
         <div 
             className = "innerWindow" 
             onPointerMove = {mouseMove} 
@@ -355,6 +354,7 @@ function Screen() {
             })}
         </processManagmentContext.Provider>
         </div>
+        <DesktopMenu addProgram = {addProgram} removeProgram = {removeProgram} setBackgroundImageUrl = {setBackgroundImageUrl} displayPrograms = {displayPrograms}/>
     </div>}
     </ThemeProvider>
 
