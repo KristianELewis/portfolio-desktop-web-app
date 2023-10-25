@@ -17,7 +17,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Paper from '@mui/material/Paper'
 
-//import Button from '@mui/material/Button';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 //import Typography from '@mui/material/Typography';
 import Backdrop from '@mui/material/Backdrop';
 import CloseIcon from '@mui/icons-material/Close';
@@ -34,6 +35,11 @@ import FileComp from './FileComp';
 import { processManagmentContext, programContext } from '../../Context'
 
 const FileManager = (props) => {
+
+    //used for preventing unwanted repositions
+    const preventPositioning = (e) =>{
+        e.stopPropagation()
+    }
 
     //const { version, clickFunction } = props;
     const { addProgram, editProgram, removeProgram, editProgramFileManager } = useContext(processManagmentContext)
@@ -80,7 +86,10 @@ const FileManager = (props) => {
         removeFromQuickAccessList
     } = useContext(fileContext)
 
+    //these can be condensed
     const [uploadFile, setUploadFile] = useState(null);
+    const [fileSet, setFileSet] = useState(false);
+
     const currentFolder = useRef(FileSystem)
     //Hmmm these values are FileSystem except on e is currentFolder. This should be fixed
     //Maybe i can improve starting location functionality and have this use that as its default state
@@ -201,53 +210,118 @@ const FileManager = (props) => {
     }
     const handleNewPDFClose =() => {
         setModalState({open : false, type : null})
-        addNewPDFFile()
+        addNewPDFFile();
+        setFileSet(false);
     }
     const handleNewImageClose =() => {
         setModalState({open : false, type : null})
-        addNewImageFile()
+        addNewImageFile();
+        setFileSet(false);
     }
+    const cancelBackdrop = () => {
+        setModalState({open : false, type : null})
+    }
+    //I can see how this can somewhat easily be refactored to be more generic.
+    //Theres really only two types of modal/backdrops. Files that just need names, and files that require user upload
     const chooseModalType = () => {
         if(modalState.type === "Folder")
         {
             return( 
-                <div>
-                    <p>New Folder Name</p>
-                    <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
-                    <button onClick = {handleNewFolderClose}>close</button>
+                <>
+                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
+                    <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}> New Folder</p>
+                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {handleNewFolderClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
+                </Paper>
+                <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
+                    <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>Folder Name</p>
+                    <TextField size = "small" fullWidth value = {folderNameInput} onChange = {handleFolderNameInputChange} inputProps = {{style : {height : "16px"}}}></TextField>
                 </div>
+                </>
             )
         }
         else if(modalState.type === "TXT")
         {
             return( 
-                <div>
-                    <p>New Text File Name</p>
-                    <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
-                    <button onClick = {handleNewTXTClose}>close</button>
+                <>
+                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
+                    <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}> New Text File</p>
+                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {handleNewTXTClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
+                </Paper>
+                <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
+                    <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>Text File Name</p>
+                    <TextField size = "small" fullWidth value = {folderNameInput} onChange = {handleFolderNameInputChange} inputProps = {{style : {height : "16px"}}}></TextField>
                 </div>
+                </>
             )
         }
         else if(modalState.type === "PDF")
         {
             return( 
-                <div>
-                    <p>New PDF File Name</p>
-                    <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
-                    <input type = "file" onChange = {(e) => {setUploadFile(e.target.files[0])}}></input>
-                    <button onClick = {handleNewPDFClose}>close</button>
+                <>
+                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
+                    <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}> New PDF File</p>
+                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {handleNewPDFClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
+                </Paper>
+                <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
+                    <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>PDF File Name</p>
+                    <TextField size = "small" fullWidth value = {folderNameInput} onChange = {handleFolderNameInputChange} inputProps = {{style : {height : "16px"}}}></TextField>
+                    <div style = {{display: "flex", justifyContent: "space-between", alignItems : "center", marginTop : "10px"}}>
+                        <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>File Downloader</p>
+                        <Button
+                            variant="contained"
+                            component="label"
+                            size = "small"
+                            >
+                            {fileSet ? uploadFile.name : "Download File" /*disabled = {deleteChecked}*/}
+                            <input
+                                type="file"
+                                onChange = {(e) => {
+                                    setFileSet(true); 
+                                    setUploadFile(e.target.files[0]); //I dont think Im unsetting this creating the file. I should probably do that
+                                }}
+                                hidden
+                            />
+                        </Button>
+                    </div>
                 </div>
+                </>
             )
         }
         else if(modalState.type === "IMAGE")
         {
             return( 
-                <div>
-                    <p>New Image File Name</p>
-                    <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
-                    <input type = "file" onChange = {(e) => {setUploadFile(e.target.files[0])}}></input>
-                    <button onClick = {handleNewImageClose}>close</button>
+                <>
+                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
+                    <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}>New Image File</p>
+                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {handleNewImageClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
+                </Paper>
+                <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
+                    <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>New Image Name</p>
+                    <TextField size = "small" fullWidth value = {folderNameInput} onChange = {handleFolderNameInputChange} inputProps = {{style : {height : "16px"}}}></TextField>
+                    <div style = {{display: "flex", justifyContent: "space-between", alignItems : "center", marginTop : "10px"}}>
+                        <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>File Downloader</p>
+                        <Button
+                            variant="contained"
+                            component="label"
+                            size = "small"
+                            >
+                            {fileSet ? uploadFile.name : "Download File" /*disabled = {deleteChecked}*/}
+                            <input
+                                type="file"
+                                onChange = {(e) => {
+                                    setFileSet(true); 
+                                    setUploadFile(e.target.files[0]); //I dont think Im unsetting this creating the file. I should probably do that
+                                }}
+                                hidden
+                            />
+                        </Button>
+                    </div>
                 </div>
+                </>
             )
         }
         else if(modalState.type === null)
@@ -413,158 +487,162 @@ const FileManager = (props) => {
     /*===============================================================================
     ---------------------------------------------------------------------------------
     ===============================================================================*/
-    //used for preventing un wanted repositions
-    const preventPositioning = (e) =>{
-        e.stopPropagation()
-    }
+
     return(
         <>
+        {/* The overflow auto should be moved further down soon.
+            Will need to get window dimensions and set the max height of the content based on that - the top bar height
+
+            not sure if its more cursed but I could send the top bar up a level instead
+        */}
+        <div style = {{height: "100%", position: "relative", display: "flex", flexDirection : "column", width : "100%"}}>
+            {/* flex really necesarry here? */}
+            {/*=======================================================
             
-                {/* The overflow auto should be moved further down soon.
-                    Will need to get window dimensions and set the max height of the content based on that - the top bar height
+            TOP BAR
 
-                    not sure if its more cursed but I could send the top bar up a level instead
-                */}
-                <div style = {{height: "100%", position: "relative", display: "flex", flexDirection : "column", width : "100%"}}>
-                    {/* flex really necesarry here? */}
-                    <Paper elevation = {2} sx = {{ flexGrow: 0, display : "flex", alignItems : "center", padding : "5px", borderBottom : "rgb(18, 18, 18) solid 1px", borderRadius : "5px 5px 0 0"}} onMouseDown = {handleMouseDown}>
-                            <IconButton size = "small" onClick = {handleBackwardButton} onMouseDown = {preventPositioning} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
-                            <IconButton size = "small" onClick = {handleForwardButton} onMouseDown = {preventPositioning} sx = {{marginLeft : "5px", borderRadius : "5px"}} disabled = {forwardList.length === 0 ? true : false}><ChevronRightIcon/></IconButton>
-                           
-                            <Path 
-                                path = {currentFolderView.fullPath} 
-                                id = {id} 
-                                currentFolder = {currentFolder.current} 
-                                pathTraverse = {pathTraverse}
-                                preventPositioning = {preventPositioning}
-                                />
-                            
-                        <CloseIcon 
-                            sx = {{
-                                color : "white",
-                                marginLeft : "5px",
-                                "&:hover": { backgroundColor: "black" }
-                            }}
-                            onClick = {fileManagerClose}
-                            onMouseDown = {preventPositioning}
+            =======================================================*/}
+            <Paper elevation = {2} sx = {{ flexGrow: 0, display : "flex", alignItems : "center", padding : "5px", borderBottom : "rgb(18, 18, 18) solid 1px", borderRadius : "5px 5px 0 0"}} onMouseDown = {handleMouseDown}>
+                    <IconButton size = "small" onClick = {handleBackwardButton} onMouseDown = {preventPositioning} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
+                    <IconButton size = "small" onClick = {handleForwardButton} onMouseDown = {preventPositioning} sx = {{marginLeft : "5px", borderRadius : "5px"}} disabled = {forwardList.length === 0 ? true : false}><ChevronRightIcon/></IconButton>
+                    
+                    <Path 
+                        path = {currentFolderView.fullPath} 
+                        id = {id} 
+                        currentFolder = {currentFolder.current} 
+                        pathTraverse = {pathTraverse}
+                        preventPositioning = {preventPositioning}
                         />
-                    </Paper>
-                    {/* 
-                        Need to get overflow working individually for each of these two containers
+                    
+                <CloseIcon 
+                    sx = {{
+                        color : "white",
+                        marginLeft : "5px",
+                        "&:hover": { backgroundColor: "black" }
+                    }}
+                    onClick = {fileManagerClose}
+                    onMouseDown = {preventPositioning}
+                />
+            </Paper>
+            {/*=======================================================
+                MAIN CONTENT
 
-                        Okay before I start trying to get overflow working in here, I need to fix the "middle window" nonsense in window
-                        That file needs some serious refactor, and cleanup
-                        Overflow for left an right is broken, the widths arent growing correctly
 
-                        The flex box stuff here needs to be cleaened up. Theres too many flex containers
+                Need to get overflow working individually for each of these two containers
+
+                Okay before I start trying to get overflow working in here, I need to fix the "middle window" nonsense in window
+                That file needs some serious refactor, and cleanup
+                Overflow for left an right is broken, the widths arent growing correctly
+
+                The flex box stuff here needs to be cleaened up. Theres too many flex containers
+            =======================================================*/}
+            <div style ={{display : "grid", gridTemplateColumns : "125px auto", flexGrow : 1, boxSizing : "border-box", overflow : "auto"}}>
+                {/*style = {{borderTop: "grey solid 1px", borderRight: "grey solid 1px", height : "100%"}} */}
+                <Paper elevation = {1} sx = {{borderRadius : "0 0 0 5px", height : "100%"}}>
+                    <QuickAccess 
+                        quickAccessList = {quickAccessList}
+                        quickAccess = {quickAccess}
+                        removeFromQuickAccessList = {removeFromQuickAccessList}
+                        />
+                </Paper>
+                <Paper 
+                    onContextMenu={handleContextMenu} 
+                    elevation={0}
+                    sx = {{
+                        /*borderTop: "grey solid 1px", */
+                        borderRadius : "0 0 5px 0",
+                        display : "flex", 
+                        flexBasis : "100px", 
+                        flexFlow : "row wrap", 
+                        flexGrow : 0, 
+                        alignContent : "start", 
+                        minHeight : "100%"
+                    }}>
+                    {/*
+                        There Might be a better/faster way to filter and map. Reduce is aparently faster
+                        Could maybe filter before hand? First filter out folders. A files array will have faster subseqent filters right?
+                        
+                        Actually it might be better to have a if statement/switch statment to decide what the files should be.
+                        
+                        Might want these files arranged in alphabetic order as well. Maybe I can add some filtering options in the future
+
+                        No reason to filter and map this. Children should be sorted in whatever way it is and then just map children
+
+                        not sure if this filter is even done right, Should it even be return nothing?
+                        I will remove this empty return statement later, I want to do it while watching memory to see what effect it has on it
                     */}
-                    <div style ={{display : "grid", gridTemplateColumns : "125px auto", flexGrow : 1, boxSizing : "border-box", overflow : "auto"}}>
-                        {/*style = {{borderTop: "grey solid 1px", borderRight: "grey solid 1px", height : "100%"}} */}
-                        <Paper elevation = {1} sx = {{borderRadius : "0 0 0 5px", height : "100%"}}>
-                            <QuickAccess 
-                                quickAccessList = {quickAccessList}
-                                quickAccess = {quickAccess}
-                                removeFromQuickAccessList = {removeFromQuickAccessList}
-                                />
-                        </Paper>
-                        <Paper 
-                            onContextMenu={handleContextMenu} 
-                            elevation={0}
-                            sx = {{
-                                /*borderTop: "grey solid 1px", */
-                                borderRadius : "0 0 5px 0",
-                                display : "flex", 
-                                flexBasis : "100px", 
-                                flexFlow : "row wrap", 
-                                flexGrow : 0, 
-                                alignContent : "start", 
-                                minHeight : "100%"
-                            }}>
-                            {/*
-                                There Might be a better/faster way to filter and map. Reduce is aparently faster
-                                Could maybe filter before hand? First filter out folders. A files array will have faster subseqent filters right?
-                                
-                                Actually it might be better to have a if statement/switch statment to decide what the files should be.
-                                
-                                Might want these files arranged in alphabetic order as well. Maybe I can add some filtering options in the future
-
-                                No reason to filter and map this. Children should be sorted in whatever way it is and then just map children
-
-                                not sure if this filter is even done right, Should it even be return nothing?
-                                I will remove this empty return statement later, I want to do it while watching memory to see what effect it has on it
-                            */}
-                            {currentFolderView.children.filter(child => {
-                                if(child.type === "Folder")
-                                {
-                                    return child;
-                                }
-                                return
-                            }).map((child) => {
-                                return (
-                                    <FolderComp 
-                                        key = {child.id} 
-                                        file = {child}
-                                        traverse = {traverse} 
-                                        FileSystem = {FileSystem}
-                                        setFileSystemState = {setFileSystemState}
-                                        addToQuickAccessList = {addToQuickAccessList}
-                                        />
-                                )
-                            })}
-                            {/*Files Gettin non no ids for files?>*/}
-                            {currentFolderView.children.filter(child => {
-                                if(child.type !== "Folder")
-                                {
-                                    return child;
-                                }
-                                return
-                            }).map((child) => {
-                                return (
-                                    //clickHandler = {fileClickHandler}
-                                    <FileComp 
-                                        key = {child.id} 
-                                        file = {child}
-                                        addProgram = {addProgram}
-                                        editProgram = {editProgram}
-                                        removeProgram = {removeProgram}
-                                        editProgramFileManager = {editProgramFileManager}
-                                        version = {version}
-                                        requestID = {requestID}
-                                        requestData = {requestData}
-                                        acceptableType = {acceptableType}
-                                        programHandler = {programHandler}
-                                        fileManagerId = {id}
-                                        setFileSystemState = {setFileSystemState}
-                                        />
-                                )
-                            })}
-                        </Paper>
-                    </div>
-
-                    {/*From the material ui demo */}
-                    <Menu
-                        open={contextMenu !== null}
-                        onClose={handleClose}
-                        anchorReference="anchorPosition"
-                        anchorPosition={
-                        contextMenu !== null
-                            ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-                            : undefined
+                    {currentFolderView.children.filter(child => {
+                        if(child.type === "Folder")
+                        {
+                            return child;
                         }
-                    >
-                        <MenuItem onClick={newFolderModal}>New Folder</MenuItem>
-                        <MenuItem onClick={newTXTModal}>New Text File</MenuItem>
-                        <MenuItem onClick={newPDFModal}>New PDF File</MenuItem>
-                        <MenuItem onClick={newImageModal}>New Image File</MenuItem>
-                    </Menu>
+                        return
+                    }).map((child) => {
+                        return (
+                            <FolderComp 
+                                key = {child.id} 
+                                file = {child}
+                                traverse = {traverse} 
+                                FileSystem = {FileSystem}
+                                setFileSystemState = {setFileSystemState}
+                                addToQuickAccessList = {addToQuickAccessList}
+                                />
+                        )
+                    })}
+                    {/*Files Gettin non no ids for files?>*/}
+                    {currentFolderView.children.filter(child => {
+                        if(child.type !== "Folder")
+                        {
+                            return child;
+                        }
+                        return
+                    }).map((child) => {
+                        return (
+                            //clickHandler = {fileClickHandler}
+                            <FileComp 
+                                key = {child.id} 
+                                file = {child}
+                                addProgram = {addProgram}
+                                editProgram = {editProgram}
+                                removeProgram = {removeProgram}
+                                editProgramFileManager = {editProgramFileManager}
+                                version = {version}
+                                requestID = {requestID}
+                                requestData = {requestData}
+                                acceptableType = {acceptableType}
+                                programHandler = {programHandler}
+                                fileManagerId = {id}
+                                setFileSystemState = {setFileSystemState}
+                                />
+                        )
+                    })}
+                </Paper>
+            </div>
 
-                </div>
-                {/* Didn't see the point of Modal, and it was harder to use */}
-                <Backdrop open = {modalState.open} sx = {{position : "absolute"}}>
-                    <Paper sx = {{width : "250px", height : "100px", margin : "auto", textAlign : "center"}}>
-                        {modalContents}
-                    </Paper>
-                </Backdrop>
+            {/*From the material ui demo */}
+            <Menu
+                open={contextMenu !== null}
+                onClose={handleClose}
+                anchorReference="anchorPosition"
+                anchorPosition={
+                contextMenu !== null
+                    ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+                    : undefined
+                }
+            >
+                <MenuItem onClick={newFolderModal}>New Folder</MenuItem>
+                <MenuItem onClick={newTXTModal}>New Text File</MenuItem>
+                <MenuItem onClick={newPDFModal}>New PDF File</MenuItem>
+                <MenuItem onClick={newImageModal}>New Image File</MenuItem>
+            </Menu>
+
+        </div>
+        {/* Didn't see the point of Modal, and it was harder to use */}
+        <Backdrop open = {modalState.open} sx = {{position : "absolute"}}>
+            <Paper sx = {{minWidth : "350px", maxWidth : "350px", margin : "auto", textAlign : "center"}}>
+                {modalContents}
+            </Paper>
+        </Backdrop>
                 </>
     )
 }

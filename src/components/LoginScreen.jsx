@@ -21,24 +21,24 @@ const LoginScreen = (props) => {
     */
 
     useEffect(() => {
-        console.log("useEffect")
+        //console.log("useEffect")
 
         const interval = setInterval(() => 
             //setTimeout(() => 
             {  
-                console.log("Interval")
+                //console.log("Interval")
                 if(username.uArray.length != 0){
-                    console.log("The array at start: " + username.uArray)  
-                    console.log("The New Username at Start: " + username.username)
+                    //console.log("The array at start: " + username.uArray)  
+                    //console.log("The New Username at Start: " + username.username)
                     const letter = username.uArray[0];
-                    console.log("the Letter: " + letter)
+                    //console.log("the Letter: " + letter)
                     setUsername((prevValue) => {return {uArray : prevValue.uArray.slice(1), username : prevValue.username + letter}})
                 }
                 else if (password.pArray.length != 0){
-                    console.log("The array at start: " + password.pArray)  
-                    console.log("The New password at Start: " + password.password)
+                    //console.log("The array at start: " + password.pArray)  
+                    //console.log("The New password at Start: " + password.password)
                     const letter = password.pArray[0];
-                    console.log("the Letter: " + letter)
+                    //console.log("the Letter: " + letter)
                     setPassword((prevValue) => {return {pArray : prevValue.pArray.slice(1), password : prevValue.password + letter}})
                 }
                 else if(loginCounter < 10)

@@ -142,7 +142,7 @@ const {setBackgroundImageUrl, removeProgram, addProgram} = props
                     <MenuItem onClick={handleAddFileManager}>File Manager</MenuItem>
                     <MenuItem onClick={handleChangeDesktopBackground} >Change Desktop Background </MenuItem>
                 </Menu>
-            <Typography align = 'cetner' sx = {{ verticalAlign: "baseline", marginTop: "auto", marginBottom: "auto", marginRight: "10px"}}>{dateTime}</Typography>
+            <Typography align = 'center' sx = {{ verticalAlign: "baseline", marginTop: "auto", marginBottom: "auto", marginRight: "10px"}}>{dateTime}</Typography>
             {/*<Button onClick = {props.displayPrograms}>Display Info</Button>*/}
             {/*maybe this will be a settings/ logout section */}
         </AppBar>
