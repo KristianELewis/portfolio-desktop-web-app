@@ -3,6 +3,7 @@ import {createContext} from 'react'
 //okay, I should choose between one of these, and its gonna be screen dimensions
 export const screenDimensionsContext = createContext(null);
 export const windowWidthContext = createContext(null);
+//Window width is being used in window, filemanager, 
 
 export const fileContext = createContext(null);
 

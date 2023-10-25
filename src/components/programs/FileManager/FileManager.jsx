@@ -32,7 +32,7 @@ import QuickAccess from './QuickAccess';
 import FolderComp from './FolderComp';
 import FileComp from './FileComp';
 
-import { processManagmentContext, programContext } from '../../Context'
+import { processManagmentContext, programContext, windowWidthContext } from '../../Context'
 
 const FileManager = (props) => {
 
@@ -43,8 +43,13 @@ const FileManager = (props) => {
 
     //const { version, clickFunction } = props;
     const { addProgram, editProgram, removeProgram, editProgramFileManager } = useContext(processManagmentContext)
-
     const programInfo = useContext(programContext);
+
+
+    const {height} = useContext(windowWidthContext)
+    //The top bar has a height of 49px at the moment
+    //the content height must be height - 49
+    const contentHeight = height - 49;
 
     const { file, id, name, handleMouseDown, handleExit } = programInfo;
     
@@ -490,10 +495,8 @@ const FileManager = (props) => {
 
     return(
         <>
-        {/* The overflow auto should be moved further down soon.
-            Will need to get window dimensions and set the max height of the content based on that - the top bar height
-
-            not sure if its more cursed but I could send the top bar up a level instead
+        {/*
+            Was thinking about moving the topbar back into window, and having programs send the relevant data needed back up to the window component
         */}
         <div style = {{height: "100%", position: "relative", display: "flex", flexDirection : "column", width : "100%"}}>
             {/* flex really necesarry here? */}
@@ -525,20 +528,20 @@ const FileManager = (props) => {
                 />
             </Paper>
             {/*=======================================================
+                
                 MAIN CONTENT
 
 
-                Need to get overflow working individually for each of these two containers
-
-                Okay before I start trying to get overflow working in here, I need to fix the "middle window" nonsense in window
-                That file needs some serious refactor, and cleanup
+                I need to fix the "middle window" nonsense in window
                 Overflow for left an right is broken, the widths arent growing correctly
 
-                The flex box stuff here needs to be cleaened up. Theres too many flex containers
+                    I'm not really sure what I waas talking about in these comments. I thought I needed to fix what ever problem that was before I could work on the overflows here, but that was wrong
+                    I may have fixed the issue though. The original overflow was not working correctly and the Paper background was not growing with the overflowing content
+                    I switched to using the window height instead of using flexbox
             =======================================================*/}
-            <div style ={{display : "grid", gridTemplateColumns : "125px auto", flexGrow : 1, boxSizing : "border-box", overflow : "auto"}}>
+            <div style ={{display : "grid", gridTemplateColumns : "125px auto", height : contentHeight, boxSizing : "border-box"}}>
                 {/*style = {{borderTop: "grey solid 1px", borderRight: "grey solid 1px", height : "100%"}} */}
-                <Paper elevation = {1} sx = {{borderRadius : "0 0 0 5px", height : "100%"}}>
+                <Paper elevation = {1} sx = {{borderRadius : "0 0 0 5px", height : "100%", width : "125px", overflowY : "auto"}}>
                     <QuickAccess 
                         quickAccessList = {quickAccessList}
                         quickAccess = {quickAccess}
@@ -551,13 +554,10 @@ const FileManager = (props) => {
                     sx = {{
                         /*borderTop: "grey solid 1px", */
                         borderRadius : "0 0 5px 0",
-                        display : "flex", 
-                        flexBasis : "100px", 
-                        flexFlow : "row wrap", 
-                        flexGrow : 0, 
-                        alignContent : "start", 
-                        minHeight : "100%"
-                    }}>
+                        overflow : "auto", 
+                        height : "100%"
+                    }}
+                    >
                     {/*
                         There Might be a better/faster way to filter and map. Reduce is aparently faster
                         Could maybe filter before hand? First filter out folders. A files array will have faster subseqent filters right?
@@ -571,51 +571,58 @@ const FileManager = (props) => {
                         not sure if this filter is even done right, Should it even be return nothing?
                         I will remove this empty return statement later, I want to do it while watching memory to see what effect it has on it
                     */}
-                    {currentFolderView.children.filter(child => {
-                        if(child.type === "Folder")
-                        {
-                            return child;
-                        }
-                        return
-                    }).map((child) => {
-                        return (
-                            <FolderComp 
-                                key = {child.id} 
-                                file = {child}
-                                traverse = {traverse} 
-                                FileSystem = {FileSystem}
-                                setFileSystemState = {setFileSystemState}
-                                addToQuickAccessList = {addToQuickAccessList}
-                                />
-                        )
-                    })}
-                    {/*Files Gettin non no ids for files?>*/}
-                    {currentFolderView.children.filter(child => {
-                        if(child.type !== "Folder")
-                        {
-                            return child;
-                        }
-                        return
-                    }).map((child) => {
-                        return (
-                            //clickHandler = {fileClickHandler}
-                            <FileComp 
-                                key = {child.id} 
-                                file = {child}
-                                addProgram = {addProgram}
-                                editProgram = {editProgram}
-                                removeProgram = {removeProgram}
-                                editProgramFileManager = {editProgramFileManager}
-                                version = {version}
-                                requestID = {requestID}
-                                requestData = {requestData}
-                                acceptableType = {acceptableType}
-                                programHandler = {programHandler}
-                                fileManagerId = {id}
-                                setFileSystemState = {setFileSystemState}
-                                />
-                        )
-                    })}
+                    <div style = {{
+                        display : "flex", 
+                        flexBasis : "100px", 
+                        flexFlow : "row wrap",  
+                        alignContent : "start" }}
+                        >
+                        {currentFolderView.children.filter(child => {
+                            if(child.type === "Folder")
+                            {
+                                return child;
+                            }
+                            return
+                        }).map((child) => {
+                            return (
+                                <FolderComp 
+                                    key = {child.id} 
+                                    file = {child}
+                                    traverse = {traverse} 
+                                    FileSystem = {FileSystem}
+                                    setFileSystemState = {setFileSystemState}
+                                    addToQuickAccessList = {addToQuickAccessList}
+                                    />
+                            )
+                        })}
+                        {/*Files Gettin non no ids for files?>*/}
+                        {currentFolderView.children.filter(child => {
+                            if(child.type !== "Folder")
+                            {
+                                return child;
+                            }
+                            return
+                        }).map((child) => {
+                            return (
+                                //clickHandler = {fileClickHandler}
+                                <FileComp 
+                                    key = {child.id} 
+                                    file = {child}
+                                    addProgram = {addProgram}
+                                    editProgram = {editProgram}
+                                    removeProgram = {removeProgram}
+                                    editProgramFileManager = {editProgramFileManager}
+                                    version = {version}
+                                    requestID = {requestID}
+                                    requestData = {requestData}
+                                    acceptableType = {acceptableType}
+                                    programHandler = {programHandler}
+                                    fileManagerId = {id}
+                                    setFileSystemState = {setFileSystemState}
+                                    />
+                            )
+                        })}
+                    </div>
                 </Paper>
             </div>
 

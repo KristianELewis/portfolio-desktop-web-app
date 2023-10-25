@@ -327,8 +327,8 @@ const Window = (props) => {
                     />
 
                 </div> */}
-                {/* this context should be renamed, and it can have a broader use */}
-                <windowWidthContext.Provider value = {{width : position.width, windowPositioningInUse : windowPositioningInUse}}>
+                {/* this context should be renamed, and it can have a broader use, why am i not including height here wtf */}
+                <windowWidthContext.Provider value = {{width : position.width, height : position.height, windowPositioningInUse : windowPositioningInUse}}>
                 {/* I think file system context can be brought up a level. 
                 
                     You think? why the hell is this even in here. I need to bring this up a level. Desktop Icons aren't using this, I guess they're passed the values?
