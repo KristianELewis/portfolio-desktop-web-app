@@ -119,7 +119,7 @@ const ImageViewer = () => {
                     onMouseDown = {preventPositioning}
                 />
             </Paper>
-            <div style = {{height: "100%", color : "black", position: "relative"}}>
+                {/*is this really necessary here? */}
                 {windowPositioningInUse && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>}
                 <Paper 
                     elevation = {0} 
@@ -134,17 +134,15 @@ const ImageViewer = () => {
                         alignItems : "center"
                         }}>
                         {/*more flex box that could probably be changed to something else */}
-                    {file && <img 
-                            src = {file.data.src} 
-                            height = {imgDimensions.height * magnificationLevel} 
-                            width = {imgDimensions.width * magnificationLevel} 
-                            style = {{boxSizing : "border-box"}}
-                            />}
+                        {file && <img 
+                                src = {file.data.src} 
+                                height = {imgDimensions.height * magnificationLevel} 
+                                width = {imgDimensions.width * magnificationLevel} 
+                                />}
                 </Paper> 
                 {/* Probably a way to reduce the size of the image but save proportions
                     then center in the middle
                 */}
-            </div>
         </div>
     )
 }
