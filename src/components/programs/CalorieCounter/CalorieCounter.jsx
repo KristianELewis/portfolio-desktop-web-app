@@ -3,7 +3,7 @@ import { windowWidthContext, programContext } from '../../Context';
 
 
 import Paper from '@mui/material/Paper'
-import Typography from '@mui/material/Paper'
+import Typography from '@mui/material/Typography'
 import CloseIcon from '@mui/icons-material/Close';
 
 const App = lazy(() => import('./src/App'))
@@ -45,40 +45,40 @@ const CalorieCounter = (props) => {
     }
 
     return (
-        <>
-        <Paper position = "relative" sx = {{height : "40px", display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
-            {/* <Button color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning}>Files</Button>
-            <Menu
-                anchorEl={filesAnchor}
-                open = {fileOpen}
-                onClose ={handleCloseFiles}
-                onMouseDown = {preventPositioning}
-            >
-                <MenuItem onClick={newFile}>New File</MenuItem>
-                <MenuItem onClick={saveData}>Save File</MenuItem>
-                <MenuItem onClick={loadFile}>Load File</MenuItem>
-            </Menu> */}
+        <div className = "windowMidContainer" style = {{width : "100%"}}>
+            <Paper position = "relative" sx = {{height : "40px", display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+                {/* <Button color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning}>Files</Button>
+                <Menu
+                    anchorEl={filesAnchor}
+                    open = {fileOpen}
+                    onClose ={handleCloseFiles}
+                    onMouseDown = {preventPositioning}
+                >
+                    <MenuItem onClick={newFile}>New File</MenuItem>
+                    <MenuItem onClick={saveData}>Save File</MenuItem>
+                    <MenuItem onClick={loadFile}>Load File</MenuItem>
+                </Menu> */}
 
-            <Typography sx = {{userSelect : "none", paddingLeft : "10px"}}>{ name }</Typography>
-            <CloseIcon 
-                sx = {{
-                    color : "white",
-                    "&:hover": { backgroundColor: "black" }
-                }}
-                onClick = {handleExit}
-                onMouseDown = {preventPositioning}
-            />
-        </Paper>
-        <div style = {{height: "100%", overflow: 'auto', backgroundColor: "#242424"}}>
-            <div style = {{display: "flex", placeItems: "center",  minHeight: "100%", position : "relative"}}>
-                <div style = {{ margin : "auto", textAlign : "center", userSelect: "none"}}>
-                    <Suspense>
-                        <App media700W = {media700W} media600W = {media600W} media500W = {media500W}/>
-                    </Suspense>
+                <Typography sx = {{userSelect : "none", paddingLeft : "10px"}}>{ name }</Typography>
+                <CloseIcon 
+                    sx = {{
+                        color : "white",
+                        "&:hover": { backgroundColor: "black" }
+                    }}
+                    onClick = {handleExit}
+                    onMouseDown = {preventPositioning}
+                />
+            </Paper>
+            <Paper elevation = {0} style = {{height: "100%", overflow: 'auto'}}>
+                <div style = {{display: "flex", placeItems: "center",  minHeight: "100%", position : "relative"}}>
+                    <div style = {{ margin : "auto", textAlign : "center", userSelect: "none"}}>
+                        <Suspense>
+                            <App media700W = {media700W} media600W = {media600W} media500W = {media500W}/>
+                        </Suspense>
+                    </div>
                 </div>
-            </div>
+            </Paper>
         </div>
-        </>
     )
 }
 

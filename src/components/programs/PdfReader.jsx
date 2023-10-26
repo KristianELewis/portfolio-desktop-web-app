@@ -82,49 +82,49 @@ const PdfReader = () => {
     //============================================================================================
     //The top bar is exactly the same as ImagViewer except for the menu
     return(
-        <>
-        <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "5px 5px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr 1fr", alignItems : "center"}} onMouseDown = {handleMouseDown}>
-        <Button size = "small" color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning} sx = {{justifySelf : "flex-start", textTransform : "none", fontSize : "16px", padding : "0"}}>Files</Button>
-            <Menu
-                anchorEl={filesAnchor}
-                open = {fileOpen}
-                onClose ={handleCloseFiles}
-                onMouseDown = {preventPositioning}
-            >
-                <MenuItem onClick={loadFile}>Load File</MenuItem>
-                <MenuItem onClick={UnLoadFile}>unLoad File</MenuItem>
-            </Menu>
+        <div className = "windowMidContainer" style = {{width : "100%"}}>
+            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "5px 5px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr 1fr", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+            <Button size = "small" color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning} sx = {{justifySelf : "flex-start", textTransform : "none", fontSize : "16px", padding : "0"}}>Files</Button>
+                <Menu
+                    anchorEl={filesAnchor}
+                    open = {fileOpen}
+                    onClose ={handleCloseFiles}
+                    onMouseDown = {preventPositioning}
+                >
+                    <MenuItem onClick={loadFile}>Load File</MenuItem>
+                    <MenuItem onClick={UnLoadFile}>unLoad File</MenuItem>
+                </Menu>
 
-            <Typography sx = {{userSelect : "none", justifySelf: "center"}}>{name}</Typography>
-            <CloseIcon 
-                sx = {{
-                    justifySelf: "flex-end",
-                    color : "white",
-                    "&:hover": { backgroundColor: "black" }
-                }}
-                onClick = {handleExit}
-                onMouseDown = {preventPositioning}
-            />
-        </Paper>
-        {/*Whats the point of this div exactly? its in image viewer too */}
-        <div style = {{height: "100%", color : "black", position: "relative"}}>
-            {windowPositioningInUse && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>}
-            <Paper 
-                elevation = {0}
-                sx = {{
-                    width : "100%", 
-                    height : "100%", 
-                    boxSizing : "border-box", 
-                    borderRadius : "0 0 5px 5px", 
-                    overflow : "auto",
-                    display : "flex",
-                    justifyContent : "center",
-                    alignItems : "center"
-                    }}>
-                {file && <iframe src = {file.data} height = {"100%"} width = {"100%"} style = {{boxSizing : "border-box"}}></iframe>}
+                <Typography sx = {{userSelect : "none", justifySelf: "center"}}>{name}</Typography>
+                <CloseIcon 
+                    sx = {{
+                        justifySelf: "flex-end",
+                        color : "white",
+                        "&:hover": { backgroundColor: "black" }
+                    }}
+                    onClick = {handleExit}
+                    onMouseDown = {preventPositioning}
+                />
             </Paper>
+            {/*Whats the point of this div exactly? its in image viewer too */}
+            <div style = {{height: "100%", color : "black", position: "relative"}}>
+                {windowPositioningInUse && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>}
+                <Paper 
+                    elevation = {0}
+                    sx = {{
+                        width : "100%", 
+                        height : "100%", 
+                        boxSizing : "border-box", 
+                        borderRadius : "0 0 5px 5px", 
+                        overflow : "auto",
+                        display : "flex",
+                        justifyContent : "center",
+                        alignItems : "center"
+                        }}>
+                    {file && <iframe src = {file.data} height = {"100%"} width = {"100%"} style = {{boxSizing : "border-box"}}></iframe>}
+                </Paper>
+            </div>
         </div>
-        </>
     )
 }
 

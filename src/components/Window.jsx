@@ -305,7 +305,7 @@ const Window = (props) => {
 
             {/*can't tell if preformance got significantly worse after adding resizer or not. Before adding the code */}
             {/* <div className = "left-right-resizer" onMouseDown = {handleResizeleft}/> */}
-            <div className = "windowMidContainer" style ={{width: position.width + "px"}}>
+            {/* <div className = "windowMidContainer" style ={{width: position.width + "px"}}> */}
             {/* style = {{
                     /*I spent an annoying amount of time messing around with this and just gave up and did this 
                     width is having trouble being calculated correctly due to the 5px things on the left and right and 
@@ -357,7 +357,7 @@ const Window = (props) => {
                 <div className = "top-bottom-resizer" style = {{height : "5px", width : "100%", backgroundColor : "transparent", position : "absolute"}} onMouseDown = {handleResizeTop}/>
                 <div className = "top-bottom-resizer" style = {{height : "5px", width : "100%", backgroundColor : "transparent", position : "absolute", top : (position.height -5) + "px"}} onMouseDown = {handleResizeBottom}/>
 
-            </div>
+            {/* </div> */}
         </div>
     )
 }

@@ -54,8 +54,8 @@ body {
     cursor: col-resize;
 }
 .windowMidContainer {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows : 40px auto;
     
 }
 .windowTopBar {
