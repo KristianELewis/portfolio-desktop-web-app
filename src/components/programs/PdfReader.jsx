@@ -83,7 +83,7 @@ const PdfReader = () => {
     //The top bar is exactly the same as ImagViewer except for the menu
     return(
         <div className = "windowMidContainer" style = {{width : "100%"}}>
-            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "5px 5px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr 1fr", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr 1fr", alignItems : "center"}} onMouseDown = {handleMouseDown}>
             <Button size = "small" color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning} sx = {{justifySelf : "flex-start", textTransform : "none", fontSize : "16px", padding : "0"}}>Files</Button>
                 <Menu
                     anchorEl={filesAnchor}
@@ -115,7 +115,7 @@ const PdfReader = () => {
                         width : "100%", 
                         height : "100%", 
                         boxSizing : "border-box", 
-                        borderRadius : "0 0 5px 5px", 
+                        borderRadius : "0 0 10px 10px", 
                         overflow : "auto",
                         display : "flex",
                         justifyContent : "center",

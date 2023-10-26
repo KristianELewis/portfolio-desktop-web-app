@@ -518,7 +518,7 @@ const FileManager = (props) => {
             TOP BAR
 
             =======================================================*/}
-            <Paper elevation = {2} sx = {{ flexGrow: 0, display : "flex", alignItems : "center", padding : "5px", borderBottom : "rgb(18, 18, 18) solid 1px", borderRadius : "5px 5px 0 0"}} onMouseDown = {handleMouseDown}>
+            <Paper elevation = {2} sx = {{ flexGrow: 0, display : "flex", alignItems : "center", padding : "5px", borderBottom : "rgb(18, 18, 18) solid 1px", borderRadius : "10px 10px 0 0"}} onMouseDown = {handleMouseDown}>
                     <IconButton size = "small" onClick = {handleBackwardButton} onMouseDown = {preventPositioning} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
                     <IconButton size = "small" onClick = {handleForwardButton} onMouseDown = {preventPositioning} sx = {{marginLeft : "5px", borderRadius : "5px"}} disabled = {forwardList.length === 0 ? true : false}><ChevronRightIcon/></IconButton>
                     
@@ -554,7 +554,7 @@ const FileManager = (props) => {
             =======================================================*/}
             <div style ={{display : "grid", gridTemplateColumns : "125px auto", height : contentHeight, boxSizing : "border-box"}}>
                 {/*style = {{borderTop: "grey solid 1px", borderRight: "grey solid 1px", height : "100%"}} */}
-                <Paper elevation = {1} sx = {{borderRadius : "0 0 0 5px", height : "100%", width : "125px", overflowY : "auto"}}>
+                <Paper elevation = {1} sx = {{borderRadius : "0 0 0 10px", height : "100%", width : "125px", overflowY : "auto"}}>
                     <QuickAccess 
                         quickAccessList = {quickAccessList}
                         quickAccess = {quickAccess}
@@ -566,7 +566,7 @@ const FileManager = (props) => {
                     elevation={0}
                     sx = {{
                         /*borderTop: "grey solid 1px", */
-                        borderRadius : "0 0 5px 0",
+                        borderRadius : "0 0 10px 0",
                         overflow : "auto", 
                         height : "100%"
                     }}
@@ -663,7 +663,7 @@ const FileManager = (props) => {
                 {modalContents}
             </Paper>
         </Backdrop>
-                </>
+        </>
     )
 }
 

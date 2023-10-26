@@ -193,7 +193,7 @@ const TextEditor = (props) => {
             {/*currentFolderId !== null && <div style = {{height : "100%", width : "100%", backgroundColor : "black", position: "absolute"}}/>
             The idea for this was to make the text editor disabled. Not a bad Idea to just implement it like this
             */}
-            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "5px 5px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr 1fr", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr 1fr", alignItems : "center"}} onMouseDown = {handleMouseDown}>
                     <Button size = "small" color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning} sx = {{justifySelf : "flex-start", textTransform : "none", fontSize : "16px", padding : "0"}}>Files</Button>
                     <Menu
                         anchorEl={filesAnchor}
@@ -217,7 +217,7 @@ const TextEditor = (props) => {
                         onMouseDown = {preventPositioning}
                     />
             </Paper>
-            <div style = {{overflow: 'auto'}}>
+            <div style = {{overflow: 'auto', borderRadius : "0 0 10px 10px"}}>
                 <Slate editor={editor} initialValue={value} value={value} onChange = {handleChange}>
                     <Editable style = {{
                         color : "white",
