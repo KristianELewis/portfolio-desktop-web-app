@@ -35,24 +35,35 @@ body {
     flex-direction: row;
     align-items: stretch;
 }
+
+/*These resizers classes arent actually doing anything, except for the cursors
 .top-bottom-resizer{
     min-height: 5px;
     width: 100%;
     background-color: darkslategray;
 }
-.top-bottom-resizer:hover{
-    cursor: row-resize;
-}
-
 .left-right-resizer{
     height: 100%;
     min-width: 5px;
     background-color: darkslategray;
 
+}*/
+
+.nwse-resizer:hover{
+    cursor: nwse-resize;
 }
+.nesw-resizer:hover{
+    cursor: nesw-resize;
+}
+.top-bottom-resizer:hover{
+    cursor: ns-resize;
+}
+
 .left-right-resizer:hover{
-    cursor: col-resize;
+    cursor: ew-resize;
 }
+
+
 .windowMidContainer {
     display: grid;
     grid-template-rows : 40px auto;

@@ -237,21 +237,20 @@ const Window = (props) => {
                 return {...prevState, height : newHeight}
         })})
     }
-
     const handleResizeTop = () => {
         props.changeFunction((e) =>{ 
             e.preventDefault();
-            setPosition((oldState) => {
-                let newTop = oldState.top + e.movementY;
-                let newHeight = oldState.height + (e.movementY * -1);
+            setPosition((prevState) => {
+                let newTop = prevState.top + e.movementY;
+                let newHeight = prevState.height + (e.movementY * -1);
                 if (newTop <= 0)
                 {
                     newTop = 0
-                    newHeight = oldState.height + oldState.top
+                    newHeight = prevState.height + prevState.top
                 }
                 else if (newHeight <= 100)
                 {
-                    newTop = oldState.top + (oldState.height - 100)
+                    newTop = prevState.top + (prevState.height - 100)
                     newHeight = 100
                 }
                 else if (newHeight >= props.screenHeight)
@@ -259,7 +258,7 @@ const Window = (props) => {
                     newTop = 0
                     newHeight = props.screenHeight
                 }
-                return {...oldState, top : newTop, height: newHeight}
+                return {...prevState, top : newTop, height: newHeight}
             })
         })
     }
@@ -267,17 +266,17 @@ const Window = (props) => {
     const handleResizeleft = () => {
         props.changeFunction((e) =>{ 
             e.preventDefault();
-            setPosition((oldState) => {
-                let newLeft = oldState.left + e.movementX;
-                let newWidth = oldState.width + (e.movementX * -1);
+            setPosition((prevState) => {
+                let newLeft = prevState.left + e.movementX;
+                let newWidth = prevState.width + (e.movementX * -1);
                 if (newLeft <= 0)
                 {
                     newLeft = 0
-                    newWidth = oldState.width + oldState.left
+                    newWidth = prevState.width + prevState.left
                 }
                 else if (newWidth <= 150)
                 {
-                    newLeft = oldState.left + (oldState.width - 150)
+                    newLeft = prevState.left + (prevState.width - 150)
                     newWidth = 150
                 }
                 else if (newWidth >= props.screenWidth)
@@ -285,11 +284,142 @@ const Window = (props) => {
                     newLeft = 0
                     newWidth = props.screenWidth
                 }
-                return {...oldState, left : newLeft, width: newWidth}
+                return {...prevState, left : newLeft, width: newWidth}
             })
         })
     }
-
+    const handleResizeBottomRight = () => {
+        props.changeFunction((e) => {
+            e.preventDefault();
+            setPosition((prevState) => {
+                let newHeight = prevState.height + e.movementY
+                if(newHeight < 100)
+                {
+                    newHeight = 100
+                }
+                if (newHeight > props.screenHeight - prevState.top)
+                {
+                    newHeight = props.screenHeight - prevState.top
+                }
+                let newWidth = prevState.width + e.movementX
+                if(newWidth < 150)
+                {
+                    newWidth = 150
+                }
+                if (newWidth > props.screenWidth - prevState.left)
+                {
+                    newWidth = props.screenWidth - prevState.left
+                }
+                return {...prevState, height : newHeight, width : newWidth}
+        })})
+    }
+    const handleResizeTopRight = () => {
+        props.changeFunction((e) => {
+            e.preventDefault();
+            setPosition((prevState) => {
+                let newTop = prevState.top + e.movementY;
+                let newHeight = prevState.height + (e.movementY * -1);
+                if (newTop <= 0)
+                {
+                    newTop = 0
+                    newHeight = prevState.height + prevState.top
+                }
+                else if (newHeight <= 100)
+                {
+                    newTop = prevState.top + (prevState.height - 100)
+                    newHeight = 100
+                }
+                else if (newHeight >= props.screenHeight)
+                {
+                    newTop = 0
+                    newHeight = props.screenHeight
+                }
+                let newWidth = prevState.width + e.movementX
+                if(newWidth < 150)
+                {
+                    newWidth = 150
+                }
+                if (newWidth > props.screenWidth - prevState.left)
+                {
+                    newWidth = props.screenWidth - prevState.left
+                }
+                return {...prevState, top : newTop, height : newHeight, width : newWidth}
+        })})
+    }
+    const handleResizeBottomLeft = () => {
+        props.changeFunction((e) => {
+            e.preventDefault();
+            setPosition((prevState) => {
+                let newHeight = prevState.height + e.movementY
+                if(newHeight < 100)
+                {
+                    newHeight = 100
+                }
+                if (newHeight > props.screenHeight - prevState.top)
+                {
+                    newHeight = props.screenHeight - prevState.top
+                }
+                let newLeft = prevState.left + e.movementX;
+                let newWidth = prevState.width + (e.movementX * -1);
+                if (newLeft <= 0)
+                {
+                    newLeft = 0
+                    newWidth = prevState.width + prevState.left
+                }
+                else if (newWidth <= 150)
+                {
+                    newLeft = prevState.left + (prevState.width - 150)
+                    newWidth = 150
+                }
+                else if (newWidth >= props.screenWidth)
+                {
+                    newLeft = 0
+                    newWidth = props.screenWidth
+                }
+                return {...prevState, left : newLeft, height : newHeight, width : newWidth}
+        })})
+    }
+    const handleResizeTopLeft = () => {
+        props.changeFunction((e) => {
+            e.preventDefault();
+            setPosition((prevState) => {
+                let newTop = prevState.top + e.movementY;
+                let newHeight = prevState.height + (e.movementY * -1);
+                if (newTop <= 0)
+                {
+                    newTop = 0
+                    newHeight = prevState.height + prevState.top
+                }
+                else if (newHeight <= 100)
+                {
+                    newTop = prevState.top + (prevState.height - 100)
+                    newHeight = 100
+                }
+                else if (newHeight >= props.screenHeight)
+                {
+                    newTop = 0
+                    newHeight = props.screenHeight
+                }
+                let newLeft = prevState.left + e.movementX;
+                let newWidth = prevState.width + (e.movementX * -1);
+                if (newLeft <= 0)
+                {
+                    newLeft = 0
+                    newWidth = prevState.width + prevState.left
+                }
+                else if (newWidth <= 150)
+                {
+                    newLeft = prevState.left + (prevState.width - 150)
+                    newWidth = 150
+                }
+                else if (newWidth >= props.screenWidth)
+                {
+                    newLeft = 0
+                    newWidth = props.screenWidth
+                }
+                return {...prevState, top : newTop, left : newLeft, height : newHeight, width : newWidth}
+        })})
+    }
 
     return (
         <div className = "window"
@@ -302,32 +432,7 @@ const Window = (props) => {
                 width: position.width + "px",
                 zIndex : props.zLevel
         }}>
-
-            {/*can't tell if preformance got significantly worse after adding resizer or not. Before adding the code */}
-            {/* <div className = "left-right-resizer" onMouseDown = {handleResizeleft}/> */}
-            {/* <div className = "windowMidContainer" style ={{width: position.width + "px"}}> */}
-            {/* style = {{
-                    /*I spent an annoying amount of time messing around with this and just gave up and did this 
-                    width is having trouble being calculated correctly due to the 5px things on the left and right and 
-                    i cant get flex box to cooperate. Will probably change this in the future
-                    
-                    
-                    width: (position.width - 10) + "px"
-                }} */}
-                {/* <div className = "windowTopBar" 
-                    onMouseDown = {handleMouseDown} 
-                >
-                    <Typography sx = {{userSelect: "none"}}>{props.name}</Typography>
-                    <CloseIcon 
-                        sx = {{
-                            color : "white",
-                            "&:hover": { backgroundColor: "black" }
-                        }}
-                        onClick = {handleExit}
-                    />
-
-                </div> */}
-                {/* this context should be renamed, and it can have a broader use, why am i not including height here wtf */}
+                {/* this context should be renamed*/}
                 <windowWidthContext.Provider value = {{width : position.width, height : position.height, windowPositioningInUse : windowPositioningInUse}}>
                 {/* I think file system context can be brought up a level. 
                 
@@ -337,6 +442,7 @@ const Window = (props) => {
 
                     I will refactor this when I make a desktop component, for now it will stay
                 
+                    Man previous me was furious at previouser me
                 */}
                 <fileContext.Provider value = {{
                     FileSystem : FileSystem.current, 
@@ -352,12 +458,31 @@ const Window = (props) => {
                 </programContext.Provider>
                 </fileContext.Provider>
                 </windowWidthContext.Provider>
-                <div className= "left-right-resizer" style = {{height : "100%", width : "5px", backgroundColor : "transparent", position : "absolute"}} onMouseDown = {handleResizeleft}></div>
-                <div className= "left-right-resizer" style = {{height : "100%", width : "5px", backgroundColor : "transparent", position : "absolute", left : (position.width -5) + "px"}} onMouseDown = {handleResizeRight}></div>
-                <div className = "top-bottom-resizer" style = {{height : "5px", width : "100%", backgroundColor : "transparent", position : "absolute"}} onMouseDown = {handleResizeTop}/>
-                <div className = "top-bottom-resizer" style = {{height : "5px", width : "100%", backgroundColor : "transparent", position : "absolute", top : (position.height -5) + "px"}} onMouseDown = {handleResizeBottom}/>
+                {/*---------------
+                REGULAR RESIZERS
+                +++++++++++++++++
+                Left
+                Right
+                Top
+                Bottom
+                ---------------*/}
+                <div className= "left-right-resizer" style = {{height : "100%", width : "10px", backgroundColor : "transparent", position : "absolute", left: "-10px"}} onMouseDown = {handleResizeleft}></div>
+                <div className= "left-right-resizer" style = {{height : "100%", width : "10px", backgroundColor : "transparent", position : "absolute", left : (position.width) + "px"}} onMouseDown = {handleResizeRight}></div>
+                <div className = "top-bottom-resizer" style = {{height : "10px", width : "100%", backgroundColor : "transparent", position : "absolute", top : "-10px"}} onMouseDown = {handleResizeTop}/>
+                <div className = "top-bottom-resizer" style = {{height : "10px", width : "100%", backgroundColor : "transparent", position : "absolute", top : (position.height) + "px"}} onMouseDown = {handleResizeBottom}/>
 
-            {/* </div> */}
+                {/*---------------
+                CORNER RESIZERS
+                +++++++++++++++++
+                Bottom Right
+                Top Left
+                Top Right
+                Bottom Left
+                ---------------*/}
+                <div className = "nwse-resizer" style = {{height : "15px", width : "15px", backgroundColor : "transparent", position : "absolute", left : (position.width -5) + "px", top : (position.height -5 ) + "px"}} onMouseDown = {handleResizeBottomRight}/>
+                <div className = "nwse-resizer" style = {{height : "15px", width : "15px", backgroundColor : "transparent", position : "absolute", left : "-10px", top : "-10px"}} onMouseDown = {handleResizeTopLeft}/>
+                <div className = "nesw-resizer" style = {{height : "15px", width : "15px", backgroundColor : "transparent", position : "absolute", left : (position.width -5) + "px", top : "-10px"}} onMouseDown = {handleResizeTopRight}/>
+                <div className = "nesw-resizer" style = {{height : "15px", width : "15px", backgroundColor : "transparent", position : "absolute", left : "-10px", top : (position.height -5) + "px"}} onMouseDown = {handleResizeBottomLeft}/>
         </div>
     )
 }
