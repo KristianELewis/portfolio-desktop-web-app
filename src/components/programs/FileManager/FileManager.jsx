@@ -19,7 +19,7 @@ import Paper from '@mui/material/Paper'
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-//import Typography from '@mui/material/Typography';
+import Typography from '@mui/material/Typography';
 import Backdrop from '@mui/material/Backdrop';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -237,6 +237,9 @@ const FileManager = (props) => {
         setFileSet(false);
     }
     const cancelBackdrop = () => {
+        setUploadFile(null);
+        setFileSet(false);
+        setFolderNameInput("");
         setModalState({open : false, type : null})
     }
     //I can see how this can somewhat easily be refactored to be more generic.
@@ -292,13 +295,21 @@ const FileManager = (props) => {
                             variant="contained"
                             component="label"
                             size = "small"
+                            sx = {{textTransform : "none", maxWidth : "150px"}}
                             >
-                            {fileSet ? uploadFile.name : "Download File" /*disabled = {deleteChecked}*/}
+                            <Typography sx = {{ fontSize : "14px"}} noWrap>{fileSet ? uploadFile.name : "Download File" /*disabled = {deleteChecked}*/}</Typography>
                             <input
                                 type="file"
+                                accept = "application/pdf"
                                 onChange = {(e) => {
-                                    setFileSet(true); 
-                                    setUploadFile(e.target.files[0]); //I dont think Im unsetting this creating the file. I should probably do that
+                                    if(e.target.files.length < 1){
+                                        setFileSet(false);
+                                        setUploadFile(null);
+                                    }
+                                    else{
+                                        setFileSet(true);
+                                        setUploadFile(e.target.files[0]);
+                                    }
                                 }}
                                 hidden
                             />
@@ -326,13 +337,21 @@ const FileManager = (props) => {
                             variant="contained"
                             component="label"
                             size = "small"
+                            sx = {{textTransform : "none", maxWidth : "150px"}}
                             >
-                            {fileSet ? uploadFile.name : "Download File" /*disabled = {deleteChecked}*/}
+                            <Typography sx = {{ fontSize : "14px"}} noWrap>{fileSet ? uploadFile.name : "Download File" /*disabled = {deleteChecked}*/}</Typography>
                             <input
-                                type="file"
+                                type = "file"
+                                accept = "image/*"
                                 onChange = {(e) => {
-                                    setFileSet(true); 
-                                    setUploadFile(e.target.files[0]); //I dont think Im unsetting this creating the file. I should probably do that
+                                    if(e.target.files.length < 1){
+                                        setFileSet(false);
+                                        setUploadFile(null);
+                                    }
+                                    else{
+                                        setFileSet(true);
+                                        setUploadFile(e.target.files[0]);
+                                    }
                                 }}
                                 hidden
                             />
