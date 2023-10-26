@@ -173,13 +173,26 @@ const FileManager = (props) => {
         }
         setFolderNameInput("");
     }
+
+    async function getDimensions (dataURL) {
+        return new Promise(resolve => {
+            let img = new Image;
+            img.onload = () => {
+                resolve({height : img.height, width : img.width})
+            }
+            img.src = dataURL;
+        })
+    }
     const addNewImageFile = () => {
         if (folderNameInput !== "" && uploadFile){
-            const data = URL.createObjectURL(uploadFile)
-            //I have to figure something else out about this. File types and process types should be separated
-            currentFolder.current.addNewFile(folderNameInput, "Image Viewer", data);
-            setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
-            setFileSystemState((prevState) => {return prevState * -1})
+            const url = URL.createObjectURL(uploadFile)
+            getDimensions(url).then( results => {
+                const data = {src : url, dimensions : results}
+                //I have to figure something else out about this. File types and process types should be separated
+                currentFolder.current.addNewFile(folderNameInput, "Image Viewer", data);
+                setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
+                setFileSystemState((prevState) => {return prevState * -1})
+            })
         }
         setFolderNameInput("");
     }
