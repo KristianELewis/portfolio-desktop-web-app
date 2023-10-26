@@ -193,8 +193,8 @@ const TextEditor = (props) => {
         {/*currentFolderId !== null && <div style = {{height : "100%", width : "100%", backgroundColor : "black", position: "absolute"}}/>
           The idea for this was to make the text editor disabled. Not a bad Idea to just implement it like this
         */}
-        <Paper position = "relative" sx = {{height : "40px", display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
-                <Button color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning}>Files</Button>
+        <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "5px 5px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr 1fr", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+                <Button size = "small" color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning} sx = {{justifySelf : "flex-start", textTransform : "none", fontSize : "16px", padding : "0"}}>Files</Button>
                 <Menu
                     anchorEl={filesAnchor}
                     open = {fileOpen}
@@ -206,10 +206,10 @@ const TextEditor = (props) => {
                     <MenuItem onClick={loadFile}>Load File</MenuItem>
                 </Menu>
 
-                <Typography sx = {{userSelect : "none"}}>{file ? file.name : "new file"}</Typography>
-                <Typography sx = {{userSelect : "none"}}>{id}</Typography>
+                <Typography sx = {{userSelect : "none", justifySelf: "center"}}>{file ? file.name : "new file"}</Typography>
                 <CloseIcon 
                     sx = {{
+                        justifySelf: "flex-end",
                         color : "white",
                         "&:hover": { backgroundColor: "black" }
                     }}
@@ -224,7 +224,7 @@ const TextEditor = (props) => {
                     backgroundColor : "rgb(18, 18, 18)", 
                     minHeight : "100%", 
                     minWidth : "100%", 
-                    padding: "3px", 
+                    padding: "5px", 
                     boxSizing: "border-box", 
                     display: "inline-block", 
                     whiteSpace: "pre"
