@@ -46,22 +46,11 @@ const CalorieCounter = (props) => {
 
     return (
         <div className = "windowMidContainer" style = {{width : "100%"}}>
-            <Paper position = "relative" sx = {{height : "40px", display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
-                {/* <Button color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning}>Files</Button>
-                <Menu
-                    anchorEl={filesAnchor}
-                    open = {fileOpen}
-                    onClose ={handleCloseFiles}
-                    onMouseDown = {preventPositioning}
-                >
-                    <MenuItem onClick={newFile}>New File</MenuItem>
-                    <MenuItem onClick={saveData}>Save File</MenuItem>
-                    <MenuItem onClick={loadFile}>Load File</MenuItem>
-                </Menu> */}
-
-                <Typography sx = {{userSelect : "none", paddingLeft : "10px"}}>{ name }</Typography>
+            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+                <Typography sx = {{userSelect : "none", paddingLeft : "10px", justifySelf : "start"}}>{ name }</Typography>
                 <CloseIcon 
                     sx = {{
+                        justifySelf : "end",
                         color : "white",
                         "&:hover": { backgroundColor: "black" }
                     }}
@@ -69,7 +58,8 @@ const CalorieCounter = (props) => {
                     onMouseDown = {preventPositioning}
                 />
             </Paper>
-            <Paper elevation = {0} style = {{height: "100%", overflow: 'auto'}}>
+            <Paper elevation = {0} style = {{height: "100%", overflow: 'auto', borderRadius : "0 0 10px 10px"}}>
+                {/*whats going on with all these divs? this was because of the backdrops I think */}
                 <div style = {{display: "flex", placeItems: "center",  minHeight: "100%", position : "relative"}}>
                     <div style = {{ margin : "auto", textAlign : "center", userSelect: "none"}}>
                         <Suspense>
