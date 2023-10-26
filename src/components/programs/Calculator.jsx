@@ -9,7 +9,7 @@ import React, {useState, useContext} from 'react'
 import { windowWidthContext, programContext } from '../Context';
 
 import Paper from '@mui/material/Paper'
-import Typography from '@mui/material/Paper'
+import Typography from '@mui/material/Typography'
 import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button'
 
