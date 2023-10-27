@@ -92,8 +92,8 @@ const DesktopMenu = (props) => {
 
     ===========================================================================*/
 
-const [currentFolderId, setCurrentFolderId] = useState(null)
-const {setBackgroundImageUrl, removeProgram, addProgram} = props
+    const [currentFolderId, setCurrentFolderId] = useState(null)
+    const {setBackgroundImageUrl, removeProgram, addProgram} = props
 
     const requestCanceler = () => {
         setCurrentFolderId(null)
@@ -118,17 +118,14 @@ const {setBackgroundImageUrl, removeProgram, addProgram} = props
         }
         setFilesAnchor(null)
     }
-
     //=============================================================================
-
     const handleCloseFiles = () => {
         setFilesAnchor(null)
     }
-//        <AppBar position = "relative" sx ={{display : "grid", gridTemplateColumns: "1fr 1fr 1fr"}}>
 
     return (
-        <AppBar position = "relative" sx ={{display : "flex", flexDirection : "row", justifyContent : "space-between"}}>
-            <Button color = 'inherit' onClick = {handleFilesClick}>Start</Button>
+        <AppBar position = "relative" sx ={{display : "grid", gridTemplateColumns: "1fr 1fr"}}>
+            <Button color = 'inherit' onClick = {handleFilesClick} sx = {{justifySelf : "start"}}>Start</Button>
                 <Menu
                     anchorEl={filesAnchor}
                     open = {fileOpen}
@@ -142,7 +139,7 @@ const {setBackgroundImageUrl, removeProgram, addProgram} = props
                     <MenuItem onClick={handleAddFileManager}>File Manager</MenuItem>
                     <MenuItem onClick={handleChangeDesktopBackground} >Change Desktop Background </MenuItem>
                 </Menu>
-            <Typography align = 'center' sx = {{ verticalAlign: "baseline", marginTop: "auto", marginBottom: "auto", marginRight: "10px"}}>{dateTime}</Typography>
+            <Typography noWrap align = 'center' sx = {{ verticalAlign: "baseline", marginTop: "auto", marginBottom: "auto", marginRight: "10px", justifySelf : "end", userSelect : "none"}}>{dateTime}</Typography>
             {/*<Button onClick = {props.displayPrograms}>Display Info</Button>*/}
             {/*maybe this will be a settings/ logout section */}
         </AppBar>
