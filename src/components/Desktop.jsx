@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 
-
 //components
 import FolderComp from './programs/FileManager/FolderComp'
 import FileComp from './programs/FileManager/FileComp'
@@ -26,8 +25,6 @@ const Desktop = (props) => {
         setFileSystemState,
         addToQuickAccessList
      } = props
-
-
     /*==================================================================
 
     context menu
@@ -37,24 +34,40 @@ const Desktop = (props) => {
     ==================================================================*/
     const [contextMenu, setContextMenu] = useState(null);
     const handleContextMenu = (event) => {
-    event.preventDefault();
-    setContextMenu(
-        contextMenu === null
-        ? {
-            mouseX: event.clientX,
-            mouseY: event.clientY,
-            }
-        : // repeated contextmenu when it is already open closes it with Chrome 84 on Ubuntu
-            // Other native context menus might behave different.
-            // With this behavior we prevent contextmenu from the backdrop to re-locale existing context menus.
-            null,
-    );
-    };
+        event.preventDefault();
+        setContextMenu(
+            contextMenu === null
+            ? {
+                mouseX: event.clientX,
+                mouseY: event.clientY,
+                }
+            : // repeated contextmenu when it is already open closes it with Chrome 84 on Ubuntu
+                // Other native context menus might behave different.
+                // With this behavior we prevent contextmenu from the backdrop to re-locale existing context menus.
+                null,
+        );
+        };
     const handleClose = () => {
         //could potentially cause issues
         setModalState({open : false, type : null})
         setContextMenu(null);
     };
+
+    /*========================================
+
+    TOUCH NONESENE FOR CONTEXT MENU
+
+    ========================================*/
+    let timer;
+    const touchStart = (e) => {
+        const event = {clientX : e.touches[0].clientX, clientY : e.touches[0].clientY, preventDefault : e.preventDefault}
+        timer = setTimeout(() => handleContextMenu(event), 1000)
+    }
+    const touchEnd = () => {
+        if(timer){
+            clearTimeout(timer);
+        }
+    }
     /*===============================================================================
 
         ADDING NEW FILES AND FOLDERS
@@ -63,7 +76,6 @@ const Desktop = (props) => {
             for both this file and the fileManager
     
     ===============================================================================*/
-
     const [uploadFile, setUploadFile] = useState(null);
     const [fileSet, setFileSet] = useState(false);
 
@@ -72,14 +84,7 @@ const Desktop = (props) => {
     const handleFolderNameInputChange = (e) => {
         setFolderNameInput(e.target.value)
     }
-
-
-
     //============================================================================
-
-
-
-
     const addNewFolder = () => {
         if (folderNameInput !== ""){
             desktopFolder.addNewFolder(folderNameInput);
@@ -301,7 +306,6 @@ const Desktop = (props) => {
     }
     const modalContents = chooseModalType();
 
-
     return (
         <>
             <div style = {{ 
@@ -313,9 +317,11 @@ const Desktop = (props) => {
                 alignContent : "start", 
                 minHeight : "100%", 
                 maxHeight : "100%", 
-                overflow : "hidden"
+                overflow : "hidden",
                 }}
-                onContextMenu={handleContextMenu}
+                onContextMenu = {handleContextMenu}
+                onTouchStart = {touchStart}
+                onTouchEnd = {touchEnd}
             >
                 {desktopFolder.children.filter(child => {
                     if(child.type === "Folder")

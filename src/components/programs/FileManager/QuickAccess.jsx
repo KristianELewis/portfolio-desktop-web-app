@@ -27,17 +27,32 @@ const QuickAccessItem = (props) =>{
       setContextMenu(null);
     };
 
+    /*========================================
+
+    TOUCH NONESENE FOR CONTEXT MENU
+
+    ========================================*/
+    let timer;
+    const touchStart = (e) => {
+        const event = {clientX : e.touches[0].clientX, clientY : e.touches[0].clientY, preventDefault : e.preventDefault, stopPropagation : e.stopPropagation}
+        timer = setTimeout(() => handleContextMenu(event), 1000)
+    }
+    const touchEnd = () => {
+        if(timer){
+            clearTimeout(timer);
+        }
+    }
+    //==========================================
+    
     const handleRemoveFromQuickAccess = () => {
         removeFromQuickAccessList(id)
     }
-
-
     const handleClick =() =>{
         quickAccess(location, id)
     }
     return (
         <>
-            <MenuItem className = "MinHeightMenuItem" sx = {{maxHeight : "36px", minHeight : "36px"}} onClick = {handleClick} onContextMenu={handleContextMenu}>
+            <MenuItem className = "MinHeightMenuItem" sx = {{maxHeight : "36px", minHeight : "36px"}} onClick = {handleClick} onContextMenu={handleContextMenu} onTouchStart = {touchStart} onTouchEnd = {touchEnd}>
                 <Typography noWrap >{name}</Typography>
             </MenuItem>
 

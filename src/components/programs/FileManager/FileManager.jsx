@@ -74,6 +74,24 @@ const FileManager = (props) => {
     };
     /* End of material ui demo stuff -----------------------------------*/
 
+
+    /*========================================
+
+    TOUCH NONESENE FOR CONTEXT MENU
+
+    ========================================*/
+    let timer;
+    const touchStart = (e) => {
+        const event = {clientX : e.touches[0].clientX, clientY : e.touches[0].clientY, preventDefault : e.preventDefault, stopPropagation : e.stopPropagation}
+        timer = setTimeout(() => handleContextMenu(event), 1000)
+    }
+    const touchEnd = () => {
+        if(timer){
+            clearTimeout(timer);
+        }
+    }
+    //==========================================
+
     const [backList, setBackList] = useState([]);
     const [forwardList, setForwardList] = useState([]);
 
@@ -581,7 +599,9 @@ const FileManager = (props) => {
                         />
                 </Paper>
                 <Paper 
-                    onContextMenu={handleContextMenu} 
+                    onContextMenu = {handleContextMenu} 
+                    onTouchStart = {touchStart}
+                    onTouchEnd = {touchEnd}
                     elevation={0}
                     sx = {{
                         /*borderTop: "grey solid 1px", */

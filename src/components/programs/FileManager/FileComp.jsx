@@ -73,6 +73,26 @@ const FileComp = (props) => {
     const handleClose = () => {
       setContextMenu(null);
     };
+
+
+    /*========================================
+
+    TOUCH NONESENE FOR CONTEXT MENU
+
+    ========================================*/
+    let timer;
+    const touchStart = (e) => {
+        e.stopPropagation();
+        const event = {clientX : e.touches[0].clientX, clientY : e.touches[0].clientY, preventDefault : e.preventDefault, stopPropagation : e.stopPropagation}
+        timer = setTimeout(() => handleContextMenu(event), 1000)
+    }
+    const touchEnd = () => {
+        if(timer){
+            clearTimeout(timer);
+        }
+    }
+    //==========================================
+
     const handleDelete = () => {
         //console.log("Delete File")
         //console.log("id: " + id)
@@ -138,7 +158,7 @@ const FileComp = (props) => {
     const handleMouseLeave = () => {
         setIsHovering(false)
     }
-    
+
 
     return (
         <>
@@ -155,6 +175,8 @@ const FileComp = (props) => {
                 onMouseLeave={handleMouseLeave}
                 onClick={handleClick}
                 onContextMenu={handleContextMenu}
+                onTouchStart = {touchStart}
+                onTouchEnd = {touchEnd}
                 >
 
                 {icon}
