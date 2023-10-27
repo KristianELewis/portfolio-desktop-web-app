@@ -221,7 +221,7 @@ const TextEditor = (props) => {
                         <MenuItem onClick={loadFile}>Load File</MenuItem>
                     </Menu>
 
-                    <Typography sx = {{userSelect : "none", justifySelf: "center"}}>{file ? file.name : "new file"}</Typography>
+                    <Typography noWrap sx = {{width : "100%", textAlign : "center", userSelect : "none", justifySelf: "center"}}>{file ? file.name : "new file"}</Typography>
                     <CloseIcon 
                         sx = {{
                             justifySelf: "flex-end",
