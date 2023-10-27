@@ -28,7 +28,7 @@ const PathItem = (props) => {
             </Typography>
             <MenuItem 
                 onClick = {handleClick} 
-                onMouseDown = {preventPositioning}
+                onPointerDown = {preventPositioning}
                 sx = {{
                     display: "inline-block", 
                     borderRadius : "5px", 
@@ -65,6 +65,9 @@ const Path = (props) => {
         -To fix this I need to learn about debouncing and useDefferedValue.
         -I have to figure out which way will work best for this
         
+    -There some issue with menu items getting larger automatically for some responsive design. I need to fix this
+
+
     -From what I understand after a very brief search
         -I add up the values of the amount scrolled.
         -I can then do one of two things

@@ -32,7 +32,7 @@ const CharButton = (props) => {
 
 const Calculator = () => {
     const programInfo = useContext(programContext);
-    const { file, id, name, handleMouseDown, handleExit } = programInfo;
+    const { file, id, name, handlePointerDown, handleExit } = programInfo;
 
     const [displayScreen, setDisplayScreen] = useState({value : "", isThereAPoint : false});
     const [previousValue, setPreviousValue] = useState("");
@@ -126,7 +126,7 @@ const Calculator = () => {
     return (
         <div className = "windowMidContainer" style = {{width : "100%"}}>
             {/*Top Bar */}
-            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr", alignItems : "center"}} onPointerDown = {handlePointerDown}>
                 <Typography sx = {{userSelect : "none", paddingLeft : "10px", justifySelf : "start"}}>{ name }</Typography>
                 <CloseIcon 
                     sx = {{
@@ -135,7 +135,7 @@ const Calculator = () => {
                         "&:hover": { backgroundColor: "black" }
                     }}
                     onClick = {handleExit}
-                    onMouseDown = {preventPositioning}
+                    onPointerDown = {preventPositioning}
                 />
             </Paper>
             {/*Was trying to avoid using flexbox, but its just easier to use it*/}

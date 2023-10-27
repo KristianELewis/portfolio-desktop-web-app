@@ -38,7 +38,7 @@ const CalorieCounter = (props) => {
 
     const programInfo = useContext(programContext);
 
-    const { file, id, name, handleMouseDown, handleExit } = programInfo;
+    const { file, id, name, handlePointerDown, handleExit } = programInfo;
 
     const preventPositioning = (e) =>{
         e.stopPropagation()
@@ -46,7 +46,7 @@ const CalorieCounter = (props) => {
 
     return (
         <div className = "windowMidContainer" style = {{width : "100%"}}>
-            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr", alignItems : "center"}} onMouseDown = {handleMouseDown}>
+            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr", alignItems : "center"}} onPointerDown = {handlePointerDown}>
                 <Typography sx = {{userSelect : "none", paddingLeft : "10px", justifySelf : "start"}}>{ name }</Typography>
                 <CloseIcon 
                     sx = {{
@@ -55,7 +55,7 @@ const CalorieCounter = (props) => {
                         "&:hover": { backgroundColor: "black" }
                     }}
                     onClick = {handleExit}
-                    onMouseDown = {preventPositioning}
+                    onPointerDown = {preventPositioning}
                 />
             </Paper>
             <Paper elevation = {0} style = {{height: "100%", overflow: 'auto', borderRadius : "0 0 10px 10px"}}>

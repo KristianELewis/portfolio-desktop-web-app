@@ -51,7 +51,7 @@ const FileManager = (props) => {
     //the content height must be height - 49
     const contentHeight = height - 49;
 
-    const { file, id, name, handleMouseDown, handleExit } = programInfo;
+    const { file, id, name, handlePointerDown, handleExit } = programInfo;
     
     /*From the material ui demo ---------------------------------------*/
     const [contextMenu, setContextMenu] = useState(null);
@@ -249,10 +249,10 @@ const FileManager = (props) => {
         {
             return( 
                 <>
-                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
-                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
+                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onPointerDown = {handlePointerDown}>
+                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
                     <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}> New Folder</p>
-                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {handleNewFolderClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
+                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {handleNewFolderClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
                 </Paper>
                 <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
                     <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>Folder Name</p>
@@ -265,10 +265,10 @@ const FileManager = (props) => {
         {
             return( 
                 <>
-                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
-                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
+                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onPointerDown = {handlePointerDown}>
+                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
                     <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}> New Text File</p>
-                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {handleNewTXTClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
+                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {handleNewTXTClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
                 </Paper>
                 <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
                     <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>Text File Name</p>
@@ -281,10 +281,10 @@ const FileManager = (props) => {
         {
             return( 
                 <>
-                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
-                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
+                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onPointerDown = {handlePointerDown}>
+                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
                     <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}> New PDF File</p>
-                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {handleNewPDFClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
+                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {handleNewPDFClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
                 </Paper>
                 <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
                     <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>PDF File Name</p>
@@ -323,10 +323,10 @@ const FileManager = (props) => {
         {
             return( 
                 <>
-                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onMouseDown = {handleMouseDown}>
-                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
+                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onPointerDown = {handlePointerDown}>
+                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
                     <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}>New Image File</p>
-                    <Button size = "small" variant = "contained" onMouseDown = {preventPositioning} onClick = {handleNewImageClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
+                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {handleNewImageClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
                 </Paper>
                 <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
                     <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>New Image Name</p>
@@ -537,9 +537,9 @@ const FileManager = (props) => {
             TOP BAR
 
             =======================================================*/}
-            <Paper elevation = {2} sx = {{ flexGrow: 0, display : "flex", alignItems : "center", padding : "5px", borderBottom : "rgb(18, 18, 18) solid 1px", borderRadius : "10px 10px 0 0"}} onMouseDown = {handleMouseDown}>
-                    <IconButton size = "small" onClick = {handleBackwardButton} onMouseDown = {preventPositioning} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
-                    <IconButton size = "small" onClick = {handleForwardButton} onMouseDown = {preventPositioning} sx = {{marginLeft : "5px", borderRadius : "5px"}} disabled = {forwardList.length === 0 ? true : false}><ChevronRightIcon/></IconButton>
+            <Paper elevation = {2} sx = {{ flexGrow: 0, display : "flex", alignItems : "center", padding : "5px", borderBottom : "rgb(18, 18, 18) solid 1px", borderRadius : "10px 10px 0 0"}} onPointerDown = {handlePointerDown}>
+                    <IconButton size = "small" onClick = {handleBackwardButton} onPointerDown = {preventPositioning} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
+                    <IconButton size = "small" onClick = {handleForwardButton} onPointerDown = {preventPositioning} sx = {{marginLeft : "5px", borderRadius : "5px"}} disabled = {forwardList.length === 0 ? true : false}><ChevronRightIcon/></IconButton>
                     
                     <Path 
                         path = {currentFolderView.fullPath} 
@@ -556,7 +556,7 @@ const FileManager = (props) => {
                         "&:hover": { backgroundColor: "black" }
                     }}
                     onClick = {fileManagerClose}
-                    onMouseDown = {preventPositioning}
+                    onPointerDown = {preventPositioning}
                 />
             </Paper>
             {/*=======================================================

@@ -31,7 +31,7 @@ const PdfReader = () => {
 
     const { windowPositioningInUse, }= useContext(windowWidthContext)
     const programInfo = useContext(programContext);
-    const { file, id, name, handleMouseDown, handleExit } = programInfo;
+    const { file, id, name, handlePointerDown, handleExit } = programInfo;
 
     //MENU ITEMS
     const [filesAnchor, setFilesAnchor] = useState(null);
@@ -83,13 +83,13 @@ const PdfReader = () => {
     //The top bar is exactly the same as ImagViewer except for the menu
     return(
         <div className = "windowMidContainer" style = {{width : "100%"}}>
-            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr 1fr", alignItems : "center"}} onMouseDown = {handleMouseDown}>
-            <Button size = "small" color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning} sx = {{justifySelf : "flex-start", textTransform : "none", fontSize : "16px", padding : "0"}}>Files</Button>
+            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr 1fr", alignItems : "center"}} onPointerDown = {handlePointerDown}>
+            <Button size = "small" color = 'inherit' onClick = {handleFilesClick} onPointerDown = {preventPositioning} sx = {{justifySelf : "flex-start", textTransform : "none", fontSize : "16px", padding : "0"}}>Files</Button>
                 <Menu
                     anchorEl={filesAnchor}
                     open = {fileOpen}
                     onClose ={handleCloseFiles}
-                    onMouseDown = {preventPositioning}
+                    onPointerDown = {preventPositioning}
                 >
                     <MenuItem onClick={loadFile}>Load File</MenuItem>
                     <MenuItem onClick={UnLoadFile}>unLoad File</MenuItem>
@@ -103,7 +103,7 @@ const PdfReader = () => {
                         "&:hover": { backgroundColor: "black" }
                     }}
                     onClick = {handleExit}
-                    onMouseDown = {preventPositioning}
+                    onPointerDown = {preventPositioning}
                 />
             </Paper>
             {/*Whats the point of this div exactly? its in image viewer too */}

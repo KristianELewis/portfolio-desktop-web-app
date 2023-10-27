@@ -289,21 +289,25 @@ function Screen() {
         })
     }
 
+    const handleTouchStart = () => {
+        console.log("Yar")
+    }
     return (
     <ThemeProvider theme={darkTheme}>
     <CssBaseline />
     {/* css baseline sets boxsizing to border-box in html, which was causing issues when calorie counter was being loaded.
     To fix this, I set border sizing to border box here and supply the innderwindow width with the borders removed */}
     {!loggedIn ? <LoginScreen loggedIn = {loggedIn} setLoggedIn = {setLoggedIn}/> :
-    <div className = "outterScreen" style = {{width: screenDimensions.width, boxSizing : "border-box"}}>
+    <div className = "outterScreen" style = {{width: screenDimensions.width, boxSizing : "border-box" }}>
         <div 
             className = "innerWindow" 
             onPointerMove = {mouseMove} 
-            onMouseLeave = {mouseLeaveState} 
-            onMouseUp = {mouseLeaveState} 
+            onPointerLeave = {mouseLeaveState} 
+            onPointerUp = {mouseLeaveState} 
             style = {{
                 height : (screenDimensions.height - outerBorderWidth - menuHeight) + "px",
-                backgroundImage : `url('${backgroundImageUrl}')`
+                backgroundImage : `url('${backgroundImageUrl}')`,
+                touchAction : "none"
             }}
             >
 

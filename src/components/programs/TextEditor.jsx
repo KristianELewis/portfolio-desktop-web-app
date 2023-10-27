@@ -38,7 +38,7 @@ const TextEditor = (props) => {
     const {editProgram, addProgram, removeProgram, programs} = processManagmentInfo;
 
     const programInfo = useContext(programContext);
-    const { file, id, name, handleMouseDown, handleExit } = programInfo;
+    const { file, id, name, handlePointerDown, handleExit} = programInfo;
 
     const loadData = () => {
         if(file){
@@ -184,22 +184,37 @@ const TextEditor = (props) => {
     }
 
     //I dont need this in its own function really, its more to remind myself.
-    //Putting this in on mouse downs in topbar buttons and such will prevent unwanted repositions
+    //Putting this in on Pointer downs in topbar buttons and such will prevent unwanted repositions
     const preventPositioning = (e) =>{
         e.stopPropagation()
+    }
+    const handleTouching = (e) => {
+        handlePointerDown(e)
     }
     return(
         <div className = "windowMidContainer" style = {{width : "100%"}}>
             {/*currentFolderId !== null && <div style = {{height : "100%", width : "100%", backgroundColor : "black", position: "absolute"}}/>
             The idea for this was to make the text editor disabled. Not a bad Idea to just implement it like this
             */}
-            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr 1fr", alignItems : "center"}} onMouseDown = {handleMouseDown}>
-                    <Button size = "small" color = 'inherit' onClick = {handleFilesClick} onMouseDown = {preventPositioning} sx = {{justifySelf : "flex-start", textTransform : "none", fontSize : "16px", padding : "0"}}>Files</Button>
+            <Paper 
+                position = "relative" 
+                sx = {{
+                    height : "40px", 
+                    padding: "0 5px 0 5px", 
+                    boxSizing : "border-box", 
+                    borderRadius : "10px 10px 0 0" , 
+                    display : "grid", 
+                    gridTemplateColumns : "1fr 1fr 1fr", 
+                    alignItems : "center"
+                    }} 
+                onPointerDown = {handleTouching}
+            >
+                    <Button size = "small" color = 'inherit' onClick = {handleFilesClick} onPointerDown = {preventPositioning} sx = {{justifySelf : "flex-start", textTransform : "none", fontSize : "16px", padding : "0"}}>Files</Button>
                     <Menu
                         anchorEl={filesAnchor}
                         open = {fileOpen}
                         onClose ={handleCloseFiles}
-                        onMouseDown = {preventPositioning}
+                        onPointerDown = {preventPositioning}
                     >
                         <MenuItem onClick={newFile}>New File</MenuItem>
                         <MenuItem onClick={saveData}>Save File</MenuItem>
@@ -214,7 +229,7 @@ const TextEditor = (props) => {
                             "&:hover": { backgroundColor: "black" }
                         }}
                         onClick = {handleExit}
-                        onMouseDown = {preventPositioning}
+                        onPointerDown = {preventPositioning}
                     />
             </Paper>
             <div style = {{overflow: 'auto', borderRadius : "0 0 10px 10px"}}>
