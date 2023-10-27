@@ -8,7 +8,12 @@ import FileComp from './programs/FileManager/FileComp'
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import Backdrop from '@mui/material/Backdrop';
+
+import Popover from '@mui/material/Popover';
 
 const Desktop = (props) => {
     const {
@@ -23,30 +28,33 @@ const Desktop = (props) => {
      } = props
 
 
-     /*==================================================================
+    /*==================================================================
 
     context menu
 
-     ==================================================================*/
+    not so sure about all this
 
-     const [contextMenu, setContextMenu] = useState(null);
-     const handleContextMenu = (event) => {
-       event.preventDefault();
-       setContextMenu(
-         contextMenu === null
-           ? {
-               mouseX: event.clientX,
-               mouseY: event.clientY,
-             }
-           : // repeated contextmenu when it is already open closes it with Chrome 84 on Ubuntu
-             // Other native context menus might behave different.
-             // With this behavior we prevent contextmenu from the backdrop to re-locale existing context menus.
-             null,
-       );
-     };
-     const handleClose = () => {
-       setContextMenu(null);
-     };
+    ==================================================================*/
+    const [contextMenu, setContextMenu] = useState(null);
+    const handleContextMenu = (event) => {
+    event.preventDefault();
+    setContextMenu(
+        contextMenu === null
+        ? {
+            mouseX: event.clientX,
+            mouseY: event.clientY,
+            }
+        : // repeated contextmenu when it is already open closes it with Chrome 84 on Ubuntu
+            // Other native context menus might behave different.
+            // With this behavior we prevent contextmenu from the backdrop to re-locale existing context menus.
+            null,
+    );
+    };
+    const handleClose = () => {
+        //could potentially cause issues
+        setModalState({open : false, type : null})
+        setContextMenu(null);
+    };
     /*===============================================================================
 
         ADDING NEW FILES AND FOLDERS
@@ -57,10 +65,20 @@ const Desktop = (props) => {
     ===============================================================================*/
 
     const [uploadFile, setUploadFile] = useState(null);
+    const [fileSet, setFileSet] = useState(false);
+
+
     const [folderNameInput, setFolderNameInput] = useState("");
     const handleFolderNameInputChange = (e) => {
         setFolderNameInput(e.target.value)
     }
+
+
+
+    //============================================================================
+
+
+
 
     const addNewFolder = () => {
         if (folderNameInput !== ""){
@@ -76,6 +94,7 @@ const Desktop = (props) => {
         }
         setFolderNameInput("");
     }
+        
     const addNewPDFFile = () => {
         if (folderNameInput !== "" && uploadFile){
             const data = URL.createObjectURL(uploadFile)
@@ -84,93 +103,191 @@ const Desktop = (props) => {
         }
         setFolderNameInput("");
     }
+    async function getDimensions (dataURL) {
+        return new Promise(resolve => {
+            let img = new Image;
+            img.onload = () => {
+                resolve({height : img.height, width : img.width})
+            }
+            img.src = dataURL;
+        })
+    }
     const addNewImageFile = () => {
         if (folderNameInput !== "" && uploadFile){
-            const data = URL.createObjectURL(uploadFile)
-            desktopFolder.addNewFile(folderNameInput, "Image Viewer", data);
-            setFileSystemState((prevState) => {return prevState * -1})
+            const url = URL.createObjectURL(uploadFile)
+            getDimensions(url).then( results => {
+                const data = {src : url, dimensions : results}
+                desktopFolder.addNewFile(folderNameInput, "Image Viewer", data);
+                setFileSystemState((prevState) => {return prevState * -1})
+            })
         }
         setFolderNameInput("");
     }
-    
+
 /*===============================================================================
     ---------------------------------------------------------------------------------
     ===============================================================================*/
     const [modalState, setModalState] = useState({open : false, type : null})
 
     const newFolderModal = () => {
-        handleClose();
+        //handleClose();
         setModalState({open : true, type : "Folder"})
     }
     const newTXTModal = () => {
-        handleClose();
+        //handleClose();
         setModalState({open : true, type : "TXT"})
     }
     const newPDFModal = () => {
-        handleClose();
+        //handleClose();
         setModalState({open : true, type : "PDF"})
     }
     const newImageModal = () => {
-        handleClose();
+        //handleClose();
         setModalState({open : true, type : "IMAGE"})
     }
     const handleNewFolderClose =() => {
         setModalState({open : false, type : null})
         addNewFolder()
+        handleClose();
     }
     const handleNewTXTClose =() => {
         setModalState({open : false, type : null})
         addNewTxtFile()
+        handleClose();
     }
     const handleNewPDFClose =() => {
         setModalState({open : false, type : null})
         addNewPDFFile()
+        handleClose();
+        setFileSet(false);
     }
     const handleNewImageClose =() => {
         setModalState({open : false, type : null})
         addNewImageFile()
+        handleClose();
+        setFileSet(false);
+    }
+    const cancelBackdrop = () => {
+        setUploadFile(null);
+        setFileSet(false);
+        setFolderNameInput("");
+        setModalState({open : false, type : null})
     }
     const chooseModalType = () => {
         if(modalState.type === "Folder")
         {
             return( 
-                <div>
-                    <p>New Folder Name</p>
-                    <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
-                    <button onClick = {handleNewFolderClose}>close</button>
+                <>
+                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}}>
+                    <Button size = "small" variant = "contained" onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
+                    <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}> New Folder</p>
+                    <Button size = "small" variant = "contained" onClick = {handleNewFolderClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
+                </Paper>
+                <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
+                    <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>Folder Name</p>
+                    <TextField size = "small" fullWidth value = {folderNameInput} onChange = {handleFolderNameInputChange} inputProps = {{style : {height : "16px"}}}></TextField>
                 </div>
+                </>
             )
         }
         else if(modalState.type === "TXT")
         {
             return( 
-                <div>
-                    <p>New Text File Name</p>
-                    <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
-                    <button onClick = {handleNewTXTClose}>close</button>
+                <>
+                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}}>
+                    <Button size = "small" variant = "contained" onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
+                    <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}> New Text File</p>
+                    <Button size = "small" variant = "contained" onClick = {handleNewTXTClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
+                </Paper>
+                <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
+                    <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>Text File Name</p>
+                    <TextField size = "small" fullWidth value = {folderNameInput} onChange = {handleFolderNameInputChange} inputProps = {{style : {height : "16px"}}}></TextField>
                 </div>
+                </>
             )
         }
         else if(modalState.type === "PDF")
         {
             return( 
-                <div>
-                    <p>New PDF File Name</p>
-                    <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
-                    <input type = "file" onChange = {(e) => {setUploadFile(e.target.files[0])}}></input>
-                    <button onClick = {handleNewPDFClose}>close</button>
+                <>
+                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}}>
+                    <Button size = "small" variant = "contained" onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
+                    <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}> New PDF File</p>
+                    <Button size = "small" variant = "contained" onClick = {handleNewPDFClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
+                </Paper>
+                <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
+                    <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>PDF File Name</p>
+                    <TextField size = "small" fullWidth value = {folderNameInput} onChange = {handleFolderNameInputChange} inputProps = {{style : {height : "16px"}}}></TextField>
+                    <div style = {{display: "flex", justifyContent: "space-between", alignItems : "center", marginTop : "10px"}}>
+                        <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>File Downloader</p>
+                        <Button
+                            variant="contained"
+                            component="label"
+                            size = "small"
+                            sx = {{textTransform : "none", maxWidth : "150px"}}
+                            >
+                            <Typography sx = {{ fontSize : "14px"}} noWrap>{fileSet ? uploadFile.name : "Download File" /*disabled = {deleteChecked}*/}</Typography>
+                            <input
+                                type="file"
+                                accept = "application/pdf"
+                                onChange = {(e) => {
+                                    if(e.target.files.length < 1){
+                                        setFileSet(false);
+                                        setUploadFile(null);
+                                    }
+                                    else{
+                                        setFileSet(true);
+                                        setUploadFile(e.target.files[0]);
+                                    }
+                                }}
+                                hidden
+                            />
+                        </Button>
+                    </div>
                 </div>
+                </>
             )
         }
         else if(modalState.type === "IMAGE")
         {
             return( 
-                <div>
-                    <p>New Image File Name</p>
-                    <input value = {folderNameInput} onChange = {handleFolderNameInputChange}></input>
-                    <input type = "file" onChange = {(e) => {setUploadFile(e.target.files[0])}}></input>
-                    <button onClick = {handleNewImageClose}>close</button>
+                <>
+                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}}>
+                    <Button size = "small" variant = "contained" onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
+                    <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}>New Image File</p>
+                    <Button size = "small" variant = "contained" onClick = {handleNewImageClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
+                </Paper>
+                <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
+                    <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>New Image Name</p>
+                    <TextField size = "small" fullWidth value = {folderNameInput} onChange = {handleFolderNameInputChange} inputProps = {{style : {height : "16px"}}}></TextField>
+                    <div style = {{display: "flex", justifyContent: "space-between", alignItems : "center", marginTop : "10px"}}>
+                        <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>File Downloader</p>
+                        <Button
+                            variant="contained"
+                            component="label"
+                            size = "small"
+                            sx = {{textTransform : "none", maxWidth : "150px"}}
+                            >
+                            <Typography sx = {{ fontSize : "14px"}} noWrap>{fileSet ? uploadFile.name : "Download File" /*disabled = {deleteChecked}*/}</Typography>
+                            <input
+                                type = "file"
+                                accept = "image/*"
+                                onChange = {(e) => {
+                                    if(e.target.files.length < 1){
+                                        setFileSet(false);
+                                        setUploadFile(null);
+                                    }
+                                    else{
+                                        setFileSet(true);
+                                        setUploadFile(e.target.files[0]);
+                                    }
+                                }}
+                                hidden
+                            />
+                        </Button>
+                    </div>
                 </div>
+                </>
             )
         }
         else if(modalState.type === null)
@@ -246,10 +363,8 @@ const Desktop = (props) => {
                 })}
             </div>
 
-
-
             <Menu
-                open={contextMenu !== null}
+                open={!modalState.open && contextMenu !== null}
                 onClose={handleClose}
                 anchorReference="anchorPosition"
                 anchorPosition={
@@ -262,13 +377,23 @@ const Desktop = (props) => {
                 <MenuItem onClick={newTXTModal}>New Text File</MenuItem>
                 <MenuItem onClick={newPDFModal}>New PDF File</MenuItem>
                 <MenuItem onClick={newImageModal}>New Image File</MenuItem>
-            </Menu>
 
-            <Backdrop open = {modalState.open} sx = {{position : "absolute"}}>
-                    <Paper sx = {{width : "250px", height : "100px", margin : "auto", textAlign : "center"}}>
-                        {modalContents}
-                    </Paper>
-            </Backdrop>
+            </Menu> 
+
+            <Popover
+                open={modalState.open}
+                onClose={handleClose}
+                anchorReference="anchorPosition"
+                anchorPosition={
+                contextMenu !== null
+                    ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
+                    : undefined
+                }
+            >
+                <Paper sx = {{minWidth : "350px", maxWidth : "350px", margin : "auto", textAlign : "center", padding : "0px"}}>
+                    {modalContents}
+                </Paper>
+            </Popover>
         </>
     )
 }
