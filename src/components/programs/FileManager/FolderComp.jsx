@@ -98,6 +98,7 @@ const Folder = (props) => {
             onContextMenu={handleContextMenu} //right click context menu
             onTouchStart = {touchStart}
             onTouchEnd = {touchEnd}
+            onTouchMove = {touchEnd}
             >
 
             <FolderIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>

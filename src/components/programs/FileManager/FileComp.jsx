@@ -177,6 +177,7 @@ const FileComp = (props) => {
                 onContextMenu={handleContextMenu}
                 onTouchStart = {touchStart}
                 onTouchEnd = {touchEnd}
+                onTouchMove = {touchEnd}
                 >
 
                 {icon}

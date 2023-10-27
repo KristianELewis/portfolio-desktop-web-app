@@ -542,7 +542,6 @@ const FileManager = (props) => {
     /*===============================================================================
     ---------------------------------------------------------------------------------
     ===============================================================================*/
-
     return(
         <>
         {/*
@@ -602,6 +601,7 @@ const FileManager = (props) => {
                     onContextMenu = {handleContextMenu} 
                     onTouchStart = {touchStart}
                     onTouchEnd = {touchEnd}
+                    onTouchMove = {touchEnd}
                     elevation={0}
                     sx = {{
                         /*borderTop: "grey solid 1px", */

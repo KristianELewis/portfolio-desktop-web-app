@@ -305,7 +305,6 @@ const Desktop = (props) => {
         }
     }
     const modalContents = chooseModalType();
-
     return (
         <>
             <div style = {{ 
@@ -322,6 +321,7 @@ const Desktop = (props) => {
                 onContextMenu = {handleContextMenu}
                 onTouchStart = {touchStart}
                 onTouchEnd = {touchEnd}
+                onTouchMove = {touchEnd}
             >
                 {desktopFolder.children.filter(child => {
                     if(child.type === "Folder")

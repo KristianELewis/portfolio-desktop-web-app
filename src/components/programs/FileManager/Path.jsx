@@ -86,6 +86,7 @@ const Path = (props) => {
     /*For scrolling functionality, but without the scrollwheel, I needed to use a class*/
     return (
         <Paper 
+            onTouchMove = {(e)=> {e.stopPropagation()}}
             onWheel={handleScrolling} 
             className = "Path" 
             ref = {scrollRef} 
