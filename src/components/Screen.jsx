@@ -123,7 +123,7 @@ function Screen() {
     const screenDimensions = useWindowSize();
     const outerBorderWidth = 20;
     //const menuHeight = 64;
-    const menuHeight = 36.5;
+    const menuHeight = 40;
     /*=================================================
 
         MULTIPLE PROGRAM FUNCTIONALITY
@@ -298,7 +298,7 @@ function Screen() {
     {/* css baseline sets boxsizing to border-box in html, which was causing issues when calorie counter was being loaded.
     To fix this, I set border sizing to border box here and supply the innderwindow width with the borders removed */}
     {!loggedIn ? <LoginScreen loggedIn = {loggedIn} setLoggedIn = {setLoggedIn}/> :
-    <div className = "outterScreen" style = {{width: screenDimensions.width, boxSizing : "border-box", touchAction : "none", userSelect : "none"}}>
+    <div className = "outterScreen" style = {{width: screenDimensions.width, boxSizing : "border-box", touchAction : "none", userSelect : "none", overflow: "hidden"}}>
         <div 
             className = "innerWindow" 
             onPointerMove = {mouseMove} 
@@ -359,7 +359,7 @@ function Screen() {
             })}
         </processManagmentContext.Provider>
         </div>
-        <DesktopMenu addProgram = {addProgram} removeProgram = {removeProgram} setBackgroundImageUrl = {setBackgroundImageUrl} displayPrograms = {displayPrograms}/>
+        <DesktopMenu addProgram = {addProgram} removeProgram = {removeProgram} setBackgroundImageUrl = {setBackgroundImageUrl} displayPrograms = {displayPrograms} screenWidth = {screenDimensions.width - outerBorderWidth}/>
     </div>}
     </ThemeProvider>
 

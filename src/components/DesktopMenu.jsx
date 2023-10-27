@@ -21,15 +21,17 @@ import dayjs from 'dayjs'
 
 //need to make the app bar smaller, very annoying right now though
 const DesktopMenu = (props) => {
-
     /*
         This doesnt seem to effect preformance much. Can change the interval if it starts to, but 1 second keeps it pretty accurate and really shouldnt be a big deal
         Still not sure if I'm using useEffect correctly. Not sure if useEffect is the right choice here, I guess this is getting info from an outside source.
+        can have different versions of this maybe
+
+        Or perhaps just the time, but date is something you can click on and it brings up a calendar like in windows
     */
     const currentTimeAndDate = () => {
         let currentDate = new Date()
         //console.log(dayjs(currentDate).format('dddd, MMMM D, YYYY h:mm A'))
-        return (dayjs(currentDate).format('dddd, MMMM D, YYYY h:mm A'));
+        return (dayjs(currentDate).format('dddd, MM/D/YYYY h:mm A'));
     }
 
     const [dateTime, setDateTime] = useState(currentTimeAndDate);
@@ -93,7 +95,7 @@ const DesktopMenu = (props) => {
     ===========================================================================*/
 
     const [currentFolderId, setCurrentFolderId] = useState(null)
-    const {setBackgroundImageUrl, removeProgram, addProgram} = props
+    const {setBackgroundImageUrl, removeProgram, addProgram, screenWidth} = props
 
     const requestCanceler = () => {
         setCurrentFolderId(null)
@@ -124,8 +126,8 @@ const DesktopMenu = (props) => {
     }
 
     return (
-        <AppBar position = "relative" sx ={{display : "grid", gridTemplateColumns: "1fr 1fr"}}>
-            <Button color = 'inherit' onClick = {handleFilesClick} sx = {{justifySelf : "start"}}>Start</Button>
+        <AppBar position = "relative" sx ={{display : "grid", gridTemplateColumns: "100px auto", height : "40px"}}>
+            <Button size = "small" color = 'inherit' onClick = {handleFilesClick} sx = {{justifySelf : "start", textTransform : "none", fontSize : "18px", width : "100px"}}>Start</Button>
                 <Menu
                     anchorEl={filesAnchor}
                     open = {fileOpen}
@@ -139,7 +141,7 @@ const DesktopMenu = (props) => {
                     <MenuItem onClick={handleAddFileManager}>File Manager</MenuItem>
                     <MenuItem onClick={handleChangeDesktopBackground} >Change Desktop Background </MenuItem>
                 </Menu>
-            <Typography noWrap align = 'center' sx = {{ verticalAlign: "baseline", marginTop: "auto", marginBottom: "auto", marginRight: "10px", justifySelf : "end", userSelect : "none"}}>{dateTime}</Typography>
+            <Typography noWrap align = 'center' sx = {{ width : "100%", verticalAlign: "baseline", marginTop: "auto", marginBottom: "auto", paddingRight: "10px", textAlign : "right", userSelect : "none"}}>{dateTime}</Typography>
             {/*<Button onClick = {props.displayPrograms}>Display Info</Button>*/}
             {/*maybe this will be a settings/ logout section */}
         </AppBar>
