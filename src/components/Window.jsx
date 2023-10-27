@@ -91,6 +91,7 @@ const Window = (props) => {
     }*/
 
     //this should be an effect
+    //Should it though? Initializations should be done with props, not useEffect. This can be done differently.
     useEffect(() => {
         if (props.name === "Text Editor")
         {
@@ -188,22 +189,15 @@ const Window = (props) => {
         props.focusWindow(props.id)
     }
 
-    /*-------------------------------------------------
+    /*=================================================
         
         RESIZING
     
-        does not include ne nw se sw resizers
-        style could use some work
-    
-        should find a good way to calculate minimum width, or maybe just get rid of tome top bar things if the width gets too small
+        These share a lot of functionality. Maybe The could be made more generic, But using previous state makes that hard.
+        I could potentially move this into individual components, but that might add uncessary complexity, while mkaing it harder to follow.
+        Although much of this is just the same kind of bounds checking. Maybe just put the bounds checking if statments into their own functions, and then use those in these functions
 
-        resizing top and left is still wonky
-        currently will continue to shrink if mouse is not over edge and left or top is 0
-        will also shink by another 1 - 2 pixels when width or height is at the minimum
-
-
-        its relying on leaving the inner screen to control expanding beyond the borders
-    -------------------------------------------------*/
+    =================================================*/
 
     const handleResizeRight = () => {
         props.changeFunction((e) =>{
@@ -430,7 +424,9 @@ const Window = (props) => {
                 top : position.top + "px",
                 height: position.height + "px",
                 width: position.width + "px",
-                zIndex : props.zLevel
+                zIndex : props.zLevel,
+                border : "solid #313131 1px",
+                borderRadius : "10px"
         }}>
                 {/* this context should be renamed*/}
                 <windowWidthContext.Provider value = {{width : position.width, height : position.height, windowPositioningInUse : windowPositioningInUse}}>
@@ -470,7 +466,6 @@ const Window = (props) => {
                 <div className= "left-right-resizer" style = {{height : "100%", width : "10px", backgroundColor : "transparent", position : "absolute", left : (position.width) + "px"}} onMouseDown = {handleResizeRight}></div>
                 <div className = "top-bottom-resizer" style = {{height : "10px", width : "100%", backgroundColor : "transparent", position : "absolute", top : "-10px"}} onMouseDown = {handleResizeTop}/>
                 <div className = "top-bottom-resizer" style = {{height : "10px", width : "100%", backgroundColor : "transparent", position : "absolute", top : (position.height) + "px"}} onMouseDown = {handleResizeBottom}/>
-
                 {/*---------------
                 CORNER RESIZERS
                 +++++++++++++++++
