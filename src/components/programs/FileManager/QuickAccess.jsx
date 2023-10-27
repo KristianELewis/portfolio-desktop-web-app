@@ -37,7 +37,7 @@ const QuickAccessItem = (props) =>{
     }
     return (
         <>
-            <MenuItem onClick = {handleClick} onContextMenu={handleContextMenu}>
+            <MenuItem className = "MinHeightMenuItem" sx = {{maxHeight : "36px", minHeight : "36px"}} onClick = {handleClick} onContextMenu={handleContextMenu}>
                 <Typography noWrap >{name}</Typography>
             </MenuItem>
 

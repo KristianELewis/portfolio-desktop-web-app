@@ -39,7 +39,9 @@ const PathItem = (props) => {
                     paddingRight: "14px",
                     marginLeft : "2px",
                     marginRight : "2px", 
-                    direction : "ltr"
+                    direction : "ltr",
+                    maxHeight : "32px",//without these It gets set to min Height 42 or something at less than 600 width, messing everything up
+                    minHeight : "32px"
                 }}>
                     <Typography sx = {{boxSizing: "border-box", maxWidth : "100px"}} noWrap>{name}</Typography>
             </MenuItem>

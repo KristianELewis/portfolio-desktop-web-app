@@ -298,7 +298,7 @@ function Screen() {
     {/* css baseline sets boxsizing to border-box in html, which was causing issues when calorie counter was being loaded.
     To fix this, I set border sizing to border box here and supply the innderwindow width with the borders removed */}
     {!loggedIn ? <LoginScreen loggedIn = {loggedIn} setLoggedIn = {setLoggedIn}/> :
-    <div className = "outterScreen" style = {{width: screenDimensions.width, boxSizing : "border-box" }}>
+    <div className = "outterScreen" style = {{width: screenDimensions.width, boxSizing : "border-box", touchAction : "none"}}>
         <div 
             className = "innerWindow" 
             onPointerMove = {mouseMove} 
