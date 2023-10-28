@@ -121,7 +121,7 @@ function Screen() {
     const [windowPositioningInUse, setWindowPositioningInUse] = useState(false);
 
     const screenDimensions = useWindowSize();
-    const outerBorderWidth = 20;
+    const outerBorderWidth = 10;
     //const menuHeight = 64;
     const menuHeight = 40;
     /*=================================================
@@ -288,17 +288,15 @@ function Screen() {
             requestCanceler : null
         })
     }
-
-    const handleTouchStart = () => {
-        console.log("Yar")
-    }
     return (
     <ThemeProvider theme={darkTheme}>
     <CssBaseline />
     {/* css baseline sets boxsizing to border-box in html, which was causing issues when calorie counter was being loaded.
     To fix this, I set border sizing to border box here and supply the innderwindow width with the borders removed */}
-    {!loggedIn ? <LoginScreen loggedIn = {loggedIn} setLoggedIn = {setLoggedIn}/> :
-    <div className = "outterScreen" style = {{width: screenDimensions.width, boxSizing : "border-box", touchAction : "none", userSelect : "none", overflow: "hidden"}}>
+    
+    <div className = "outterScreen" style = {{position: "relative", height : screenDimensions.height, width: screenDimensions.width, boxSizing : "border-box", touchAction : "none", userSelect : "none", overflow: "hidden"}}>
+    {!loggedIn ? <LoginScreen loggedIn = {loggedIn} setLoggedIn = {setLoggedIn} dimensions = {{screenHeight : screenDimensions.height - outerBorderWidth , screenWidth : screenDimensions.width - outerBorderWidth}}/> :
+        <>
         <div 
             className = "innerWindow" 
             onPointerMove = {mouseMove} 
@@ -322,6 +320,7 @@ function Screen() {
                 setFileSystemState = {setFileSystemState}
                 addToQuickAccessList = {addToQuickAccessList}
             />
+
             <processManagmentContext.Provider value = {{addProgram : addProgram, removeProgram : removeProgram, editProgram : editProgram, editProgramFileManager : editProgramFileManager, programs :programs}}>
             {programs.map(program => {
                 return (
@@ -360,7 +359,9 @@ function Screen() {
         </processManagmentContext.Provider>
         </div>
         <DesktopMenu addProgram = {addProgram} removeProgram = {removeProgram} setBackgroundImageUrl = {setBackgroundImageUrl} displayPrograms = {displayPrograms} screenWidth = {screenDimensions.width - outerBorderWidth}/>
-    </div>}
+        </>
+        }
+    </div>
     </ThemeProvider>
 
     )
