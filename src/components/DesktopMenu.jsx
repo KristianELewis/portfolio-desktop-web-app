@@ -103,7 +103,7 @@ const DesktopMenu = (props) => {
     const handleSetBackgroundImage = (type, file) => {
         if(type === "Image Viewer")
         {
-            setBackgroundImageUrl(file.data);
+            setBackgroundImageUrl(file.data.src);
         }
         setCurrentFolderId(null)
     }

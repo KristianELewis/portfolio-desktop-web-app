@@ -5,7 +5,6 @@
     This is a much simplier implementation of the Folders deletion section. See the folder deletion section explanation and notes
 
 =====================================================================*/
-
 export class File {
     constructor(name, parent, id, prevPath, type, data) {
         this.name = name;
@@ -177,12 +176,17 @@ export class Folder {
     }
 }
 
+
+
 export const defaultFileSystem = () => {
     const home = new Folder("Home", null, 0, "")
     home.addNewFolder("Desktop");
     home.addNewFolder("Documents");
     home.addNewFolder("Pictures");
 
+    const data = {src : "/testBackground.jpg", dimensions : {width : 1920, height : 1080}}
+
+    home.children[2].addNewFile("Background", "Image Viewer", data)
     //This will be implented when fileManager functionality is improved
     //home.addNewFolder("Recent");
     //This will be implemented if/when a File Downloader program is made

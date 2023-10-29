@@ -85,7 +85,6 @@ function useWindowSize() {
 
 function Screen() {
 
-    const [backgroundImageUrl, setBackgroundImageUrl] = useState(null)
     const [loggedIn, setLoggedIn] = useState(false);
 
     //const [file, setFile] = useState(null);
@@ -97,12 +96,15 @@ function Screen() {
     
 
     //QuickAccessList should be a part of the file system
+    //These two things are messy. I should find a different way to do this
     const [quickAccessList, setQuickAccessList] = useState([
         {location : FileSystem.current, key : FileSystem.current.fullPath + FileSystem.current.id, name : "Home"},
         {location : FileSystem.current.children[0], key : FileSystem.current.children[0].fullPath + FileSystem.current.children[0].id, name : "Desktop"},
         {location : FileSystem.current.children[1], key : FileSystem.current.children[1].fullPath + FileSystem.current.children[1].id, name : "Documents"},
         {location : FileSystem.current.children[2], key : FileSystem.current.children[2].fullPath + FileSystem.current.children[2].id, name : "Pictures"}
     ])
+    const [backgroundImageUrl, setBackgroundImageUrl] = useState(FileSystem.current.children[2].children[0].data.src)
+
     const addToQuickAccessList = (quickAccessItem) => {
         setQuickAccessList((prevState) => {
             if(prevState.findIndex(existingQuickItem => existingQuickItem.key === quickAccessItem.key) === -1){
