@@ -11,12 +11,7 @@ const TextEditor = lazy(() => import('./programs/TextEditor'));
 
 
 //materialUI
-import CloseIcon from '@mui/icons-material/Close';
-import Typography from '@mui/material/Typography';
-
 import { windowWidthContext, fileContext, programContext } from './Context';
-
-import { Folder, File } from './programs/FileManager/fileSystem';
 
 const Window = (props) => {
     //const [file, setFile] = useState(null)

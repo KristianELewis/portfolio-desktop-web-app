@@ -4,10 +4,8 @@ import Window from './Window'
 import Desktop from './Desktop';
 import DesktopMenu from './DesktopMenu'
 import LoginScreen from './LoginScreen';
-import { Folder, File, defaultFileSystem } from './programs/FileManager/fileSystem';
 
-import FileComp from './programs/FileManager/FileComp'
-import FolderComp from './programs/FileManager/FolderComp'
+import { defaultFileSystem } from './programs/FileManager/fileSystem';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';

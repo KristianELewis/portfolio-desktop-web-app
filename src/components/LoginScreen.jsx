@@ -1,5 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
-import Paper from '@mui/material/Paper';
+import React, {useState, useEffect} from "react";
 import TextField from "@mui/material/TextField";
 import { Avatar } from "@mui/material";
 const LoginScreen = (props) => {

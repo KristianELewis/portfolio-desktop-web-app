@@ -1,4 +1,4 @@
-import React, { useState , useRef} from 'react'
+import React from 'react'
 
 import Screen from './components/Screen'
 import './App.css'
@@ -8,8 +8,4 @@ function App() {
         <Screen></Screen>
     )
 }
-
 export default App;
-
-//<div className = "mainContainer" >
-//</div>

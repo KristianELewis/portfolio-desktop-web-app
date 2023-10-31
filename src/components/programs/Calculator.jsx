@@ -6,7 +6,7 @@ This is fine for now but at some point I want to have it mirror the gnome calcul
 
 ===================================================*/
 import React, {useState, useContext} from 'react'
-import { windowWidthContext, programContext } from '../Context';
+import { programContext } from '../Context';
 
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'

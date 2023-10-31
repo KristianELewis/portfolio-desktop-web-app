@@ -1,19 +1,12 @@
 import React, {useState, useContext} from 'react'
 import { windowWidthContext, programContext, processManagmentContext } from '../Context';
 
-import FileManager from './FileManager/FileManager';
-
 import Paper from '@mui/material/Paper'
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography'
 import CloseIcon from '@mui/icons-material/Close';
-
 import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-
-import AppBar from '@mui/material/AppBar';
-import Backdrop from '@mui/material/Backdrop'
 
 /*========================================================================
 
