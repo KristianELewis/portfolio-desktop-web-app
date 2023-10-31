@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, { useState, useEffect, lazy, Suspense, useContext, useRef } from 'react'
 
 //Programs
-import TextEditor from './programs/TextEditor';
+//import TextEditor from './programs/TextEditor';
 import Calculator from './programs/Calculator';
 import CalorieCounter from './programs/CalorieCounter/CalorieCounter';
 import PdfReader from './programs/PdfReader';
 import ImageViewer from './programs/ImageViewer';
-
 import FileManager from './programs/FileManager/FileManager';
+const TextEditor = lazy(() => import('./programs/TextEditor'));
 
 
 //materialUI
@@ -102,7 +102,7 @@ const Window = (props) => {
 
         if (props.name === "Text Editor")
         {
-            setProgram(<TextEditor editProgram = {editProgram}></TextEditor>)
+            setProgram(<Suspense><TextEditor editProgram = {editProgram}></TextEditor></Suspense>)
         }
         else if (props.name === "Calculator")
         {
@@ -120,7 +120,11 @@ const Window = (props) => {
         else if (props.name === "File Manager")
         {
             //pretty sure the add Program should be removed
+            
+
             setProgram(<FileManager addProgram = {addProgram} version = "Standalone"></FileManager>)
+           
+
         }
         else if (props.name === "Calorie Counter")
         {
