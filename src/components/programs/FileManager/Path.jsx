@@ -63,27 +63,38 @@ const Path = (props) => {
 
     This allows for horizontal scrolling of the path when it is overflowing
 
-    -Its a little jumpy right now
-        -To fix this I need to learn about debouncing and useDefferedValue.
-        -I have to figure out which way will work best for this
-        
-    -There some issue with menu items getting larger automatically for some responsive design. I need to fix this
+    -The timer prevents jump behavoir from multiple calls while a scroll is in progress
+        -This is a sort of debounce
+    -everytime the user scrolls, the amount scrolled increase
+    -If the timer is not set yet, a short timer will be set
+        -at the end of the timer the path will be scrolled in the x direction bu the accumulated scroll amount
 
-
-    -From what I understand after a very brief search
-        -I add up the values of the amount scrolled.
-        -I can then do one of two things
-            -I can wait till user input ends and then scroll by the accumulated amount
-            -I can wait for a period of time and then scroll by the amount accumulated in that time
-        
-    -I think the second option is what I want
+    -this could be adjusted to wait for the end of user input instead
+        -its still a little jumpy on longer scrolls.
+        -In normal use waiting for the user to finish scrolling should cause any problems
+            -The user would purposefully need to continuesly scroll to even notice
+        -not sure if an adjustment is necessary, this works fine
     -------------------------------------*/
+
+    let scrollTimer;
+    const scrollAmount = useRef(0)
     const scrollRef = useRef(null)
+    const scrollTimerAction = () => {
+        scrollRef.current.scrollBy(scrollAmount.current, 0)
+        scrollAmount.current = 0;
+        scrollTimer = null
+    }
     const handleScrolling = (e) => {
-        scrollRef.current.scrollBy(e.deltaY, 0)
+        const scrollIncrement = e.deltaY;
+        scrollAmount.current += scrollIncrement
+        if(!scrollTimer){
+            scrollTimer = setTimeout(() => {
+                scrollTimerAction()
+            }, 100)
+        }   
     }
     
-    /*For scrolling functionality, but without the scrollwheel, I needed to use a class*/
+    /*For scrolling functionality, but without the scrollwheel, I needed to use a css class*/
     return (
         <Paper 
             onTouchMove = {(e)=> {e.stopPropagation()}}
