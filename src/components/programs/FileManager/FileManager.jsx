@@ -504,7 +504,7 @@ const FileManager = () => {
     const quickAccess = (destinationFolder, key) => {
         if(destinationFolder.dirty === true){
             //again probably should use a back drop for this
-            console.log("This file is deleted")
+            //console.log("This file is deleted")
             removeFromQuickAccessList(key)
         }
         else{
@@ -525,7 +525,7 @@ const FileManager = () => {
         if(destinationFolder.dirty === true){
             //again probably should use a back drop for this
             //If this is true then the current path is probably deleted too, this should probably not even happen with the way deleted files are handled by fileManager
-            console.log("This file is deleted")
+            //console.log("This file is deleted")
         }
         else{
             const prevFolder = currentFolder.current

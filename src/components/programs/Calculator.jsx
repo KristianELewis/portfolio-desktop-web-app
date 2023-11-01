@@ -116,7 +116,6 @@ const Calculator = () => {
                 setOperation("")
             }
         }
-        console.log("evaluate")
     }
 
 

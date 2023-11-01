@@ -190,8 +190,8 @@ function Screen() {
         const newPrograms = programs.map((program) => {
             if(program.id === id)
             {
-                console.log(program.name)
-                console.log(file)
+                //console.log(program.name)
+                //console.log(file)
                 return {
                     id: program.id,
                     zLevel: program.zLevel,

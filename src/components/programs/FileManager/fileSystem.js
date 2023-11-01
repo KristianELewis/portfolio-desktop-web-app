@@ -53,7 +53,7 @@ export class File {
             this.parent.deleteChild(this.id)
         }
         else{
-            console.log("File is protected")
+            //console.log("File is protected")
             return "This is a protected File and can not be deleted."
         }
     }
@@ -159,7 +159,7 @@ export class Folder {
             this.parent.deleteChild(this.id)
         }
         else{
-            console.log("Folder is protected")
+            //console.log("Folder is protected")
             return "This is a protected Folder and can not be deleted." //This could be sent to a future terminal program if the delete function was called from there
         }
     }
