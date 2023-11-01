@@ -1,7 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense, useContext, useRef } from 'react'
 
 //Programs
-//import TextEditor from './programs/TextEditor';
 import Calculator from './programs/Calculator';
 import CalorieCounter from './programs/CalorieCounter/CalorieCounter';
 import PdfReader from './programs/PdfReader';
@@ -9,13 +8,10 @@ import ImageViewer from './programs/ImageViewer';
 import FileManager from './programs/FileManager/FileManager';
 const TextEditor = lazy(() => import('./programs/TextEditor'));
 
-
 //materialUI
 import { windowWidthContext, fileContext, programContext } from './Context';
 
 const Window = (props) => {
-    //const [file, setFile] = useState(null)
-
     const {
         screenDimensions, 
         windowPositioningInUse, 
@@ -32,13 +28,61 @@ const Window = (props) => {
         addToQuickAccessList, 
         removeFromQuickAccessList
     } = props;
-    //console.log("Window Render: " + file)
 
-    //console.log("rendering Window")
-    const [position, setPosition] = useState({left: 50, top: 50, width: 300, height: 300, prevX : null, prevY : null})
+    /*=======================================================
+
+        SETTING DEFAULT VALUES 
+
+    =======================================================*/
+    const [position, setPosition] = useState(() => {
+        if(props.screenWidth >= 720 && props.screenHeight >= 500){
+            const leftInit = (props.screenWidth / 2) - (720 / 2)
+            const topInit =  (props.screenHeight / 2) - (500 / 2)
+            return ({left: leftInit, top: topInit, width: 720, height: 500, prevX : null, prevY : null})
+        }
+        else if(props.screenWidth >= 720)
+        {
+            const leftInit = (props.screenWidth / 2) - (720 / 2)
+            return ({left: leftInit, top: 0, width: 720, height: props.screenHeight, prevX : null, prevY : null})
+        }
+        else if(props.screenHeight >= 500)
+        {
+            const topInit =  (props.screenHeight / 2) - (500 / 2)
+            return ({left: 0, top: topInit, width: props.screenWidth, height: 500, prevX : null, prevY : null})
+        }
+        else{
+            return ({left: 0, top: 0, width: props.screenWidth, height: props.screenHeight, prevX : null, prevY : null})
+        }
+    })  
     //not sure about this, might be a better way to do this other than using a state
-    const [program, setProgram] = useState(null)
-    //maybe move if statements inside set position?
+    const [program, setProgram] = useState(() => { 
+        if (props.name === "Text Editor")
+        {
+            return (<Suspense><TextEditor></TextEditor></Suspense>)
+        }
+        else if (props.name === "Calculator")
+        {
+            return (<Calculator></Calculator>)
+        }
+        else if (props.name === "PDF Viewer")
+        {
+            return (<PdfReader></PdfReader>)
+        }
+        else if (props.name === "Image Viewer")
+        {
+
+            return (<ImageViewer></ImageViewer>)
+        }
+        else if (props.name === "File Manager")
+        {
+            return (<FileManager></FileManager>)
+        }
+        else if (props.name === "Calorie Counter")
+        {
+            return (<CalorieCounter></CalorieCounter>)
+        }
+        return null
+    })
     /*=======================================================
 
         SCREEN DIMENSION CHANGE 
@@ -71,13 +115,6 @@ const Window = (props) => {
         }
     }, [props.screenHeight])
 
-    /*=======================================================
-
-        SETTING DEFAULT VALUES 
-        if the dimensions of the screen change, these two useEffects will make sure the window is still contained within the screens boundries
-
-    =======================================================*/
-
     /*const displayInfo = () => {
         console.log("left: " + position.left)
         console.log("width: " + position.width)
@@ -85,45 +122,6 @@ const Window = (props) => {
         console.log("height: " + position.height)
     }*/
 
-    //this should be an effect
-    //Should it though? Initializations should be done with props, not useEffect. This can be done differently.
-    //When saving the file, this will reset position, not sure if it has a similar effect in normal use in anyway.
-    //If it becomes an issue I can set this to use a previous state
-    //These two if statements should be inside of the state intializers
-    useEffect(() => {
-        if(props.screenWidth >= 720 && props.screenHeight >= 500){
-            setPosition({left: 50, top: 50, width: 720, height: 500})
-        }
-        else{
-            setPosition({left: 0, top: 0, width: props.screenWidth, height: props.screenHeight})
-        }
-
-        if (props.name === "Text Editor")
-        {
-            setProgram(<Suspense><TextEditor></TextEditor></Suspense>)
-        }
-        else if (props.name === "Calculator")
-        {
-            setProgram(<Calculator></Calculator>)
-        }
-        else if (props.name === "PDF Viewer")
-        {
-            setProgram(<PdfReader></PdfReader>)
-        }
-        else if (props.name === "Image Viewer")
-        {
-
-            setProgram(<ImageViewer></ImageViewer>)
-        }
-        else if (props.name === "File Manager")
-        {
-            setProgram(<FileManager></FileManager>)
-        }
-        else if (props.name === "Calorie Counter")
-        {
-            setProgram(<CalorieCounter></CalorieCounter>)
-        }
-    }, [])
     /*========================================================
 
     MOUSE TRACKING AND WINDOW POSITIONING
@@ -163,22 +161,20 @@ const Window = (props) => {
 
 
 
-    //not really necesasry
+    //not really necesasry and isn't used. This should be deleted probably
     const handlePointerup = (e) => {
         props.removeFunction()
     }
+
     const handlePointerDown = (e) => {
         setPosition((prevState) => {return {...prevState, prevX : e.clientX, prevY : e.clientY}})
         props.changeFunction( updatePointerPosition )
 
     }
     
-    //mouse up may be redundant
-
     //position : "relative" must be placed in here. It is beining overwritten
     //padding also gets overwritten...
-
-
+    //^^^^ these are old comments. There out of context in here. Might not be relevant anymore
     const handleExit = () => {
         props.removeProgram(props.id)
     }
@@ -194,6 +190,8 @@ const Window = (props) => {
         These share a lot of functionality. Maybe The could be made more generic, But using previous state makes that hard.
         I could potentially move this into individual components, but that might add uncessary complexity, while mkaing it harder to follow.
         Although much of this is just the same kind of bounds checking. Maybe just put the bounds checking if statments into their own functions, and then use those in these functions
+        
+        This needs to be refactored
 
     =================================================*/
 
@@ -453,15 +451,9 @@ const Window = (props) => {
         }}>
                 {/* this context should be renamed*/}
                 <windowWidthContext.Provider value = {{width : position.width, height : position.height, windowPositioningInUse : windowPositioningInUse}}>
-                {/* I think file system context can be brought up a level. 
-                
-                    You think? why the hell is this even in here. I need to bring this up a level. Desktop Icons aren't using this, I guess they're passed the values?
-                    I guess I see why I just passed it down, but this seems weird and unecessary.
-                    The use of context in this app is messy, I will need to deal with this
-
-                    I will refactor this when I make a desktop component, for now it will stay
-                
-                    Man previous me was furious at previouser me
+                {/* 
+                    Not sure about this fileSystem context. There was some heated debate I had with myself here about it.
+                    Probably should be moved up to screen. Desktop also needs this context anyway
                 */}
                 <fileContext.Provider value = {{
                     FileSystem : FileSystem.current, 
