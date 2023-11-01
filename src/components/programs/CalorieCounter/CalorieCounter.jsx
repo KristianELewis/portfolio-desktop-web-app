@@ -73,3 +73,17 @@ const CalorieCounter = (props) => {
 }
 
 export default CalorieCounter;
+
+/*
+    This is a better backdrop functionality, but backdrops will go off the screen. Give backdrops a scroll bar and this could be okay
+
+            <Paper elevation = {0} style = {{height: "100%", position : "relative", overflow: 'hidden', borderRadius : "0 0 10px 10px"}}>
+                <div style = {{display: "flex", placeItems: "center", height : "100%", overflow: 'auto'}}>
+                    <div style = {{ margin : "auto", textAlign : "center", userSelect: "none"}}>
+                        <Suspense>
+                            <App media700W = {media700W} media600W = {media600W} media500W = {media500W}/>
+                        </Suspense>
+                    </div>
+                </div>
+            </Paper>
+*/

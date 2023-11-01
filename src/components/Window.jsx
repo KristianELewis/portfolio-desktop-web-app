@@ -497,3 +497,18 @@ const Window = (props) => {
     )
 }
 export default Window;
+/*
+
+This was an idea for having the resizers not bound to the overflow hidden of the outter screen.
+It might instead be better to just double tap and resize the window to something smaller than the current screen
+
+<div className= "left-right-resizer" style = {{height : position.height + "px", width : "15px", backgroundColor : "green", position : "fixed", left: (position.left + "px"), top : (position.top + 5 + "px")}} onPointerDown = {handleResizeleft}></div>
+<div className= "left-right-resizer" style = {{height : position.height + "px", width : "15px", backgroundColor : "green", position : "fixed", left : (position.left + position.width ) + "px", top : position.top + 5 + "px"}} onPointerDown = {handleResizeRight}></div>
+<div className = "top-bottom-resizer" style = {{height : "15px", width : position.width + "px", backgroundColor : "green", position : "fixed", top : position.top - 5 + "px"}} onPointerDown = {handleResizeTop}/>
+<div className = "top-bottom-resizer" style = {{height : "15px", width : position.width + "px", backgroundColor : "green", position : "fixed", top : (position.top + position.height ) + "px"}} onPointerDown = {handleResizeBottom}/>
+
+<div className = "nwse-resizer" style = {{height : "20px", width : "20px", backgroundColor : "green", position : "fixed", left : (position.width -5) + "px", top : (position.height -5 ) + "px"}} onPointerDown = {handleResizeBottomRight}/>
+<div className = "nwse-resizer" style = {{height : "20px", width : "20px", backgroundColor : "green", position : "fixed", left : "-10px", top : "-10px"}} onPointerDown = {handleResizeTopLeft}/>
+<div className = "nesw-resizer" style = {{height : "20px", width : "20px", backgroundColor : "green", position : "fixed", left : (position.width -5) + "px", top : "-10px"}} onPointerDown = {handleResizeTopRight}/>
+<div className = "nesw-resizer" style = {{height : "20px", width : "20px", backgroundColor : "green", position : "fixed", left : "-10px", top : (position.height -5) + "px"}} onPointerDown = {handleResizeBottomLeft}/>
+*/

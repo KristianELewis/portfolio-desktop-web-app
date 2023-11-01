@@ -30,6 +30,7 @@ ________________________________________________________________________________
 
 import dayjs from 'dayjs';
 const hostURL = "http://localhost:3000"
+//const hostURL = "https://kristianlewis.com"
 
 //this should be in the custom errors file
 import {NotFoundError, AuthError, ServerSideError, UnknownError, NoProfilePicture} from './customErrors'
