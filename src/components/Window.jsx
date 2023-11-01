@@ -87,6 +87,9 @@ const Window = (props) => {
 
     //this should be an effect
     //Should it though? Initializations should be done with props, not useEffect. This can be done differently.
+    //When saving the file, this will reset position, not sure if it has a similar effect in normal use in anyway.
+    //If it becomes an issue I can set this to use a previous state
+    //These two if statements should be inside of the state intializers
     useEffect(() => {
         if(props.screenWidth >= 720 && props.screenHeight >= 500){
             setPosition({left: 50, top: 50, width: 720, height: 500})
@@ -97,7 +100,7 @@ const Window = (props) => {
 
         if (props.name === "Text Editor")
         {
-            setProgram(<Suspense><TextEditor editProgram = {editProgram}></TextEditor></Suspense>)
+            setProgram(<Suspense><TextEditor></TextEditor></Suspense>)
         }
         else if (props.name === "Calculator")
         {
@@ -114,21 +117,11 @@ const Window = (props) => {
         }
         else if (props.name === "File Manager")
         {
-            //pretty sure the add Program should be removed
-            
-
-            setProgram(<FileManager addProgram = {addProgram} version = "Standalone"></FileManager>)
-           
-
+            setProgram(<FileManager></FileManager>)
         }
         else if (props.name === "Calorie Counter")
         {
-            //When saving the file, this will reset position, not sure if it has a similar effect in normal use in anyway.
-            //If it becomes an issue I can set this to use a previous state
             setProgram(<CalorieCounter></CalorieCounter>)
-        }
-        else{
-
         }
     }, [])
     /*========================================================

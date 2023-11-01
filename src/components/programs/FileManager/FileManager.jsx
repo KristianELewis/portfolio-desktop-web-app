@@ -34,14 +34,13 @@ import FileComp from './FileComp';
 
 import { processManagmentContext, programContext, windowWidthContext } from '../../Context'
 
-const FileManager = (props) => {
+const FileManager = () => {
 
     //used for preventing unwanted repositions
     const preventPositioning = (e) =>{
         e.stopPropagation()
     }
 
-    //const { version, clickFunction } = props;
     const { addProgram, editProgram, removeProgram, editProgramFileManager } = useContext(processManagmentContext)
     const programInfo = useContext(programContext);
 
@@ -175,7 +174,13 @@ const FileManager = (props) => {
     const addNewTxtFile = () => {
         if (folderNameInput !== ""){
             //I have to figure something else out about this. File types and process types should be separated
-            currentFolder.current.addNewFile(folderNameInput, "Text Editor", null);
+            const data = [
+                {
+                    type: 'paragraph',
+                    children: [{ text: '' }],
+                },
+            ]
+            currentFolder.current.addNewFile(folderNameInput, "Text Editor", data);
             setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
             setFileSystemState((prevState) => {return prevState * -1})
         }

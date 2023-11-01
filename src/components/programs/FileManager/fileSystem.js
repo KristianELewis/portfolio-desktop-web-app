@@ -1,5 +1,14 @@
 /*=====================================================================
 
+    DATA TYPES
+    "Text Editor"
+    "PDF Viewer"
+    "Image Viewer"
+    "Folder"
+
+=====================================================================*/
+/*=====================================================================
+
     DELETION SECTION
 
     This is a much simplier implementation of the Folders deletion section. See the folder deletion section explanation and notes
@@ -14,27 +23,7 @@ export class File {
         this.fullPath = prevPath + "/" + name;
         this.protection = false;
         this.dirty = false;
-        //The only reason this is like this is because of the default text editor data
-        //It should just be provided and this if statement removed
-        if (type === "Text Editor"){
-            this.data = [
-                {
-                    type: 'paragraph',
-                    children: [{ text: 'init' }],
-                },
-            ]
-        }
-        //Probably should just use an else statement here or something. Maybe eventually just git rid of this
-        //if else block. Just pass init data down
-        else if(type === "PDF Viewer") {
-            this.data = data
-        }
-        else if(type === "Image Viewer") {
-            this.data = data
-        }
-        else{
-            this.data = null
-        }
+        this.data = data;
     }
     toggleProtection () {
         if(this.protection === false){
@@ -177,16 +166,28 @@ export class Folder {
 }
 
 
-
+//There probably is a better way to do this. I should refactor this later
+//Some things like adding specific file types could be made more generic
 export const defaultFileSystem = () => {
     const home = new Folder("Home", null, 0, "")
     home.addNewFolder("Desktop");
     home.addNewFolder("Documents");
     home.addNewFolder("Pictures");
 
-    const data = {src : "/testBackground.jpg", dimensions : {width : 1920, height : 1080}}
+    const backgroundPictureData = {src : "/testBackground.jpg", dimensions : {width : 1920, height : 1080}};
+    home.children[2].addNewFile("Background", "Image Viewer", backgroundPictureData);
 
-    home.children[2].addNewFile("Background", "Image Viewer", data)
+    const howToData = [
+        {
+            type: 'paragraph',
+            children: [{ text: 'Test 123' }],
+        },
+    ];
+    home.children[0].addNewFile("How to use", "Text Editor", howToData);
+
+    const resumePDF = "/Resume.pdf";
+    home.children[0].addNewFile("Resume.pdf", "PDF Viewer", resumePDF);
+
     //This will be implented when fileManager functionality is improved
     //home.addNewFolder("Recent");
     //This will be implemented if/when a File Downloader program is made

@@ -32,9 +32,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { programContext, processManagmentContext } from '../Context';
 
-const TextEditor = (props) => {
-    //const {editProgram} = props;
-
+const TextEditor = () => {
     const processManagmentInfo = useContext(processManagmentContext);
     const {editProgram, addProgram, removeProgram, programs} = processManagmentInfo;
 

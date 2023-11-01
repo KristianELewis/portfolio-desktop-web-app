@@ -92,7 +92,13 @@ const Desktop = (props) => {
     }
     const addNewTxtFile = () => {
         if (folderNameInput !== ""){
-            desktopFolder.addNewFile(folderNameInput, "Text Editor", null);
+            const data = [
+                {
+                    type: 'paragraph',
+                    children: [{ text: '' }],
+                },
+            ]
+            desktopFolder.addNewFile(folderNameInput, "Text Editor", data);
             setFileSystemState((prevState) => {return prevState * -1})
         }
         setFolderNameInput("");
