@@ -200,6 +200,10 @@ export const defaultFileSystem = () => {
     for(const child of home.children)
     {
         child.toggleProtection()
+        for(const child_ of child.children)
+        {
+            child_.toggleProtection()
+        }
     }
     return home;
 }
