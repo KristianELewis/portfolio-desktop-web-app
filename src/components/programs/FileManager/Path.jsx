@@ -97,7 +97,12 @@ const Path = (props) => {
     /*For scrolling functionality, but without the scrollwheel, I needed to use a css class*/
     return (
         <Paper 
-            onTouchMove = {(e)=> {e.stopPropagation()}}
+            onPointerDown = {(e)=> {
+                if (e.pointerType === "touch")
+                {
+                    e.stopPropagation()
+                }
+            }}
             onWheel={handleScrolling} 
             className = "Path" 
             ref = {scrollRef} 
@@ -108,7 +113,8 @@ const Path = (props) => {
                 overflowX : "auto", 
                 maxHeight : "38px", 
                 textAlign : "left", 
-                whiteSpace : "nowrap"
+                whiteSpace : "nowrap",
+                marginLeft : "20px"
                 }}>
 
                 <MenuList sx = {{padding : "0px"}}>

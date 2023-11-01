@@ -560,16 +560,16 @@ const FileManager = () => {
 
             =======================================================*/}
             <Paper elevation = {2} sx = {{ flexGrow: 0, display : "flex", alignItems : "center", padding : "5px", borderBottom : "rgb(18, 18, 18) solid 1px", borderRadius : "10px 10px 0 0"}} onPointerDown = {handlePointerDown}>
-                    <IconButton size = "small" onClick = {handleBackwardButton} onPointerDown = {preventPositioning} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
-                    <IconButton size = "small" onClick = {handleForwardButton} onPointerDown = {preventPositioning} sx = {{marginLeft : "5px", borderRadius : "5px"}} disabled = {forwardList.length === 0 ? true : false}><ChevronRightIcon/></IconButton>
-                    
-                    <Path 
-                        path = {currentFolderView.fullPath} 
-                        id = {id} 
-                        currentFolder = {currentFolder.current} 
-                        pathTraverse = {pathTraverse}
-                        preventPositioning = {preventPositioning}
-                        />
+                <IconButton size = "small" onClick = {handleBackwardButton} onPointerDown = {preventPositioning} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
+                <IconButton size = "small" onClick = {handleForwardButton} onPointerDown = {preventPositioning} sx = {{marginLeft : "5px", borderRadius : "5px"}} disabled = {forwardList.length === 0 ? true : false}><ChevronRightIcon/></IconButton>
+                
+                <Path 
+                    path = {currentFolderView.fullPath} 
+                    id = {id} 
+                    currentFolder = {currentFolder.current} 
+                    pathTraverse = {pathTraverse}
+                    preventPositioning = {preventPositioning}
+                    />
                     
                 <CloseIcon 
                     sx = {{
