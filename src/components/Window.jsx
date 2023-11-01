@@ -178,9 +178,38 @@ const Window = (props) => {
     const handleExit = () => {
         props.removeProgram(props.id)
     }
+    const clickCounter = useRef(0)
     const focusWindow = () => {
         //console.log("focus")
         props.focusWindow(props.id)
+        if (clickCounter.current === 0)
+        {
+            clickCounter.current = 1;
+            setTimeout(() => {
+                console.log("timeout")
+                clickCounter.current = 0
+            }, 500)
+        }
+        else{
+            console.log("clicked twice")
+            setPosition( (preValue) => {
+
+                if(props.screenWidth >= 720 && props.screenHeight >= 500){
+                    return ({...preValue, width: 720, height: 500})
+                }
+                else if(props.screenWidth >= 720)
+                {
+                    return ({...preValue, top: 10, width: 720, height: props.screenHeight -20})
+                }
+                else if(props.screenHeight >= 500)
+                {
+                    return ({...preValue, left: 10, width: props.screenWidth - 20, height: 500})
+                }
+                else{
+                    return ({...preValue, left: 10, top: 10, width: props.screenWidth - 20, height: props.screenHeight - 20})
+                }
+            })
+        }
     }
 
     /*=================================================

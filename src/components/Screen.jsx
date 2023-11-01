@@ -121,7 +121,7 @@ function Screen() {
     const [windowPositioningInUse, setWindowPositioningInUse] = useState(false);
 
     const screenDimensions = useWindowSize();
-    const outerBorderWidth = 10;
+    const outerBorderWidth = 0;
     //const menuHeight = 64;
     const menuHeight = 40;
     /*=================================================
