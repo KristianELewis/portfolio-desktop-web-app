@@ -35,7 +35,7 @@ const QuickAccessItem = (props) =>{
     let timer;
     const touchStart = (e) => {
         const event = {clientX : e.touches[0].clientX, clientY : e.touches[0].clientY, preventDefault : e.preventDefault, stopPropagation : e.stopPropagation}
-        timer = setTimeout(() => handleContextMenu(event), 1000)
+        timer = setTimeout(() => handleContextMenu(event), 400)
     }
     const touchEnd = () => {
         if(timer){
