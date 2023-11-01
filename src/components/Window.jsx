@@ -477,10 +477,10 @@ const Window = (props) => {
                 Top
                 Bottom
                 ---------------*/}
-                <div className= "left-right-resizer" style = {{height : "100%", width : "10px", backgroundColor : "transparent", position : "absolute", left: "-10px"}} onPointerDown = {handleResizeleft}></div>
-                <div className= "left-right-resizer" style = {{height : "100%", width : "10px", backgroundColor : "transparent", position : "absolute", left : (position.width) + "px"}} onPointerDown = {handleResizeRight}></div>
-                <div className = "top-bottom-resizer" style = {{height : "10px", width : "100%", backgroundColor : "transparent", position : "absolute", top : "-10px"}} onPointerDown = {handleResizeTop}/>
-                <div className = "top-bottom-resizer" style = {{height : "10px", width : "100%", backgroundColor : "transparent", position : "absolute", top : (position.height) + "px"}} onPointerDown = {handleResizeBottom}/>
+                <div className= "left-right-resizer" style = {{height : "100%", width : "15px", backgroundColor : "transparent", position : "absolute", left: "-10px"}} onPointerDown = {handleResizeleft}></div>
+                <div className= "left-right-resizer" style = {{height : "100%", width : "15px", backgroundColor : "transparent", position : "absolute", left : (position.width - 5) + "px"}} onPointerDown = {handleResizeRight}></div>
+                <div className = "top-bottom-resizer" style = {{height : "15px", width : "100%", backgroundColor : "transparent", position : "absolute", top : "-10px"}} onPointerDown = {handleResizeTop}/>
+                <div className = "top-bottom-resizer" style = {{height : "15px", width : "100%", backgroundColor : "transparent", position : "absolute", top : (position.height - 5) + "px"}} onPointerDown = {handleResizeBottom}/>
                 {/*---------------
                 CORNER RESIZERS
                 +++++++++++++++++
@@ -489,10 +489,10 @@ const Window = (props) => {
                 Top Right
                 Bottom Left
                 ---------------*/}
-                <div className = "nwse-resizer" style = {{height : "15px", width : "15px", backgroundColor : "transparent", position : "absolute", left : (position.width -5) + "px", top : (position.height -5 ) + "px"}} onPointerDown = {handleResizeBottomRight}/>
-                <div className = "nwse-resizer" style = {{height : "15px", width : "15px", backgroundColor : "transparent", position : "absolute", left : "-10px", top : "-10px"}} onPointerDown = {handleResizeTopLeft}/>
-                <div className = "nesw-resizer" style = {{height : "15px", width : "15px", backgroundColor : "transparent", position : "absolute", left : (position.width -5) + "px", top : "-10px"}} onPointerDown = {handleResizeTopRight}/>
-                <div className = "nesw-resizer" style = {{height : "15px", width : "15px", backgroundColor : "transparent", position : "absolute", left : "-10px", top : (position.height -5) + "px"}} onPointerDown = {handleResizeBottomLeft}/>
+                <div className = "nwse-resizer" style = {{height : "20px", width : "20px", backgroundColor : "transparent", position : "absolute", left : (position.width -10) + "px", top : (position.height -10 ) + "px"}} onPointerDown = {handleResizeBottomRight}/>
+                <div className = "nwse-resizer" style = {{height : "20px", width : "20px", backgroundColor : "transparent", position : "absolute", left : "-10px", top : "-10px"}} onPointerDown = {handleResizeTopLeft}/>
+                <div className = "nesw-resizer" style = {{height : "20px", width : "20px", backgroundColor : "transparent", position : "absolute", left : (position.width -10) + "px", top : "-10px"}} onPointerDown = {handleResizeTopRight}/>
+                <div className = "nesw-resizer" style = {{height : "20px", width : "20px", backgroundColor : "transparent", position : "absolute", left : "-10px", top : (position.height -10) + "px"}} onPointerDown = {handleResizeBottomLeft}/>
         </div>
     )
 }
