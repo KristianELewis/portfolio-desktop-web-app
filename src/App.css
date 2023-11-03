@@ -1,6 +1,6 @@
 #root {
-    touch-action : "none";
-    -webkit-touch-callout: none; /* Safari */
+        touch-action : "none";
+  -webkit-touch-callout: none; /* Safari */
     -webkit-user-select: none; /* Chrome */     
        -moz-user-select: none; /* Firefox */
         -ms-user-select: none; /* Internet Explorer/Edge */
@@ -34,13 +34,16 @@ body {
     border-radius: 5px; */
     width: 1280px;
     margin: auto;
-
+    touch-action : "none";
+    user-select : "none";
 }
 /*should get renamed to inner screen or something */
 .innerWindow {
     position: relative;
     background-color: black;
     height: 720px;
+    touch-action : "none";
+    user-select : "none";
 }
 
 

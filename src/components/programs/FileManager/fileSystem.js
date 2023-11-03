@@ -174,7 +174,7 @@ export const defaultFileSystem = () => {
     home.addNewFolder("Documents");
     home.addNewFolder("Pictures");
 
-    const backgroundPictureData = {src : "/testBackground.jpg", dimensions : {width : 1920, height : 1080}};
+    const backgroundPictureData = {src : "/testBackground.png", dimensions : {width : 1920, height : 1080}};
     home.children[2].addNewFile("Background", "Image Viewer", backgroundPictureData);
 
     const howToData = [

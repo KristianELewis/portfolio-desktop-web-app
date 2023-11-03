@@ -59,7 +59,7 @@ const LoginScreen = (props) => {
         <>
         <div className = "blurredBackground"
             style = {{
-                backgroundImage : "url(testBackground.jpg)", 
+                backgroundImage : "url(testBackground.png)", 
                 width : "100%", 
                 height: "100%", 
                 position: "absolute", 
