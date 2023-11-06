@@ -86,7 +86,7 @@ const PdfReader = () => {
                     onPointerDown = {preventPositioning}
                 >
                     <MenuItem onClick={loadFile}>Load File</MenuItem>
-                    <MenuItem onClick={UnLoadFile}>unLoad File</MenuItem>
+                    {/* <MenuItem onClick={UnLoadFile}>unLoad File</MenuItem> */}
                 </Menu>
 
                 <Typography sx = {{width : "100%", textAlign : "center", userSelect : "none", justifySelf: "center"}}>{name}</Typography>

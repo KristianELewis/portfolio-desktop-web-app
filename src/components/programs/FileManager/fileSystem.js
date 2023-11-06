@@ -180,7 +180,24 @@ export const defaultFileSystem = () => {
     const howToData = [
         {
             type: 'paragraph',
-            children: [{ text: 'Test 123' }],
+            children: [{ text: `=================================================
+Hello and welcome.
+This website is meant to be used as a regular desktop computer.
+
+Clicking on files and folders will work similar to how they would on a regular operating system.
+
+You can move or resize windows in the way you normally would.
+Double clicking on the top bar of a program will quickly resize it to a default size.
+-------------------------------------------------------------------------------------
+The website supports touch devices but is built to be used with a mouse.
+You may encounter bugs if using a touch device!
+
+In the file manager the current path can grow large enough that you may need to scroll through it.
+Using a mouse you can move the file manager around while dragging on the path.
+A touch device can not move the file manager while touching the path.
+This is because touching the path will scroll through the path.
+There is a small section to the left of the path that you can use to move the file manager.
+=================================================` }],
         },
     ];
     home.children[0].addNewFile("How to use", "Text Editor", howToData);
