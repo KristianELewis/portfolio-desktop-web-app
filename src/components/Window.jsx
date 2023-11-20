@@ -6,6 +6,8 @@ import CalorieCounter from './programs/CalorieCounter/CalorieCounter';
 import PdfReader from './programs/PdfReader';
 import ImageViewer from './programs/ImageViewer';
 import FileManager from './programs/FileManager/FileManager';
+import PianoSynthJS from './programs/PianoSynthJS/PianoSynthJS';
+
 const TextEditor = lazy(() => import('./programs/TextEditor'));
 
 //materialUI
@@ -32,6 +34,8 @@ const Window = (props) => {
     /*=======================================================
 
         SETTING DEFAULT VALUES 
+
+        Should have a way to set separate default values for window width and height. It should probably be passed down through props
 
     =======================================================*/
     const [position, setPosition] = useState(() => {
@@ -80,6 +84,10 @@ const Window = (props) => {
         else if (props.name === "Calorie Counter")
         {
             return (<CalorieCounter></CalorieCounter>)
+        }
+        else if (props.name === "PianoSynthJS")
+        {
+            return (<PianoSynthJS></PianoSynthJS>)
         }
         return null
     })
@@ -179,21 +187,19 @@ const Window = (props) => {
         props.removeProgram(props.id)
     }
     const clickCounter = useRef(0)
+
+    //The double click to resize is getting annoying, it should probably only be used in the topbar
     const focusWindow = () => {
-        //console.log("focus")
         props.focusWindow(props.id)
         if (clickCounter.current === 0)
         {
             clickCounter.current = 1;
             setTimeout(() => {
-                console.log("timeout")
                 clickCounter.current = 0
             }, 500)
         }
         else{
-            console.log("clicked twice")
             setPosition( (preValue) => {
-
                 if(props.screenWidth >= 720 && props.screenHeight >= 500){
                     return ({...preValue, width: 720, height: 500})
                 }

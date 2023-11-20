@@ -7,6 +7,9 @@
             user-select: none; 
 }
 
+.keys:hover {
+    cursor : pointer;
+}
 body {
     background-color: black;
     padding: 0px;

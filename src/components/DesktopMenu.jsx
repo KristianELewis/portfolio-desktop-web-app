@@ -69,6 +69,10 @@ const DesktopMenu = (props) => {
         props.addProgram("Image Viewer", null)
         setFilesAnchor(null)
     }
+    const handlePianoSynthJS = () => {
+        props.addProgram("PianoSynthJS", null)
+        setFilesAnchor(null)
+    }
 
     /*
         for file managers, the file parameter will be just an object. It will hold the file manager version and clickehandler 
@@ -140,6 +144,8 @@ const DesktopMenu = (props) => {
                     <MenuItem onClick={handleAddImageViewer}>Image Viewer</MenuItem>
                     <MenuItem onClick={handleAddFileManager}>File Manager</MenuItem>
                     <MenuItem onClick={handleChangeDesktopBackground} >Change Desktop Background </MenuItem>
+                    <MenuItem onClick={handlePianoSynthJS}>PianoSynthJS</MenuItem>
+
                 </Menu>
             <Typography noWrap align = 'center' sx = {{ width : "100%", verticalAlign: "baseline", marginTop: "auto", marginBottom: "auto", paddingRight: "10px", textAlign : "right", userSelect : "none"}}>{dateTime}</Typography>
             {/*<Button onClick = {props.displayPrograms}>Display Info</Button>*/}
