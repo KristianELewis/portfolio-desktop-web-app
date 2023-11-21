@@ -30,7 +30,7 @@ const ImageViewer = () => {
 
     const { windowPositioningInUse, }= useContext(windowWidthContext)
     const programInfo = useContext(programContext);
-    const { file, id, name, handlePointerDown, handleExit } = programInfo;
+    const { file, id, name, handlePointerDown, doubleClickResize, handleExit } = programInfo;
 
     const [imgDimensions, setImgDimensions] = useState(() => loadImgDimensions(file))
     const [magnificationLevel, setMagnificationLevel] = useState(1);
@@ -79,11 +79,14 @@ const ImageViewer = () => {
         setFilesAnchor(null)
     }
     //================================================
-    
+    const handlePointerDownTopBar = (e) => {
+        handlePointerDown(e)
+        doubleClickResize()
+    }
     
     return(
         <div className = "windowMidContainer" style = {{width : "100%"}}>
-            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr 1fr", alignItems : "center"}} onPointerDown = {handlePointerDown}>
+            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr 1fr", alignItems : "center"}} onPointerDown = {handlePointerDownTopBar}>
                 <Button size = "small" color = 'inherit' onClick = {handleFilesClick} onPointerDown = {preventPositioning} sx = {{justifySelf : "flex-start", textTransform : "none", fontSize : "16px", padding : "0"}}>Files</Button>
                 <Menu
                     anchorEl={filesAnchor}

@@ -32,7 +32,7 @@ const CharButton = (props) => {
 
 const Calculator = () => {
     const programInfo = useContext(programContext);
-    const { file, id, name, handlePointerDown, handleExit } = programInfo;
+    const { file, id, name, handlePointerDown, doubleClickResize, handleExit } = programInfo;
 
     const [displayScreen, setDisplayScreen] = useState({value : "", isThereAPoint : false});
     const [previousValue, setPreviousValue] = useState("");
@@ -118,14 +118,17 @@ const Calculator = () => {
         }
     }
 
-
+    const handlePointerDownTopBar = (e) => {
+        handlePointerDown(e)
+        doubleClickResize()
+    }
     const preventPositioning = (e) =>{
         e.stopPropagation()
     }
     return (
         <div className = "windowMidContainer" style = {{width : "100%"}}>
             {/*Top Bar */}
-            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr", alignItems : "center"}} onPointerDown = {handlePointerDown}>
+            <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr", alignItems : "center"}} onPointerDown = {handlePointerDownTopBar}>
                 <Typography noWrap sx = {{width : "100%", userSelect : "none", paddingLeft : "10px", justifySelf : "start"}}>{ name }</Typography>
                 <CloseIcon 
                     sx = {{

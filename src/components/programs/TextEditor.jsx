@@ -37,7 +37,7 @@ const TextEditor = () => {
     const {editProgram, addProgram, removeProgram, programs} = processManagmentInfo;
 
     const programInfo = useContext(programContext);
-    const { file, id, name, handlePointerDown, handleExit} = programInfo;
+    const { file, id, name, handlePointerDown, doubleClickResize, handleExit} = programInfo;
 
     const loadData = () => {
         if(file){
@@ -187,8 +187,9 @@ const TextEditor = () => {
     const preventPositioning = (e) =>{
         e.stopPropagation()
     }
-    const handleTouching = (e) => {
+    const handlePointerDownTopBar = (e) => {
         handlePointerDown(e)
+        doubleClickResize()
     }
     return(
         <div className = "windowMidContainer" style = {{width : "100%"}}>
@@ -206,7 +207,7 @@ const TextEditor = () => {
                     gridTemplateColumns : "1fr 1fr 1fr", 
                     alignItems : "center"
                     }} 
-                onPointerDown = {handleTouching}
+                onPointerDown = {handlePointerDownTopBar}
             >
                     <Button size = "small" color = 'inherit' onClick = {handleFilesClick} onPointerDown = {preventPositioning} sx = {{justifySelf : "flex-start", textTransform : "none", fontSize : "16px", padding : "0"}}>Files</Button>
                     <Menu

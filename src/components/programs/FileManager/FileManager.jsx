@@ -50,7 +50,7 @@ const FileManager = () => {
     //the content height must be height - 49
     const contentHeight = height - 49;
 
-    const { file, id, name, handlePointerDown, handleExit } = programInfo;
+    const { file, id, name, handlePointerDown, doubleClickResize, handleExit } = programInfo;
     
     /*From the material ui demo ---------------------------------------*/
     const [contextMenu, setContextMenu] = useState(null);
@@ -547,6 +547,11 @@ const FileManager = () => {
     /*===============================================================================
     ---------------------------------------------------------------------------------
     ===============================================================================*/
+
+    const handlePointerDownTopBar = (e) => {
+        handlePointerDown(e)
+        doubleClickResize()
+    }
     return(
         <>
         {/*
@@ -559,7 +564,7 @@ const FileManager = () => {
             TOP BAR
 
             =======================================================*/}
-            <Paper elevation = {2} sx = {{ flexGrow: 0, display : "flex", alignItems : "center", padding : "5px", borderBottom : "rgb(18, 18, 18) solid 1px", borderRadius : "10px 10px 0 0"}} onPointerDown = {handlePointerDown}>
+            <Paper elevation = {2} sx = {{ flexGrow: 0, display : "flex", alignItems : "center", padding : "5px", borderBottom : "rgb(18, 18, 18) solid 1px", borderRadius : "10px 10px 0 0"}} onPointerDown = {handlePointerDownTopBar}>
                 <IconButton size = "small" onClick = {handleBackwardButton} onPointerDown = {preventPositioning} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
                 <IconButton size = "small" onClick = {handleForwardButton} onPointerDown = {preventPositioning} sx = {{marginLeft : "5px", borderRadius : "5px"}} disabled = {forwardList.length === 0 ? true : false}><ChevronRightIcon/></IconButton>
                 

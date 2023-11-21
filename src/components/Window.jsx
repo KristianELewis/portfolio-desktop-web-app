@@ -174,6 +174,8 @@ const Window = (props) => {
         props.removeFunction()
     }
 
+    //This is for moving the window
+    //should be renamed to something like move
     const handlePointerDown = (e) => {
         setPosition((prevState) => {return {...prevState, prevX : e.clientX, prevY : e.clientY}})
         props.changeFunction( updatePointerPosition )
@@ -186,11 +188,10 @@ const Window = (props) => {
     const handleExit = () => {
         props.removeProgram(props.id)
     }
-    const clickCounter = useRef(0)
 
-    //The double click to resize is getting annoying, it should probably only be used in the topbar
-    const focusWindow = () => {
-        props.focusWindow(props.id)
+    //This needs a check for if the new resizes is beyond the screen
+    const clickCounter = useRef(0)
+    const doubleClickResize = () => {
         if (clickCounter.current === 0)
         {
             clickCounter.current = 1;
@@ -216,6 +217,10 @@ const Window = (props) => {
                 }
             })
         }
+    }
+    //The double click to resize is getting annoying, it should probably only be used in the topbar
+    const focusWindow = () => {
+        props.focusWindow(props.id)
     }
 
     /*=================================================
@@ -498,7 +503,7 @@ const Window = (props) => {
                     addToQuickAccessList : addToQuickAccessList, 
                     removeFromQuickAccessList : removeFromQuickAccessList
                     }}>
-                <programContext.Provider value = {{id: id, file : file, name : name, handlePointerDown : handlePointerDown, handleExit : handleExit}}>
+                <programContext.Provider value = {{id: id, file : file, name : name, handlePointerDown : handlePointerDown, doubleClickResize : doubleClickResize, handleExit : handleExit}}>
                     {program}
                     {/*chooseProgram()*/}
                 </programContext.Provider>
