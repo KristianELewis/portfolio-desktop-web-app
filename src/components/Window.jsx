@@ -74,7 +74,6 @@ const Window = (props) => {
         }
         else if (props.name === "Image Viewer")
         {
-
             return (<ImageViewer></ImageViewer>)
         }
         else if (props.name === "File Manager")
@@ -538,6 +537,10 @@ const Window = (props) => {
 }
 export default Window;
 /*
+
+
+There is no outer screen border anymore
+probably just delete this, I wont be using this
 
 This was an idea for having the resizers not bound to the overflow hidden of the outter screen.
 It might instead be better to just double tap and resize the window to something smaller than the current screen
