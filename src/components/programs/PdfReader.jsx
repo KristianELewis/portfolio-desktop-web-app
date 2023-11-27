@@ -94,7 +94,7 @@ const PdfReader = () => {
                         {/* <MenuItem onClick={UnLoadFile}>unLoad File</MenuItem> */}
                     </Menu>
 
-                    <Typography sx = {{width : "100%", textAlign : "center", userSelect : "none", justifySelf: "center"}}>{name}</Typography>
+                    <Typography noWrap sx = {{width : "100%", textAlign : "center", userSelect : "none", justifySelf: "center"}}>{name}</Typography>
                     <CloseIcon 
                         sx = {{
                             justifySelf: "flex-end",

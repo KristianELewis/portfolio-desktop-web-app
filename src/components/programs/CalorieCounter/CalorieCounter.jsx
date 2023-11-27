@@ -50,7 +50,8 @@ const CalorieCounter = (props) => {
     return (
         <div className = "windowMidContainer" style = {{width : "100%"}}>
             <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr", alignItems : "center"}} onPointerDown = {handlePointerDownTopBar}>
-                <Typography sx = {{userSelect : "none", paddingLeft : "10px", justifySelf : "start"}}>{ name }</Typography>
+                {/*This has a specific style because it has no file options*/}
+                <Typography noWrap sx = {{width : "100%", userSelect : "none", paddingLeft : "10px", justifySelf : "start"}}>{ name }</Typography>
                 <CloseIcon 
                     sx = {{
                         justifySelf : "end",
