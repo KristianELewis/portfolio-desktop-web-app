@@ -182,13 +182,17 @@ export const defaultFileSystem = () => {
             type: 'paragraph',
             children: [{ text: `=================================================
 Hello and welcome.
-This website is meant to be used as a regular desktop computer.
 
-Clicking on files and folders will work similar to how they would on a regular operating system.
+Click on the start menu in the bottom left corner to choose a program.
 
-You can move or resize windows in the way you normally would.
-Double clicking on the top bar of a program will quickly resize it to a default size.
+You can move or resize any program window.
+
+If a window fills the screen and you have trouble reszing it, double click on the windows top bar.
+This will resize it to a size smaller then the screen.
 -------------------------------------------------------------------------------------
+
+A Note on Touch and Mobile Devices
+
 The website supports touch devices but is built to be used with a mouse.
 You may encounter bugs if using a touch device!
 
