@@ -103,7 +103,7 @@ const Folder = (props) => {
 
             <FolderIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
             
-            <p style = {{margin: "0px", userSelect: "none"}}>{ name }</p>
+            <p style = {{margin: "0px", userSelect: "none", textShadow: "1px 1px 2px #000000"}}>{ name }</p>
         </div>
 
         <Menu

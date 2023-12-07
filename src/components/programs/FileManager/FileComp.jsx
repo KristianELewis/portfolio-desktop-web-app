@@ -214,7 +214,7 @@ const FileComp = (props) => {
 
                 {icon}
                 
-                <p style = {{margin: "0px", userSelect: "none"}}>{ name }</p>
+                <p style = {{margin: "0px", userSelect: "none", textShadow: "1px 1px 2px #000000"}}>{ name }</p>
             </div>
 
             <Menu
