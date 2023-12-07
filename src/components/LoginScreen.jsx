@@ -55,11 +55,12 @@ const LoginScreen = (props) => {
         setTimeout(() => setLoggedIn(true), 100);
     }
     //Login screen will need to adjust for different displays
+    //maybe the background image should be dealt with differently
     return (
         <>
         <div className = "blurredBackground"
             style = {{
-                backgroundImage : "url(testBackground.png)", 
+                backgroundImage : "url(darkOcean.png)", 
                 width : "100%", 
                 height: "100%", 
                 position: "absolute", 

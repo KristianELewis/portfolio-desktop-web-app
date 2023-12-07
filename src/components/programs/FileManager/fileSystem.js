@@ -172,8 +172,25 @@ export const defaultFileSystem = () => {
     home.addNewFolder("Documents");
     home.addNewFolder("Pictures");
 
-    const backgroundPictureData = {src : "/testBackground.png", dimensions : {width : 1920, height : 1080}};
-    home.children[2].addNewFile("Background", "Image Viewer", backgroundPictureData);
+    //const backgroundPictureData = {src : "/darkOcean.png", dimensions : {width : 1920, height : 1080}};
+
+    const defaultPictureData = [
+        {src : "/darkOcean.png", dimensions : {width : 1920, height : 1080}},
+        {src : "/mountain.png", dimensions : {width : 1920, height : 1080}},
+        {src : "/beach.png", dimensions : {width : 768, height : 512}},
+        {src : "/beach2.png", dimensions : {width : 768, height : 512}},
+        {src : "/beach3.png", dimensions : {width : 512, height : 512}},
+        {src : "/officeView.png", dimensions : {width : 768, height : 768}},
+        {src : "/onTheJob.png", dimensions : {width : 512, height : 512}}
+    ]
+
+    home.children[2].addNewFile("Dark Ocean.png", "Image Viewer", defaultPictureData[0]);
+    home.children[2].addNewFile("Mountain.png", "Image Viewer", defaultPictureData[1]);
+    home.children[2].addNewFile("Beach.png", "Image Viewer", defaultPictureData[2]);
+    home.children[2].addNewFile("Beach 2.png", "Image Viewer", defaultPictureData[3]);
+    home.children[2].addNewFile("Beach 3.png", "Image Viewer", defaultPictureData[4]);
+    home.children[2].addNewFile("Office View.png", "Image Viewer", defaultPictureData[5]);
+    home.children[2].addNewFile("On The Job.png", "Image Viewer", defaultPictureData[6]);
 
     const howToData = [
         {
@@ -181,9 +198,12 @@ export const defaultFileSystem = () => {
             children: [{ text: `=================================================
 Hello and welcome.
 
-Click on the start menu in the bottom left corner to choose a program.
+Click on a shortcut to start that program.
+You can also click on the start menu in the bottom left corner to choose a program.
 
 You can move or resize any program window.
+
+You can change the background picture from the start menu.
 
 If a window fills the screen and you have trouble reszing it, double click on the windows top bar.
 This will resize it to a size smaller then the screen.

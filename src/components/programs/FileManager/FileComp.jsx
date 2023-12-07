@@ -62,12 +62,12 @@ const FileComp = (props) => {
         }
         else if(type === "Calorie Counter") //I think I'm gonna switch to a lookup table or something
         {
-            return <img src="CalorieCounterLogo50.png" alt="Calorie Counter" width="50px" height="50px" style = {{marginTop : "5px"}}></img>
+            return <img src="calorieCounterLogo.png" alt="Calorie Counter" width="50px" height="50px" style = {{marginTop : "5px"}}></img>
             //return <TerminalIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
         }
         else if(type === "PianoSynthJS") //I think I'm gonna switch to a lookup table or something
         {
-            return <img src="PianoSynthApp.png" alt="PianoSynthJS" width="50px" height="50px" style = {{marginTop : "5px"}}></img>
+            return <img src="pianoSynthLogo.png" alt="PianoSynthJS" width="50px" height="50px" style = {{marginTop : "5px"}}></img>
             //return <TerminalIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
         }
         else if(type === "Calculator") //I think I'm gonna switch to a lookup table or something
