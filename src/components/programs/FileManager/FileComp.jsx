@@ -5,6 +5,7 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ImageIcon from '@mui/icons-material/Image';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import TerminalIcon from '@mui/icons-material/Terminal';
+import FolderSpecialIcon from '@mui/icons-material/FolderSpecial';
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -54,6 +55,10 @@ const FileComp = (props) => {
         else if(type === "Image Viewer")
         {
             return <ImageIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
+        }
+        else if(type === "File Manager") //I think I'm gonna switch to a lookup table or something
+        {
+            return <FolderSpecialIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
         }
         else if(type === "Calorie Counter") //I think I'm gonna switch to a lookup table or something
         {
@@ -163,6 +168,8 @@ const FileComp = (props) => {
     ===========================================================================*/
     const handleClick = () => {
         if(version === "Standalone"){ //If this is a standalone file manager it should just add a new program
+            console.log(type)
+            console.log(file)
             addProgram(type, file)
         }
         else if (version === "SetBackground" && acceptableType === type){

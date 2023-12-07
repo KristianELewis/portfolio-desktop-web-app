@@ -209,6 +209,15 @@ There is a small section to the left of the path that you can use to move the fi
 
     
     //these should just basically be program shortcuts
+    home.children[0].addNewFile("File Manager","File Manager", {
+        version : "Standalone", 
+        clickFunction : null, 
+        requestID : null, 
+        requestData : null, 
+        acceptableType : null, 
+        programHandler : null, 
+        requestCanceler : null
+    })
     home.children[0].addNewFile("Calorie Counter", "Calorie Counter", null);
     home.children[0].addNewFile("PianoSynthJS", "PianoSynthJS", null);
     home.children[0].addNewFile("Calculator", "Calculator", null);

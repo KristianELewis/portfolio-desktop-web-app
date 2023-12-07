@@ -78,14 +78,15 @@ const DesktopMenu = (props) => {
         for file managers, the file parameter will be just an object. It will hold the file manager version and clickehandler 
     */
     const handleAddFileManager = () => {
-        props.addProgram("File Manager", {
+        //had to add data : {object} here to make it work well as a short cut
+        props.addProgram("File Manager", {data : {
             version : "Standalone", 
             clickFunction : null, 
             requestID : null, 
             requestData : null, 
             acceptableType : null, 
             programHandler : null, 
-            requestCanceler : null
+            requestCanceler : null}
         })
         setFilesAnchor(null)
     }

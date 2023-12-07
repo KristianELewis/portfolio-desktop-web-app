@@ -144,6 +144,8 @@ function Screen() {
     //so within text editor when you click save or load it would make a new program with that function as data.
     //although file manager withing the text file should probably be its own thing
     const addProgram = (name, file) => {
+        console.log(name)
+        console.log(file)
         const programID = programCount.current;
         setPrograms((prevPrograms) => {
             const tempProgramCount = programCount.current

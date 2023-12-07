@@ -132,7 +132,7 @@ const FileManager = () => {
     */
     useEffect(() => {
         setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
-    }, [fileSystemState])
+    }, [fileSystemState])//why is this a useeffect?
 
     /*
     if(currentFolder.current === null)
@@ -406,7 +406,10 @@ const FileManager = () => {
     ===============================================================================*/
 
     //may not need requestData
-    const { version, requestID, requestData, acceptableType, programHandler, requestCanceler } = file;
+    //This is an issue because filemanager uses file differently than other programs.
+    //its causing issues if trying to have a file manager program
+    //easiest way to fix this was to add .data to file here and in desktop menu I set the file to data: {object} instead of just {object} 
+    const { version, requestID, requestData, acceptableType, programHandler, requestCanceler } = file.data;
 
     //traverse a folder
     const traverse = (id) => {
