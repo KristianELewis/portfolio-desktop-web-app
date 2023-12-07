@@ -3,6 +3,8 @@ import React, {useState} from 'react'
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import ImageIcon from '@mui/icons-material/Image';
+import CalculateIcon from '@mui/icons-material/Calculate';
+import TerminalIcon from '@mui/icons-material/Terminal';
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -37,6 +39,9 @@ const FileComp = (props) => {
 
     const [isHovering, setIsHovering] = useState(false);
 
+
+
+    //this should be refactored. should be a state or something. No reason to run this everytime the component is rerendered
     const iconDecider = () => {
         if(type === "Text Editor")
         {
@@ -50,8 +55,28 @@ const FileComp = (props) => {
         {
             return <ImageIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
         }
+        else if(type === "Calorie Counter") //I think I'm gonna switch to a lookup table or something
+        {
+            return <img src="CalorieCounterLogo50.png" alt="Calorie Counter" width="50px" height="50px" style = {{marginTop : "5px"}}></img>
+            //return <TerminalIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
+        }
+        else if(type === "PianoSynthJS") //I think I'm gonna switch to a lookup table or something
+        {
+            return <img src="PianoSynthApp.png" alt="PianoSynthJS" width="50px" height="50px" style = {{marginTop : "5px"}}></img>
+            //return <TerminalIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
+        }
+        else if(type === "Calculator") //I think I'm gonna switch to a lookup table or something
+        {
+            return <CalculateIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
+        }
+        else// if(type === "Program") //I think I'm gonna switch to a lookup table or something
+        {
+            return <TerminalIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
+        }
     }
-    const icon = iconDecider();
+    //never need to reset this, so maybe useRef instead or someting
+    const [icon, setIcon] = useState(iconDecider())
+    //const icon = iconDecider();
     /*===========================================================
 
     CONTEXT MENU

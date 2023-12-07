@@ -1,3 +1,4 @@
+
 /*=====================================================================
 
     DATA TYPES
@@ -6,14 +7,9 @@
     "Image Viewer"
     "Folder"
 
+    Shortcut should potentially be its own class that extends File?
 =====================================================================*/
-/*=====================================================================
 
-    DELETION SECTION
-
-    This is a much simplier implementation of the Folders deletion section. See the folder deletion section explanation and notes
-
-=====================================================================*/
 export class File {
     constructor(name, parent, id, prevPath, type, data) {
         this.name = name;
@@ -168,6 +164,8 @@ export class Folder {
 
 //There probably is a better way to do this. I should refactor this later
 //Some things like adding specific file types could be made more generic
+
+//this either needs to be a separate program that generates json or something, or just json.
 export const defaultFileSystem = () => {
     const home = new Folder("Home", null, 0, "")
     home.addNewFolder("Desktop");
@@ -208,6 +206,12 @@ There is a small section to the left of the path that you can use to move the fi
 
     const resumePDF = "/Resume.pdf";
     home.children[0].addNewFile("Resume.pdf", "PDF Viewer", resumePDF);
+
+    
+    //these should just basically be program shortcuts
+    home.children[0].addNewFile("Calorie Counter", "Calorie Counter", null);
+    home.children[0].addNewFile("PianoSynthJS", "PianoSynthJS", null);
+    home.children[0].addNewFile("Calculator", "Calculator", null);
 
     //This will be implented when fileManager functionality is improved
     //home.addNewFolder("Recent");
