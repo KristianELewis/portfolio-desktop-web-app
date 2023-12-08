@@ -13,32 +13,10 @@ const TextEditor = lazy(() => import('./programs/TextEditor'));
 //materialUI
 import { windowWidthContext, fileContext, programContext } from './Context';
 
-const Window = (props) => {
-    const {
-        screenDimensions, 
-        windowPositioningInUse, 
-        setFile, 
-        FileSystem, 
-        fileSystemState, 
-        setFileSystemState, 
-        addProgram, 
-        editProgram, 
-        id,
-        file,
-        name,
-        quickAccessList, 
-        addToQuickAccessList, 
-        removeFromQuickAccessList
-    } = props;
 
-    /*=======================================================
 
-        SETTING DEFAULT VALUES 
-
-        Should have a way to set separate default values for window width and height. It should probably be passed down through props
-
-    =======================================================*/
-    const [position, setPosition] = useState(() => {
+/*
+() => {
         if(props.screenWidth >= 720 && props.screenHeight >= 500){
             const leftInit = (props.screenWidth / 2) - (720 / 2)
             const topInit =  (props.screenHeight / 2) - (500 / 2)
@@ -57,8 +35,60 @@ const Window = (props) => {
         else{
             return ({left: 0, top: 0, width: props.screenWidth, height: props.screenHeight, prevX : null, prevY : null})
         }
-    })  
+    }
+    */
+
+const defaultDimensions = (dWidth, dHeight, sWidth, sHeight) => {
+
+    if(sWidth >= dWidth && sHeight >= dHeight){
+        const leftInit = (sWidth / 2) - (dWidth / 2)
+        const topInit =  (sHeight / 2) - (dHeight / 2)
+        return ({left: leftInit, top: topInit, width: dWidth, height: dHeight, prevX : null, prevY : null})
+    }
+    else if(sWidth >= dWidth)
+    {
+        const leftInit = (sWidth / 2) - (dWidth / 2)
+        return ({left: leftInit, top: 0, width: dWidth, height: sHeight, prevX : null, prevY : null})
+    }
+    else if(sHeight >= dHeight)
+    {
+        const topInit =  (sHeight / 2) - (dHeight / 2)
+        return ({left: 0, top: topInit, width: sWidth, height: dHeight, prevX : null, prevY : null})
+    }
+    else{
+        return ({left: 0, top: 0, width: sWidth, height: sHeight, prevX : null, prevY : null})
+    }
+}
+
+
+const Window = (props) => {
+    const {
+        FileSystem, 
+        fileSystemState, 
+        setFileSystemState, 
+        id,
+        file,
+        name,
+        screenWidth,
+        screenHeight,
+        defaultWidth,
+        defaultHeight,
+        windowPositioningInUse, 
+        quickAccessList, 
+        addToQuickAccessList, 
+        removeFromQuickAccessList
+    } = props;
+
+    /*=======================================================
+
+        SETTING DEFAULT VALUES 
+
+        Should have a way to set separate default values for window width and height. It should probably be passed down through props
+
+    =======================================================*/
+    const [position, setPosition] = useState(defaultDimensions(defaultWidth, defaultHeight, screenWidth, screenHeight))  
     //not sure about this, might be a better way to do this other than using a state
+    //I dont like how this is done.
     const [program, setProgram] = useState(() => { 
         if (props.name === "Text Editor")
         {
@@ -232,6 +262,9 @@ const Window = (props) => {
         
         This needs to be refactored
 
+        I think the best way to refactor this would be to have some helper functions that accept the props stuff as parameters and returns new position and size data
+        that data is then returned as the new state
+        so these functions will be called from withing a setter function.
     =================================================*/
 
     const handleResizeRight = (e) => {

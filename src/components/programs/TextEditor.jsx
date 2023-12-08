@@ -127,14 +127,14 @@ const TextEditor = () => {
             file.data = value;
         }
         else if(currentFolderId === null){
-            setCurrentFolderId(addProgram("File Manager", {
+            setCurrentFolderId(addProgram("File Manager", {data :{
                 version : "Save", 
                 requestID : id, 
                 requestData : null, 
                 acceptableType : "Text Editor", 
                 programHandler : handleSaveData,
                 requestCanceler : requestCanceler
-            }))
+        }}))
         }
         setFilesAnchor(null)
     }
@@ -151,14 +151,14 @@ const TextEditor = () => {
     }
     const loadFile = () => {
         if(currentFolderId === null){
-            setCurrentFolderId(addProgram("File Manager", {
+            setCurrentFolderId(addProgram("File Manager", {data :{
                 version : "Load", 
                 requestID : id, 
                 requestData : null, 
                 acceptableType : "Text Editor", 
                 programHandler : handleLoadFile,
                 requestCanceler : requestCanceler
-            }))
+        }}))
         }
         setFilesAnchor(null)
     }

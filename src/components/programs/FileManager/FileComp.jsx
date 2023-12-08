@@ -177,8 +177,6 @@ const FileComp = (props) => {
     ===========================================================================*/
     const handleClick = () => {
         if(version === "Standalone"){ //If this is a standalone file manager it should just add a new program
-            console.log(type)
-            console.log(file)
             addProgram(type, file)
         }
         else if (version === "SetBackground" && acceptableType === type){

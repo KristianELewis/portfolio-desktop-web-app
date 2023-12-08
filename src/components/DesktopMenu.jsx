@@ -86,8 +86,8 @@ const DesktopMenu = (props) => {
             requestData : null, 
             acceptableType : null, 
             programHandler : null, 
-            requestCanceler : null}
-        })
+            requestCanceler : null
+        }})
         setFilesAnchor(null)
     }
 
@@ -114,14 +114,14 @@ const DesktopMenu = (props) => {
     }
     const handleChangeDesktopBackground = (e) => {
         if (currentFolderId === null){
-            setCurrentFolderId(addProgram("File Manager", {
+            setCurrentFolderId(addProgram("File Manager", {data :{
                 version : "SetBackground", 
                 requestID : null, 
                 requestData : null, 
                 acceptableType : "Image Viewer", 
                 programHandler : handleSetBackgroundImage,
                 requestCanceler : requestCanceler
-            }))
+            }}))
         }
         setFilesAnchor(null)
     }

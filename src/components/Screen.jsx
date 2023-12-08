@@ -80,6 +80,37 @@ function useWindowSize() {
     return windowSize;
   }
 
+const determineDefaultSize = (name) => {
+    if (name === "Text Editor")
+    {
+        return {defaultWidth: 720, defaultHeight : 500}
+    }
+    else if (name === "Calculator")
+    {
+        return {defaultWidth: 390, defaultHeight : 510}
+    }
+    else if (name === "PDF Viewer")
+    {
+        return {defaultWidth: 720, defaultHeight : 500}
+    }
+    else if (name === "Image Viewer")
+    {
+        return {defaultWidth: 720, defaultHeight : 500}
+    }
+    else if (name === "File Manager")
+    {
+        return {defaultWidth: 720, defaultHeight : 500}
+    }
+    else if (name === "Calorie Counter")
+    {
+        return {defaultWidth: 720, defaultHeight : 800}
+    }
+    else if (name === "PianoSynthJS")
+    {
+        return {defaultWidth: 370, defaultHeight : 630}
+    }
+    return null
+}
 
 function Screen() {
 
@@ -143,16 +174,20 @@ function Screen() {
     //for folderManager the "file" variable wouldn't hold a file, it could hold the current file manager function
     //so within text editor when you click save or load it would make a new program with that function as data.
     //although file manager withing the text file should probably be its own thing
-    const addProgram = (name, file) => {
-        console.log(name)
-        console.log(file)
+
+    //File manager uses the same kind of file as the other programs now
+
+    //right now default sizes will need to be calculated with a function. Later I should use some Enum equivlant thing, or have better meta data storage
+
+    const addProgram = (name, file, ) => {
         const programID = programCount.current;
+        const {defaultWidth, defaultHeight} = determineDefaultSize(name)
         setPrograms((prevPrograms) => {
             const tempProgramCount = programCount.current
             const tempZlevel = currentZLevel.current;
             currentZLevel.current += 1;
             programCount.current +=1
-            return [...prevPrograms, { id: tempProgramCount, zLevel: tempZlevel, name: name, file : file}]
+            return [...prevPrograms, { id: tempProgramCount, zLevel: tempZlevel, name: name, file : file, defaultWidth : defaultWidth, defaultHeight : defaultHeight}]
         })
         //setProgramCount((prevState) => {return prevState+1})
         return programID
@@ -326,6 +361,7 @@ function Screen() {
             <processManagmentContext.Provider value = {{addProgram : addProgram, removeProgram : removeProgram, editProgram : editProgram, editProgramFileManager : editProgramFileManager, programs :programs}}>
             {programs.map(program => {
                 return (
+                    //why aren't we using the other contexts here  instead of passing props?
                         <Window 
                             changeFunction = {changeFunction}
                             removeFunction = {removeFunction}
@@ -336,7 +372,8 @@ function Screen() {
                             file = {program.file}
                             screenWidth = {screenDimensions.width - outerBorderWidth}
                             screenHeight = {screenDimensions.height - outerBorderWidth - menuHeight}
-                            screenDimensions = {screenDimensions}
+                            defaultWidth = {program.defaultWidth}
+                            defaultHeight = {program.defaultHeight}
                             windowPositioningInUse = {windowPositioningInUse}
                             FileSystem = {FileSystem}
                             fileSystemState = {fileSystemState}
@@ -344,10 +381,10 @@ function Screen() {
                             quickAccessList = {quickAccessList}
                             addToQuickAccessList = {addToQuickAccessList}
                             removeFromQuickAccessList = {removeFromQuickAccessList}
-                            addProgram = {addProgram}
-                            editProgram= {editProgram}
-                            removeProgram = {removeProgram}
                             focusWindow = {focusWindow}
+                            addProgram = {addProgram}
+                            removeProgram = {removeProgram}
+                            editProgram = {editProgram}
                         />
                         /* 
                             remove addProgram removeProgram focuswindow and editProgram, put them in context 
