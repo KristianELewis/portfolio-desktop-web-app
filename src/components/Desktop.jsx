@@ -19,7 +19,6 @@ const Desktop = (props) => {
         editProgram,
         removeProgram,
         editProgramFileManager,
-        handleFolderClick,
         setFileSystemState,
         addToQuickAccessList
      } = props
@@ -309,6 +308,24 @@ const Desktop = (props) => {
         }
     }
     const modalContents = chooseModalType();
+
+    const handleFolderClick = (id) => {
+        //this is temporary to get it working
+        //requestData should be renamed to starting location
+        //all of this data should be rearranged for its version type, It should be called payload
+        //This is just too much shit to have here
+        const locatioIndex =  desktopFolder.children.findIndex((element) => element.id === id); //this is temporary I guess for now. It was broken before
+        const location = desktopFolder.children[locatioIndex] //it seems like desktop is the only place that uses the location thing right now. Before I just put id in 
+        addProgram("File Manager", {data : {
+            version : "Standalone", 
+            clickFunction : null, 
+            requestID : null, 
+            requestData : location, 
+            acceptableType : null, 
+            programHandler : null, 
+            requestCanceler : null
+        }})
+    }
     return (
         <>
             <div style = {{ 

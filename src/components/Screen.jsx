@@ -113,7 +113,6 @@ const determineDefaultSize = (name) => {
 }
 
 function Screen() {
-
     const [loggedIn, setLoggedIn] = useState(false);
 
     //const [file, setFile] = useState(null);
@@ -309,22 +308,7 @@ function Screen() {
     ================================================================================*/
     const desktopFolder = FileSystem.current.children[0];
 
-    const handleFolderClick = (id) => {
-        //this is temporary to get it working
-        //requestData should be renamed to starting location
-        //all of this data should be rearranged for its version type, It should be called payload
-        //This is just too much shit to have here
-        const location = desktopFolder.children[id]
-        addProgram("File Manager", {
-            version : "Standalone", 
-            clickFunction : null, 
-            requestID : null, 
-            requestData : location, 
-            acceptableType : null, 
-            programHandler : null, 
-            requestCanceler : null
-        })
-    }
+
     return (
     <ThemeProvider theme={darkTheme}>
     <CssBaseline />
@@ -353,7 +337,6 @@ function Screen() {
                 editProgram = {editProgram}
                 removeProgram = {removeProgram}
                 editProgramFileManager = {editProgramFileManager}
-                handleFolderClick = {handleFolderClick}
                 setFileSystemState = {setFileSystemState}
                 addToQuickAccessList = {addToQuickAccessList}
             />
