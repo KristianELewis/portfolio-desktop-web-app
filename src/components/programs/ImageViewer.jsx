@@ -67,14 +67,14 @@ const ImageViewer = () => {
     }
     const loadFile = () => {
         if(currentFolderId === null){
-            setCurrentFolderId(addProgram("File Manager", {
+            setCurrentFolderId(addProgram("File Manager", {data :{
                 version : "Load", 
                 requestID : id, 
                 requestData : null, 
                 acceptableType : "Image Viewer", 
                 programHandler : handleLoadFile,
                 requestCanceler : requestCanceler
-            }))
+            }}))
         }
         setFilesAnchor(null)
     }
