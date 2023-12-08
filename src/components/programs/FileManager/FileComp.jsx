@@ -17,6 +17,14 @@ import MenuItem from '@mui/material/MenuItem';
     I think It would be easiest to have different versions for each filemanager. Maybe in the future there can be more generoc components with
     small more specific sub components
 
+    12/8/2023
+    I don't think I agree with the last comment anymore.
+
+    Right now long names for files and folders will just be awkwardly cut off.
+
+    In the future the should be elipsed and then when double click is implemeneted a single click should elongate the name
+
+
 */
 
 const FileComp = (props) => {
@@ -80,8 +88,9 @@ const FileComp = (props) => {
         }
     }
     //never need to reset this, so maybe useRef instead or someting
-    const [icon, setIcon] = useState(iconDecider())
-    //const icon = iconDecider();
+    //Moving betweebn folder icons will keep the previous icons image, but have the new shortcuts data unless the icon is reset. Annoying react thing
+    //const [icon, setIcon] = useState(iconDecider())
+    const icon = iconDecider(); //just eadier to use this for now
     /*===========================================================
 
     CONTEXT MENU
@@ -197,10 +206,11 @@ const FileComp = (props) => {
             <div
                 style = {{
                     textAlign : "center", 
-                    width : "90px", 
-                    height : "90px", 
+                    width : "100px", 
+                    height : "100px", 
                     borderRadius : "10px", 
-                    margin: "10px",
+                    margin: "5px",
+                    overflow: "clip",
                     backgroundColor : isHovering ? "rgba(255, 255, 255, 0.08)" : "transparent"
                 }}
                 onMouseEnter={handleMouseEnter}
@@ -214,7 +224,16 @@ const FileComp = (props) => {
 
                 {icon}
                 
-                <p style = {{margin: "0px", userSelect: "none", textShadow: "1px 1px 2px #000000"}}>{ name }</p>
+                <p style = {{
+                    margin: "0px", 
+                    userSelect: "none", 
+                    textShadow: "1px 1px 2px #000000",
+                    fontSize: "14px",
+                    maxWidth: "100px",
+                    maxHeight: "45px",
+                    lineHeight: "17px",
+                    textOverflow: "ellipsis"
+                    }}>{ name }</p>
             </div>
 
             <Menu

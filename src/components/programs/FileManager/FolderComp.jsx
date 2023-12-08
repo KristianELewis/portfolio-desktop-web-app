@@ -86,10 +86,11 @@ const Folder = (props) => {
         <div
             style = {{
                 textAlign : "center", 
-                width : "90px", 
-                height : "90px", 
+                width : "100px", 
+                height : "100px", 
                 borderRadius : "10px", 
-                margin: "10px",
+                margin: "5px",
+                overflow: "clip",
                 backgroundColor : isHovering ? "rgba(255, 255, 255, 0.08)" : "transparent"
             }}
             onMouseEnter={handleMouseEnter}
@@ -103,7 +104,16 @@ const Folder = (props) => {
 
             <FolderIcon fontSize = "large" sx ={{width : "50px", height : "50px", marginTop : "5px"}}/>
             
-            <p style = {{margin: "0px", userSelect: "none", textShadow: "1px 1px 2px #000000"}}>{ name }</p>
+            <p style = {{
+                    margin: "0px", 
+                    userSelect: "none", 
+                    textShadow: "1px 1px 2px #000000",
+                    fontSize: "14px",
+                    maxWidth: "100px",
+                    maxHeight: "45px",
+                    lineHeight: "17px",
+                    textOverflow: "ellipsis"
+                    }}>{ name }</p>
         </div>
 
         <Menu
