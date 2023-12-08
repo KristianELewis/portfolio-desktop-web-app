@@ -91,7 +91,7 @@ const determineDefaultSize = (name) => {
     }
     else if (name === "PDF Viewer")
     {
-        return {defaultWidth: 720, defaultHeight : 500}
+        return {defaultWidth: 720, defaultHeight : 800}
     }
     else if (name === "Image Viewer")
     {
