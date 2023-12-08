@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useRef} from 'react'
 import { windowWidthContext, programContext, processManagmentContext } from '../Context';
 
 import Paper from '@mui/material/Paper'
@@ -24,6 +24,7 @@ const loadImgDimensions = (file) => {
     }
 }
 const ImageViewer = () => {
+
     //CONTEXT, PROPS, INTIALIZATION
     const processManagmentInfo = useContext(processManagmentContext);
     const {editProgram, addProgram} = processManagmentInfo;
@@ -37,6 +38,7 @@ const ImageViewer = () => {
     //MENU ITEMS
     const [filesAnchor, setFilesAnchor] = useState(null);
     const fileOpen = Boolean(filesAnchor);
+
     const handleFilesClick = (e) => {
         setFilesAnchor(e.currentTarget)
     }
@@ -48,6 +50,96 @@ const ImageViewer = () => {
     }
 
 
+    /*
+        This is to get scrollwheel and clicking for zoom to work
+        probably could do with tweaking.
+        This likely nonfunctional on mobile
+        event listeners are put in userefs so I can remove them easilyy. Could have maybe done it with usecallback on use effect, I like this way though
+
+        The wheel scrolling needed to be done like this to do prevent default to preevent scrolling up and down the screen
+
+        Not sure how I will manage to do it with touch yet
+    */
+
+    const [ctrlPressed, setCtrlPressed] = useState(false)
+    const keyDownFunction = (e) => {
+        if(e.key === "Control")
+        {
+            setCtrlPressed(true)
+        }
+    }
+    const keyUpFunction = (e) => {
+        if(e.key === "Control")
+        {
+            setCtrlPressed(false)
+        }
+    }
+
+    const wheelOverider = (e) => {
+        e.preventDefault()
+        if(e.deltaY > 0)
+        {
+            setMagnificationLevel((oldState) => {
+                if( oldState > .1 ){
+                    return oldState - .1
+                }
+                else{
+                    return oldState
+                }
+            })
+        }
+        else if (e.deltaY < 0)
+        {
+            setMagnificationLevel((oldState) => {
+                if( oldState < 4 ){
+                    return oldState + .1
+                }
+                else{
+                    return oldState
+                }
+            })
+        }
+    }
+
+    const keyDownRef = useRef(keyDownFunction)
+    const keyUpRef = useRef(keyUpFunction)
+
+    const wheelOveriderRef = useRef(wheelOverider)
+    const handleMouseEnter = () => {
+        window.addEventListener("keydown", keyDownRef.current);
+        window.addEventListener("keyup", keyUpRef.current);
+        window.addEventListener("wheel", wheelOveriderRef.current, { passive: false })
+    }
+    const handleMouseLeave = () => {
+        window.removeEventListener("keydown", keyDownRef.current);
+        window.removeEventListener("keyup", keyUpRef.current);
+        window.removeEventListener("wheel", wheelOveriderRef.current);
+
+        setCtrlPressed(false) //makes sure ctrl is set back to false if they leave the image without letting go of ctrl
+    }
+    const handleImageClick = (e) => {
+        if(ctrlPressed)
+        {
+            setMagnificationLevel((oldState) => {
+                if( oldState > .2 ){
+                    return oldState - .2
+                }
+                else{
+                    return oldState
+                }
+            })
+        }
+        else{
+            setMagnificationLevel((oldState) => {
+                if( oldState < 4 ){
+                    return oldState + .2
+                }
+                else{
+                    return oldState
+                }
+            })
+        }
+    }
     /*===========================================================================
 
         FILE MANAGEMENT
@@ -83,7 +175,6 @@ const ImageViewer = () => {
         handlePointerDown(e)
         doubleClickResize()
     }
-    
     return(
         <div className = "windowMidContainer" style = {{width : "100%"}}>
             <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr 1fr", alignItems : "center"}} onPointerDown = {handlePointerDownTopBar}>
@@ -114,8 +205,13 @@ const ImageViewer = () => {
                 />
             </Paper>
                 {/*is this really necessary here? */}
-                {windowPositioningInUse && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>}
+                {/*windowPositioningInUse && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>*/}
+                {/*This is the inner window */}
                 <Paper 
+                    onClick = {handleImageClick}
+                    onMouseEnter = {handleMouseEnter}
+                    onMouseLeave = {handleMouseLeave}
+                    
                     elevation = {0} 
                     sx = {{
                         width : "100%", 
@@ -125,10 +221,12 @@ const ImageViewer = () => {
                         overflow : "auto",
                         display : "flex",
                         justifyContent : "center",
-                        alignItems : "center"
+                        alignItems : "center",
+                        cursor : (ctrlPressed) ? "zoom-out" : "zoom-in"
                         }}>
                         {/*more flex box that could probably be changed to something else */}
                         {file && <img 
+
                                 src = {file.data.src} 
                                 height = {imgDimensions.height * magnificationLevel} 
                                 width = {imgDimensions.width * magnificationLevel} 
