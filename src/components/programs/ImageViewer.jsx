@@ -5,8 +5,8 @@ import Paper from '@mui/material/Paper'
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography'
-import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
+import TopBarButtons from '../topBarComponents/TopBarButtons';
 
 /*========================================================================
 
@@ -194,15 +194,7 @@ const ImageViewer = () => {
 
                 </Menu>
                 <Typography noWrap sx = {{width : "100%", textAlign : "center", userSelect : "none", justifySelf: "center"}}>{name}</Typography>
-                <CloseIcon 
-                    sx = {{
-                        justifySelf: "flex-end",
-                        color : "white",
-                        "&:hover": { backgroundColor: "black" }
-                    }}
-                    onClick = {handleExit}
-                    onPointerDown = {preventPositioning}
-                />
+                <TopBarButtons program = {4} handleExit = {handleExit} preventPositioning = {preventPositioning}/>
             </Paper>
                 {/*is this really necessary here? */}
                 {/*windowPositioningInUse && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>*/}

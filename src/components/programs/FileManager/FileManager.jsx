@@ -21,7 +21,6 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Backdrop from '@mui/material/Backdrop';
-import CloseIcon from '@mui/icons-material/Close';
 
 import { fileContext } from '../../Context';
 
@@ -33,6 +32,7 @@ import FolderComp from './FolderComp';
 import FileComp from './FileComp';
 
 import { processManagmentContext, programContext, windowWidthContext } from '../../Context'
+import TopBarButtons from '../../topBarComponents/TopBarButtons';
 
 const FileManager = () => {
 
@@ -578,16 +578,8 @@ const FileManager = () => {
                     pathTraverse = {pathTraverse}
                     preventPositioning = {preventPositioning}
                     />
-                    
-                <CloseIcon 
-                    sx = {{
-                        color : "white",
-                        marginLeft : "5px",
-                        "&:hover": { backgroundColor: "black" }
-                    }}
-                    onClick = {fileManagerClose}
-                    onPointerDown = {preventPositioning}
-                />
+                {/*fileManagerClose is need to close file manager because of requestcanceller */}
+                <TopBarButtons program = {1} handleExit = {fileManagerClose} preventPositioning = {preventPositioning}/>
             </Paper>
             {/*=======================================================
                 

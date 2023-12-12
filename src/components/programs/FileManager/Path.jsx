@@ -114,7 +114,7 @@ const Path = (props) => {
                 maxHeight : "38px", 
                 textAlign : "left", 
                 whiteSpace : "nowrap",
-                marginLeft : "20px"
+                marginLeft : "5px"
                 }}>
 
                 <MenuList sx = {{padding : "0px"}}>

@@ -15,20 +15,12 @@ import { createEditor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 
 import Button from '@mui/material/Button';
-//import ButtonGroup from '@mui/material/ButtonGroup';
 import Typography from '@mui/material/Typography';
-//import Backdrop from '@mui/material/Backdrop'
-
 import Paper from '@mui/material/Paper'
-//import Toolbar from '@mui/material/Toolbar'
-//import AppBar from '@mui/material/AppBar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-//import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
 
-
-//import FileManager from './FileManager/FileManager';
+import TopBarButtons from '../topBarComponents/TopBarButtons';
 
 import { programContext, processManagmentContext } from '../Context';
 
@@ -222,15 +214,7 @@ const TextEditor = () => {
                     </Menu>
 
                     <Typography noWrap sx = {{width : "100%", textAlign : "center", userSelect : "none", justifySelf: "center"}}>{file ? file.name : "new file"}</Typography>
-                    <CloseIcon 
-                        sx = {{
-                            justifySelf: "flex-end",
-                            color : "white",
-                            "&:hover": { backgroundColor: "black" }
-                        }}
-                        onClick = {handleExit}
-                        onPointerDown = {preventPositioning}
-                    />
+                    <TopBarButtons program = {6} handleExit = {handleExit} preventPositioning = {preventPositioning}/>
             </Paper>
             <div style = {{overflow: 'auto', borderRadius : "0 0 10px 10px"}}>
                 <Slate editor={editor} initialValue={value} value={value} onChange = {handleChange}>

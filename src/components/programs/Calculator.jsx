@@ -10,8 +10,8 @@ import { programContext } from '../Context';
 
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
-import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button'
+import TopBarButtons from '../topBarComponents/TopBarButtons';
 
 
 
@@ -130,15 +130,7 @@ const Calculator = () => {
             {/*Top Bar */}
             <Paper position = "relative" sx = {{height : "40px", padding: "0 5px 0 5px", boxSizing : "border-box", borderRadius : "10px 10px 0 0" , display : "grid", gridTemplateColumns : "1fr 1fr", alignItems : "center"}} onPointerDown = {handlePointerDownTopBar}>
                 <Typography noWrap sx = {{width : "100%", userSelect : "none", paddingLeft : "10px", justifySelf : "start"}}>{ name }</Typography>
-                <CloseIcon 
-                    sx = {{
-                        justifySelf : "end",
-                        color : "white",
-                        "&:hover": { backgroundColor: "black" }
-                    }}
-                    onClick = {handleExit}
-                    onPointerDown = {preventPositioning}
-                />
+                <TopBarButtons program = {3} handleExit = {handleExit} preventPositioning = {preventPositioning}/>
             </Paper>
             {/*Was trying to avoid using flexbox, but its just easier to use it*/}
             <Paper elevation = {0} sx = {{ display : "flex", height: "100%", overflow: 'auto', alignItems: "center", justifyContent : "center", borderRadius : "0 0 10px 10px"}}>

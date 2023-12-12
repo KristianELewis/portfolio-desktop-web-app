@@ -5,8 +5,8 @@ import Paper from '@mui/material/Paper'
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography'
-import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
+import TopBarButtons from '../topBarComponents/TopBarButtons';
 
 
 /*========================================================================
@@ -95,15 +95,7 @@ const PdfReader = () => {
                     </Menu>
 
                     <Typography noWrap sx = {{width : "100%", textAlign : "center", userSelect : "none", justifySelf: "center"}}>{name}</Typography>
-                    <CloseIcon 
-                        sx = {{
-                            justifySelf: "flex-end",
-                            color : "white",
-                            "&:hover": { backgroundColor: "black" }
-                        }}
-                        onClick = {handleExit}
-                        onPointerDown = {preventPositioning}
-                    />
+                    <TopBarButtons program = {5} handleExit = {handleExit} preventPositioning = {preventPositioning}/>
             </Paper>
             {/*Whats the point of this div exactly? its in image viewer too */}
             {/*the overflow auto helps with mobile pdfs. For some reason it wont just overflow, it keeps matching the size and stretching. Mobile also doenst work with multiple pages */}
