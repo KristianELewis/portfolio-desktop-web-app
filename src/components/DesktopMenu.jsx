@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 
 //materialUI stuff
 //need to switch to import paths
@@ -9,7 +9,6 @@ import MenuItem from '@mui/material/MenuItem';
 //import MenuIcon from '@mui/icons-material/Menu';
 
 import Button from '@mui/material/Button'
-import Toolbar from '@mui/material/Toolbar'
 
 import Typography from '@mui/material/Typography'
 //import IconButton from '@mui/material/IconButton'
@@ -17,8 +16,8 @@ import Typography from '@mui/material/Typography'
 import dayjs from 'dayjs'
 
 //import FileManager from "./programs/FileManager/FileManager"
-
-
+import {programIDs} from "../metaData"
+const {CALORIECOUNTER, FILEMANAGER, PIANOSYNTHJS, CALCULATOR, IMAGEVIEWER, PDFREADER, TEXTEDITOR} = programIDs;
 //need to make the app bar smaller, very annoying right now though
 const DesktopMenu = (props) => {
     /*
@@ -48,38 +47,37 @@ const DesktopMenu = (props) => {
     }
 
     //These can be made more generic for sure
-    
-    const handleAddTextEditor = () => {
-        props.addProgram("Text Editor", null)
-        setFilesAnchor(null)
-    }
-    const handleAddCalculator = () => {
-        props.addProgram("Calculator", null)
-        setFilesAnchor(null)
-    }
     const handleAddCalorieCounter = () => {
-        props.addProgram("Calorie Counter", null)
-        setFilesAnchor(null)
-    }
-    const handleAddPdfReader = () => {
-        props.addProgram("PDF Viewer", null)
-        setFilesAnchor(null)
-    }
-    const handleAddImageViewer = () => {
-        props.addProgram("Image Viewer", null)
+        console.log(CALORIECOUNTER)
+        props.addProgram(CALORIECOUNTER, null)
         setFilesAnchor(null)
     }
     const handlePianoSynthJS = () => {
-        props.addProgram("PianoSynthJS", null)
+        props.addProgram(PIANOSYNTHJS, null)
         setFilesAnchor(null)
     }
-
+    const handleAddCalculator = () => {
+        props.addProgram(CALCULATOR, null)
+        setFilesAnchor(null)
+    }
+    const handleAddImageViewer = () => {
+        props.addProgram(IMAGEVIEWER, null)
+        setFilesAnchor(null)
+    }
+    const handleAddPdfReader = () => {
+        props.addProgram(PDFREADER, null)
+        setFilesAnchor(null)
+    }
+    const handleAddTextEditor = () => {
+        props.addProgram(TEXTEDITOR, null)
+        setFilesAnchor(null)
+    }
     /*
         for file managers, the file parameter will be just an object. It will hold the file manager version and clickehandler 
     */
     const handleAddFileManager = () => {
         //had to add data : {object} here to make it work well as a short cut
-        props.addProgram("File Manager", {data : {
+        props.addProgram(FILEMANAGER, {data : {
             version : "Standalone", 
             clickFunction : null, 
             requestID : null, 
@@ -114,7 +112,7 @@ const DesktopMenu = (props) => {
     }
     const handleChangeDesktopBackground = (e) => {
         if (currentFolderId === null){
-            setCurrentFolderId(addProgram("File Manager", {data :{
+            setCurrentFolderId(addProgram(FILEMANAGER, {data :{
                 version : "SetBackground", 
                 requestID : null, 
                 requestData : null, 

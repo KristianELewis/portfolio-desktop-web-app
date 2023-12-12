@@ -9,7 +9,7 @@ import { defaultFileSystem } from './programs/FileManager/fileSystem';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-
+import metaData from '../metaData';
 /*======================================================================
 
     -I think the themeing stuff can be moved elsewhere. Probably in app.jsx
@@ -80,38 +80,6 @@ function useWindowSize() {
     return windowSize;
   }
 
-const determineDefaultSize = (name) => {
-    if (name === "Text Editor")
-    {
-        return {defaultWidth: 720, defaultHeight : 600}
-    }
-    else if (name === "Calculator")
-    {
-        return {defaultWidth: 390, defaultHeight : 510}
-    }
-    else if (name === "PDF Viewer")
-    {
-        return {defaultWidth: 720, defaultHeight : 800}
-    }
-    else if (name === "Image Viewer")
-    {
-        return {defaultWidth: 720, defaultHeight : 500}
-    }
-    else if (name === "File Manager")
-    {
-        return {defaultWidth: 720, defaultHeight : 500}
-    }
-    else if (name === "Calorie Counter")
-    {
-        return {defaultWidth: 720, defaultHeight : 800}
-    }
-    else if (name === "PianoSynthJS")
-    {
-        return {defaultWidth: 370, defaultHeight : 630}
-    }
-    return null
-}
-
 function Screen() {
     const [loggedIn, setLoggedIn] = useState(false);
 
@@ -178,18 +146,20 @@ function Screen() {
 
     //right now default sizes will need to be calculated with a function. Later I should use some Enum equivlant thing, or have better meta data storage
 
-    const addProgram = (name, file, ) => {
-        const programID = programCount.current;
-        const {defaultWidth, defaultHeight} = determineDefaultSize(name)
+    const addProgram = (program, file) => {
+        const processID = programCount.current;
+        const tempZlevel = currentZLevel.current;
+        currentZLevel.current += 1;
+        programCount.current += 1;
+        //File manager needs to be refactored before I can continue with ProgramIDs and meta data stuff
+        const metaDataIndex = metaData.findIndex((element) => element.name === program) //this is temporary
+        const programMetaData = metaData[metaDataIndex] //program should replace metaDataIndex soon
+        const {defaultWidth, defaultHeight} = programMetaData.defaultDimensions;
         setPrograms((prevPrograms) => {
-            const tempProgramCount = programCount.current
-            const tempZlevel = currentZLevel.current;
-            currentZLevel.current += 1;
-            programCount.current +=1
-            return [...prevPrograms, { id: tempProgramCount, zLevel: tempZlevel, name: name, file : file, defaultWidth : defaultWidth, defaultHeight : defaultHeight}]
+            return [...prevPrograms, { id: processID, zLevel: tempZlevel, name: program, file : file, defaultWidth : defaultWidth, defaultHeight : defaultHeight}]
         })
         //setProgramCount((prevState) => {return prevState+1})
-        return programID
+        return processID
     }
 
     const removeProgram = (id) => {
