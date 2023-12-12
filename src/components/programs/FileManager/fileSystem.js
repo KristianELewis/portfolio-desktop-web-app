@@ -201,14 +201,14 @@ Hello and welcome.
 Click on a shortcut to start that program.
 You can also click on the start menu in the bottom left corner to choose a program.
 
-Clicking on the question mark in the top right of a window will give an explantion of 
+Clicking on the question mark in the top right of a window will give an explanation of 
 how to use the program.
 
 You can move or resize any program window.
 
 You can change the background picture from the start menu.
 
-If a window fills the screen and you have trouble reszing it, double click on the windows top bar.
+If a window fills the screen and you have trouble resizing it, double click on the windows top bar.
 This will resize it to a size smaller then the screen.
 
 -------------------------------------------------------------------------------------
