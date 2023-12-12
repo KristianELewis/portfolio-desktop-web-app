@@ -6,7 +6,7 @@ const LoginScreen = (props) => {
     const {loggedIn, setLoggedIn, screenHeight, screenWidth} = props;
 
     //const [username, setUsername] = useState({uArray : ['u', 's', 'e', 'r', 'n', 'a', 'm', 'e'], username : ""})
-    const [password, setPassword] = useState({pArray : ['p', 'a', 's', 's', 'w', 'o', 'r', 'd', 'a', 'b', 'c', 'd'], password : ""})
+    const [password, setPassword] = useState({pArray : ['*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*'], password : ""})
     const [loginCounter, setloginCounter] = useState(0);
 
     /*
@@ -94,7 +94,7 @@ const LoginScreen = (props) => {
                     }}>
                 <Avatar sx = {{bgcolor : "green", width : "150px", height : "150px", fontSize : "75px", border : "solid darkGreen 2px", boxSizing : "border-box"}}>K</Avatar>
                 <h2>Kristian</h2>
-                <TextField label = "Password" type = "password" size = "small" value = {password.password} sx = {{backgroundColor: "rgba(0,0,0, 0.25)", width : "235px"}}/>
+                <TextField label = "Password" size = "small" value = {password.password} sx = {{backgroundColor: "rgba(0,0,0, 0.25)", width : "235px"}}/>
             </div>
             <div style = {{width: "300px", height : "300px", backgroundColor : "transparent", position : "absolute"}}></div>
         </div>
