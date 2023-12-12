@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 function soundReducer(state, action) {
     switch (action.type){
         case "AddSound":
-            return [...state, {id : action.id, waveType : "sine", gain : 50, frequencyRange : 4}]
+            return [...state, {id : action.id, waveType : "sine", gain : 50, octave : 4}]
         case "DeleteSound":
             const index = state.findIndex(sound => sound.id === action.id)
             const newarr = state.toSpliced(index, 1)
@@ -33,11 +33,11 @@ function soundReducer(state, action) {
                 }
             })
             return newSoundStateG
-        case "ChangeFrequencyRange":
+        case "ChangeOctave":
             let newSoundStateF = state.map(sound => {
                 if (sound.id === action.id)
                 {
-                    return {...sound, frequencyRange : action.frequencyRange}
+                    return {...sound, octave : action.octave}
                 }
                 else{
                     return sound
@@ -65,7 +65,7 @@ const SoundBoard = () => {
             let g = audioContext.createGain()
             o.connect(g)
             o.type = sound.waveType
-            o.frequency.value = baseFrequency * Math.pow(2, sound.frequencyRange);
+            o.frequency.value = baseFrequency * Math.pow(2, sound.octave);
             g.connect(audioContext.destination)
             o.start();
             g.gain.setValueAtTime(sound.gain /100, audioContext.currentTime);

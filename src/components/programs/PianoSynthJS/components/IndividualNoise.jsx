@@ -14,7 +14,7 @@ const IndividualNoise = (props) => {
     const [playOrStop, setPlayOrStop] = useState("Play")
     const [soundState, setSoundState] = useState(null)
     const [waveType, setWaveType] = useState("sine")
-    const [frequencyRange, setFrequencyRange] = useState(4);
+    const [octave, setOctave] = useState(4);
     const [gain, setGain] = useState(50);
     let baseFrequency = 16.35;
 
@@ -27,7 +27,7 @@ const IndividualNoise = (props) => {
                 let g = audioContext.createGain()
                 o.connect(g)
                 o.type = waveType;
-                o.frequency.value = baseFrequency * Math.pow(2, frequencyRange);
+                o.frequency.value = baseFrequency * Math.pow(2, octave);
                 g.connect(audioContext.destination)
                 o.start();
                 g.gain.setValueAtTime(gain /100, audioContext.currentTime);
@@ -44,12 +44,12 @@ const IndividualNoise = (props) => {
             }
         }
     }
-    const handleFrequencyRange = (e) => {
+    const handleOctave = (e) => {
         if(soundState !==null){
             soundState.o.frequency.setValueAtTime((baseFrequency * Math.pow(2, e.target.value)), audioContext.currentTime)
         }
-        setFrequencyRange(e.target.value)
-        dispatchSound({type : "ChangeFrequencyRange", frequencyRange : e.target.value, id : id})
+        setOctave(e.target.value)
+        dispatchSound({type : "ChangeOctave", octave : e.target.value, id : id})
     }
     const handleGain = (e) => {
         if(soundState !==null){
@@ -82,10 +82,10 @@ const IndividualNoise = (props) => {
                 <Typography>{waveType.charAt(0).toUpperCase() + waveType.slice(1)} Wave</Typography>
             </AccordionSummary>
             <AccordionDetails>
-                <Typography>Base Frequency C: {baseFrequency * Math.pow(2, frequencyRange)}</Typography>
+                <Typography>C Frequency at octave {octave}: {baseFrequency * Math.pow(2, octave)}</Typography>
                 <div>
-                    <Typography>Frequency Range: {frequencyRange}</Typography>
-                    <Slider step={1} min = {0} max = {8} onChange = {handleFrequencyRange} value = {frequencyRange}/>
+                    <Typography>Octave: {octave}</Typography>
+                    <Slider step={1} min = {0} max = {8} onChange = {handleOctave} value = {octave}/>
                 </div>
                 <div>
                     <Typography>Volume: {gain}</Typography>
