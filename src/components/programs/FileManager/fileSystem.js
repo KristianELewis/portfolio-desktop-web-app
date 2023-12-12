@@ -201,24 +201,21 @@ Hello and welcome.
 Click on a shortcut to start that program.
 You can also click on the start menu in the bottom left corner to choose a program.
 
+Clicking on the question mark in the top right of a window will give an explantion of 
+how to use the program.
+
 You can move or resize any program window.
 
 You can change the background picture from the start menu.
 
 If a window fills the screen and you have trouble reszing it, double click on the windows top bar.
 This will resize it to a size smaller then the screen.
--------------------------------------------------------------------------------------
 
+-------------------------------------------------------------------------------------
 A Note on Touch and Mobile Devices
 
 The website supports touch devices but is built to be used with a mouse.
 You may encounter bugs if using a touch device!
-
-In the file manager the current path can grow large enough that you may need to scroll through it.
-Using a mouse you can move the file manager around while dragging on the path.
-A touch device can not move the file manager while touching the path.
-This is because touching the path will scroll through the path.
-There is a small section to the left of the path that you can use to move the file manager.
 =================================================` }],
         },
     ];
@@ -264,6 +261,13 @@ There is a small section to the left of the path that you can use to move the fi
 
 
 /*=====================================================================
+
+In the file manager the current path can grow large enough that you may need to scroll through it.
+Using a mouse you can move the file manager around while dragging on the path.
+A touch device can not move the file manager while touching the path.
+This is because touching the path will scroll through the path.
+There is a small section to the left of the path that you can use to move the file manager.
+
 
     UNSORTED NOTES/IMPROVEMENTS
 

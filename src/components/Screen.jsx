@@ -83,7 +83,7 @@ function useWindowSize() {
 const determineDefaultSize = (name) => {
     if (name === "Text Editor")
     {
-        return {defaultWidth: 720, defaultHeight : 500}
+        return {defaultWidth: 720, defaultHeight : 600}
     }
     else if (name === "Calculator")
     {
