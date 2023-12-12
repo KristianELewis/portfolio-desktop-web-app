@@ -3,6 +3,11 @@ import IndividualNoise from './IndividualNoise';
 import Keyboard from './Keyboard';
 import Button from '@mui/material/Button';
 
+/*
+    Im gonna completely rework this soon. The accordian nonsense is annoying me, probably want different event handling for the keyboard, and maybe more options for continous noise and what not
+
+*/
+
 function soundReducer(state, action) {
     switch (action.type){
         case "AddSound":
@@ -75,15 +80,17 @@ const SoundBoard = () => {
     }
     return (
         <div style = {{ height : "100%", minHeight: "400px", display : "flex", flexDirection : "column", justifyContent : "center", alignItems : "center"}}>
-                <div style = {{display: "flex", flexDirection : "column", alignItems : "center", width : "325px", maxHeight : "400px", overflow : "auto"}}>
+
+                <div style = {{display: "flex", flexDirection : "column", alignItems : "center", boxSizing : "border-box", paddingTop : "10px", paddingBottom : "10px", marginBottom : "10px", width : "325px", maxHeight : "350px", overflow : "auto", border: "grey 1px", borderStyle : "solid none solid none "}}>
                     {sounds.map((sound) => {
                         return(
                             <IndividualNoise key = {sound.id} audioContext = {audioContext} dispatchSound = {dispatchSound} id = {sound.id}/>
                         )
                     })}
+                    <Button variant="outlined" sx ={{width : "294px"}} onClick = {handleAddNewSound}>Add New Sound</Button>
                 </div>
-                <Button variant="outlined" sx ={{marginBottom : "10px", marginTop : "10px", width : "294px"}} onClick = {handleAddNewSound}>Add New Sound</Button>
                 <Keyboard handleButtonClick = {handleButtonClick}></Keyboard>
+
         </div>
     )
 }

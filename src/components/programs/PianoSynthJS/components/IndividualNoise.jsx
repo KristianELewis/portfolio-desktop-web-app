@@ -77,7 +77,8 @@ const IndividualNoise = (props) => {
 
     */
     return (
-        <Accordion sx = {{marginBottom:"16px", width: "300px"}}>
+        <div style = {{marginBottom : "10px"}}>
+        <Accordion sx = {{width: "300px"}}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography>{waveType.charAt(0).toUpperCase() + waveType.slice(1)} Wave</Typography>
             </AccordionSummary>
@@ -106,6 +107,7 @@ const IndividualNoise = (props) => {
                 </div>
             </AccordionDetails>
         </Accordion>
+        </div>
     )
 }
 
