@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React from 'react'
 
 /*
 Probably easiest way to do this would be to have two types of keys
@@ -11,7 +11,6 @@ easiest way to get hover on keys, was to make a keys class and in the app.css ad
 */
 
  const WhiteKey = (props) => {
-
     const {handleClick, placement} = props;
     const left = (42 * placement);
     return (
@@ -33,7 +32,6 @@ easiest way to get hover on keys, was to make a keys class and in the app.css ad
 }
 
 const BlackKey = (props) => {
-
     const {handleClick, placement} = props;
     const left = (42 * placement) - 11;
     return (
@@ -52,22 +50,17 @@ const BlackKey = (props) => {
         </div>
     )
 }
+
 const SoundButton = (props) => {
-    const {sliderAmount, handleButtonClick, noteInfo} = props;
+    const {handleButtonClick, noteInfo} = props;
     const {baseFrequency, note, type, placement} = noteInfo;
-    /*{
-        context : currentAudioContext,
-        oscilator : o,
-        gain : g
-    }*/
-
-
     const handleClick = () => {
         handleButtonClick({baseFrequency: baseFrequency})
     }
-    return ( <>
-        {type === 0 ? <WhiteKey handleClick = {handleClick} note = {note} placement = {placement}/> : <BlackKey handleClick = {handleClick} note = {note} placement = {placement}/>}
-    </>
+    return( 
+        <>
+            {type === 0 ? <WhiteKey handleClick = {handleClick} note = {note} placement = {placement}/> : <BlackKey handleClick = {handleClick} note = {note} placement = {placement}/>}
+        </>
     )
 }
 export default SoundButton;

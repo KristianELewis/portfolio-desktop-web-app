@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react'
+import React from 'react'
 import SoundButton from './SoundButton';
 import KeyboardInput from './KeyboardInput'
 
 import notes from '../notes'
-
-
 
 const Keyboard = (props) => {
 

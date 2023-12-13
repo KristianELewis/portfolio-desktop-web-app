@@ -1,11 +1,10 @@
-import { useState, useRef, useEffect, useReducer } from 'react'
+import { useState, useRef, useReducer } from 'react'
 import IndividualNoise from './IndividualNoise';
 import Keyboard from './Keyboard';
 import Button from '@mui/material/Button';
 
 /*
     Im gonna completely rework this soon. The accordian nonsense is annoying me, probably want different event handling for the keyboard, and maybe more options for continous noise and what not
-
 */
 
 function soundReducer(state, action) {
@@ -56,7 +55,6 @@ const SoundBoard = () => {
     const id = useRef(-1);
     const [audioContext, setAudioContext] = useState(() => {return new AudioContext()})
     const [sounds, dispatchSound] = useReducer(soundReducer, [])
-    let baseFrequency = 16.35;
     
     const handleAddNewSound = () => {
         id.current++;
@@ -95,16 +93,3 @@ const SoundBoard = () => {
     )
 }
 export default SoundBoard;
-
-
-//<SoundButton key = {freqChild.note} handleButtonClick = {handleButtonClick} sliderAmount = {sliderAmount} baseFrequency = {freqChild.frequency} letter = {freqChild.letter} note = {freqChild.note}/>
-
-// setSounds(prevState => {
-//     return [...prevState, {audioContext : audioContext}]
-// })
-// }
-// return (
-// <div>
-//     {sounds.map((freqChild) => {
-//         return(
-//             <IndividualNoise audioContext = {freqChild.audioContext}/>

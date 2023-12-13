@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography'
 import TopBarButtons from '../../topBarComponents/TopBarButtons';
 /*
 Mayube I could make use of the IsFocused thing for keyboard events
-
 */
 const PianoSynthJS = () => {
 

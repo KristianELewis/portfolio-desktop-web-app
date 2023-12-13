@@ -73,8 +73,6 @@ const IndividualNoise = (props) => {
     /*
         These accordians have some annoying styling when multiples are put together
         There is some annoying styling here in general
-
-
     */
     return (
         <div style = {{marginBottom : "10px"}}>
