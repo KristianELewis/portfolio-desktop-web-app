@@ -1,10 +1,21 @@
 #root {
-        touch-action : "none";
+        touch-action : "none"; /* why does this have none in quotes around it*/
   -webkit-touch-callout: none; /* Safari */
     -webkit-user-select: none; /* Chrome */     
        -moz-user-select: none; /* Firefox */
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; 
+}
+
+/*Probably easiest for anything that should not have user selection to use this.*/
+/*should cover most browsers*/
+.noUserSelection {
+    touch-action : "none";
+    -webkit-touch-callout: none; /* Safari */
+      -webkit-user-select: none; /* Chrome */     
+         -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; 
 }
 
 .keys:hover {

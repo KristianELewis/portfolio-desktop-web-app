@@ -76,7 +76,7 @@ const InfoPopover = (props) => {
                   onPointerDown = {onPointerDown}
 
                 >
-                <Typography sx={{ p: 1, width: "200px", fontSize : "14px", whiteSpace: "pre-wrap" }}>{content[currentPage-1]}</Typography>
+                <Typography className = "noUserSelection" sx={{ p: 1, width: "200px", fontSize : "14px", whiteSpace: "pre-wrap" }}>{content[currentPage-1]}</Typography>
                 
                 {program === 0 ? <a 
                     href="https://kristianlewis.com/caloriecounter" 
