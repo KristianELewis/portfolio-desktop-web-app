@@ -95,7 +95,7 @@ const InfoPopover = (props) => {
 
                 <div style = {{width : "200px", display : "flex", justifyContent :"space-between"}}>
                     <IconButton size = "small" onClick = {handleBackwardButton} sx = {{borderRadius : "5px"}} disabled = {currentPage === 1 ? true : false}><ChevronLeftIcon/></IconButton>
-                    <Typography sx={{ p: 1, fontSize : "14px", display : "inline-block" }}>Page {currentPage} of {pages}</Typography>
+                    <Typography className = "noUserSelection" sx={{ p: 1, fontSize : "14px", display : "inline-block" }}>Page {currentPage} of {pages}</Typography>
                     <IconButton size = "small" onClick = {handleForwardButton} sx = {{borderRadius : "5px"}} disabled = {currentPage === pages ? true : false}><ChevronRightIcon/></IconButton>
                 </div>
             </Popover>
