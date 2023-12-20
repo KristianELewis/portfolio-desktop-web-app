@@ -1,9 +1,13 @@
+const MINWIDTH = 200;
+const MINHEIGHT = 200;
+
+
 export const resizeRight = (e, prevState, screenWidth) => {
     const movementX = e.clientX - prevState.prevX;
     let newWidth = prevState.width + movementX
-    if(newWidth < 150)
+    if(newWidth < MINWIDTH)
     {
-        newWidth = 150
+        newWidth = MINWIDTH
     }
     if (newWidth > screenWidth - prevState.left)
     {
@@ -15,9 +19,9 @@ export const resizeRight = (e, prevState, screenWidth) => {
 export const resizeBottom = (e, prevState, screenHeight) => {
     const movementY = e.clientY - prevState.prevY;
     let newHeight = prevState.height + movementY
-    if(newHeight < 100)
+    if(newHeight < MINHEIGHT)
     {
-        newHeight = 100
+        newHeight = MINHEIGHT
     }
     if (newHeight > screenHeight - prevState.top)
     {
@@ -35,10 +39,10 @@ export const resizeLeft = (e, prevState, screenWidth) => {
         newLeft = 0
         newWidth = prevState.width + prevState.left
     }
-    else if (newWidth <= 150)
+    else if (newWidth <= MINWIDTH)
     {
-        newLeft = prevState.left + (prevState.width - 150)
-        newWidth = 150
+        newLeft = prevState.left + (prevState.width - MINWIDTH)
+        newWidth = MINWIDTH
     }
     else if (newWidth >= screenWidth)
     {
@@ -57,10 +61,10 @@ export const resizeTop = (e, prevState, screenHeight) => {
         newTop = 0
         newHeight = prevState.height + prevState.top
     }
-    else if (newHeight <= 100)
+    else if (newHeight <= MINHEIGHT)
     {
-        newTop = prevState.top + (prevState.height - 100)
-        newHeight = 100
+        newTop = prevState.top + (prevState.height - MINHEIGHT)
+        newHeight = MINHEIGHT
     }
     else if (newHeight >= screenHeight)
     {
