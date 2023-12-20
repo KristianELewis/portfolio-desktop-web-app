@@ -11,7 +11,7 @@ TODO
 ========================================================*/
 
 import React, {useState} from "react";
-import {handleUpdate, handleDelete} from '../serverFunctions/serverFunctions.jsx'
+import {handleUpdate, handleDelete} from '../serverFunctions/loggedItemDatabaseServerFunctions.js'
 
 //custom components
 import SearchItemForm from "./backdrops/SearchItemForm";

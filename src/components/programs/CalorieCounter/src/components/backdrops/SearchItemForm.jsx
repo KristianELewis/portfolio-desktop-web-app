@@ -44,8 +44,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 
-
-import {serverSearch, addMealItemServerFunc, changeResultsPage} from "../../serverFunctions/serverFunctions";
+import { addMealItemServerFunc} from "../../serverFunctions/loggedItemDatabaseServerFunctions.js"
+import {serverSearch, changeResultsPage} from "../../serverFunctions/foodDatabaseServerFunctions.js";
 
 import SearchResult from "./SearchResult";
 import SearchResultInfo from "./SearchResultInfo"

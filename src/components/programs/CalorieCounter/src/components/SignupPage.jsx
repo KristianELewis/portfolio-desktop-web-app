@@ -16,8 +16,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Alert from '@mui/material/Alert';
 
-
-import { signUp } from "../serverFunctions/serverFunctions";
+import { signUp } from "../serverFunctions/loginSignupServerFunctions.js";
 
 import '../stylesheets/signup.css'
 
@@ -73,7 +72,7 @@ const InformationInput = (props) => {
 
 const SignupPage = (props) => {
 
-        const [signupError, setSignupError] = useState({isError : false, errorType : "none"})
+        const [signupError, setSignupError] = useState({error : false, errorType : "none"})
         const {setSignup} = props;
 
         const [signupComplete, setSignupComplete] = useState(false);
@@ -96,15 +95,15 @@ const SignupPage = (props) => {
         //there is also serverside validation
         const userValidation = () => {
             if (username === "" || hasWhiteSpace(username)){
-                setSignupError({isError : true, errorType : "Invalid Username"})
-                return true;
-            }
-            else if(password === "" || hasWhiteSpace(password)){
-                setSignupError({isError : true, errorType : "Invalid Password"})
+                setSignupError({error : true, errorType : "Invalid Username"})
                 return true;
             }
             else if(name === ""){
-                setSignupError({isError : true, errorType : "No Name Sent"})
+                setSignupError({error : true, errorType : "No Name Sent"})
+                return true;
+            }
+            else if(password === "" || hasWhiteSpace(password)){
+                setSignupError({error : true, errorType : "Invalid Password"})
                 return true;
             }
             return false;
@@ -112,7 +111,7 @@ const SignupPage = (props) => {
 
         //if anything is not entered it should just fail
         const handleSignUp = () => {
-            setSignupError({isError : false, errorType : "none"})
+            setSignupError({error : false, errorType : "none"})
             if (userValidation() === true ) {
                 return
             }
@@ -123,16 +122,14 @@ const SignupPage = (props) => {
             }
             signUp(userData)
             .then(res => {
-                if (res.error === true)
-                {
-                    setSignupError({isError : true, errorType : res.errorType})
-                }
-                else{
-                    setSignupError({isError : false, errorType : "none"})
-                    setSignupComplete(true);
-                    //eventually this should just sign you in
-                    setTimeout(() => setSignup(false), 1000)
-                }
+                setSignupError({error : false, errorType : "none"})
+                setSignupComplete(true);
+                //eventually this should just sign you in
+                setTimeout(() => setSignup(false), 1000)
+            })
+            .catch(err => {
+                //handleServerErrors(err)
+                setSignupError({error: true, errorType: err.message})
             })
 
         }
@@ -162,7 +159,7 @@ const SignupPage = (props) => {
                 />   
             </div>
             <hr></hr>
-            {signupError.isError ? <Alert onClose = {() => {setSignupError({isError : false, errorType : "none"})}} severity="error">{signupError.errorType}</Alert> : <></>}
+            {signupError.error ? <Alert onClose = {() => {setSignupError({error : false, errorType : "none"})}} severity="error">{signupError.errorType}</Alert> : <></>}
             {signupComplete ? <Alert severity="success">Signup Successful</Alert> : 
             <div className="signupButtons">
                 <Button onClick = {handleCancel}>Cancel</Button>
@@ -173,69 +170,3 @@ const SignupPage = (props) => {
 }
 
 export default SignupPage;
-
-
-//                <TextField onChange = {handlePasswordChange} required id = "password" type="password" label="Password" size="small" sx = {{marginTop:2}}/>
-
-
-
-
-/*
-old input fields
-
-<TextField 
-                    onChange = {handleUsernameChange} 
-                    required = {true}
-                    id = "signupUsername" 
-                    label="Username" 
-                    size="small" 
-                    margin = "normal"
-                />
-                <TextField 
-                    onChange = {handlePasswordChange} 
-                    required = {true}
-                    id = "signupPassword" 
-                    type="password" 
-                    label="Password" 
-                    size="small" 
-                    margin = "normal"
-                />
-                <TextField 
-                    onChange = {handleNameChange} 
-                    required = {true}
-                    id = "signupName" 
-                    type="name" 
-                    label="name" 
-                    size="small" 
-                    margin = "normal"
-                />
-                <TextField 
-                    onChange = {handleAgeChange} 
-                    required = {true}
-                    id = "signupAge" 
-                    type="age" 
-                    label="age" 
-                    size="small" 
-                    margin = "normal"
-                />
-                <TextField 
-                    onChange = {handleWeightChange} 
-                    required ={true}
-                    id = "signupWeight" 
-                    type="weight" 
-                    label="weight" 
-                    size="small" 
-                    margin = "normal"
-                />
-                */
-
-                            //will not be using these anytime soon. may end up deleting
-            /*
-            else if(age < 1 || isNaN(age)){
-                setSignupError({isError : true, errorType : "Invalid Age"})
-                return true;
-            }
-            else if(weight < 1 || isNaN(weight)){
-                setSignupError({isError : true, errorType : "Invalid Weight"})
-                return true;
-            }*/

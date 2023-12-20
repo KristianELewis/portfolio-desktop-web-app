@@ -24,7 +24,7 @@ import Checkbox from '@mui/material/Checkbox';
 
 import "../../stylesheets/editUser.css"
 
-import {handleUpdateUserInfo, uploadNewProfilePicture, deleteProfilePicture} from '../../serverFunctions/serverFunctions'
+import {handleUpdateUserInfo, uploadNewProfilePicture, deleteProfilePicture} from '../../serverFunctions/userDataServerFunctions.js'
 
 
 //this is copy pasted from add meal item

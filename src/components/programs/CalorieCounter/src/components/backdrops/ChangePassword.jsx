@@ -1,15 +1,11 @@
 import React, {useState} from 'react'
 
-import Backdrop from '@mui/material/Backdrop';
 import TextField from "@mui/material/TextField";
 import Button from '@mui/material/Button';
 import Card from "@mui/material/Card";
 import Alert from "@mui/material/Alert"
 
-import {handleChangePassword} from '../../serverFunctions/serverFunctions'
-
-
-
+import {handleChangePassword} from '../../serverFunctions/userDataServerFunctions.js'
 
 //this has been used in multiple components. This will be turned into its own component soon
 const InformationInput = (props) => {

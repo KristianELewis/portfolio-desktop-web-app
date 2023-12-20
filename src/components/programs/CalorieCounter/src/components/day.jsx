@@ -98,7 +98,7 @@ import dayjs from 'dayjs';
 import Alert from '@mui/material/Alert';
 
 //utility functions
-import { loadDay } from "../serverFunctions/serverFunctions";
+import { loadDay } from "../serverFunctions/loggedItemDatabaseServerFunctions";
 import {NotFoundError, AuthError, ServerSideError, UnknownError, NoProfilePicture} from '../serverFunctions/customErrors'
 import {removeCookies} from '../serverFunctions/cookieUtilFunctions'
 import '../stylesheets/day.css'
@@ -136,6 +136,11 @@ const Day = (props) => {
             handleLogout()
             //this is for login alerts
             setAlerted({error: true, errorType:"Session expired, please log back in"})
+            return
+        }
+        else if( error instanceof UnauthorizedError)
+        {
+            setAlerted({error: true, errorType:"Test auth error"})
             return
         }
         else if(error instanceof NotFoundError)

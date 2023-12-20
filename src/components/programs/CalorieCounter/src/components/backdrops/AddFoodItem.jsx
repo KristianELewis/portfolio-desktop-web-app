@@ -7,7 +7,7 @@ import Card from "@mui/material/Card";
 
 import "../../stylesheets/addFoodItem.css"
 
-import {addNewFoodItemConnect} from '../../serverFunctions/serverFunctions.jsx'
+import {addNewFoodItemConnect} from '../../serverFunctions/foodDatabaseServerFunctions.js'
 
 /*
 Its okay as is right, still not super happy about the way it looks
