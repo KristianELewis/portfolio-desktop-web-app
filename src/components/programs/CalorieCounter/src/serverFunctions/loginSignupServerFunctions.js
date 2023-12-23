@@ -61,7 +61,7 @@ used in SignUpPage.jsx
 
 export async function signUp (userData) {
     return (
-        fetch(hostURL + "/signup", {
+        fetch(hostURL + "/login/signup", {
         method: "POST",
         body: JSON.stringify({
             userData : userData

@@ -31,6 +31,7 @@ ________________________________________________________________________________
 import dayjs from 'dayjs';
 //const hostURL = "http://localhost:3000"
 const hostURL = "https://kristianlewis.com/caloriecounter"
+
 import {serverErrorDecider} from './customErrors'
 /*====================================================================================
 
@@ -42,7 +43,7 @@ used in BackdropBase.jsx
 ------------------------------------------------------------------------------------*/
 export async function handleDelete (loggedID, userID, token, dispatch){
     
-    const path = hostURL + `/user/${userID}/logged-food/${loggedID}`
+    const path = hostURL + `/user/${userID}/logged-food/by-ID/${loggedID}`
 
     return fetch(path, {
         method: "DELETE",
@@ -73,7 +74,7 @@ used in BackdropBase.jsx
 
 export async function handleUpdate (loggedID, amount, userID, token, dispatch) {
 
-    const path = hostURL + `/user/${userID}/logged-food/${loggedID}`
+    const path = hostURL + `/user/${userID}/logged-food/by-ID/${loggedID}`
 
     return fetch(path, {
         method: "PATCH",
@@ -103,7 +104,7 @@ used in SearchItemForm.jsx
 export async function addMealItemServerFunc (userID, meal, foodItemID, amount, curDate, token) {
     
     const date = dayjs(curDate).format('YYYY-MM-DD')
-    const path = hostURL + `/user/${userID}/date/${date}/new-item`
+    const path = hostURL + `/user/${userID}/logged-food/by-date/${date}/new-item`
 
 	return (
 		fetch(path, {
@@ -138,7 +139,7 @@ used in Day.jsx
 export async function loadDay (userID, curDate, token) {
    
     const date = dayjs(curDate).format('YYYY-MM-DD')
-    const path = hostURL + `/user/${userID}/date/${date}`
+    const path = hostURL + `/user/${userID}/logged-food/by-date/${date}`
   
     return (
         fetch(path, {

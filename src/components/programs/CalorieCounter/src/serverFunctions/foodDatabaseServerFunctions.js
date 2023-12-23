@@ -14,8 +14,8 @@ name should change, confused with AddMealItemServerFunc
 const hostURL = "https://kristianlewis.com/caloriecounter"
 
 import {serverErrorDecider} from './customErrors'
-export async function addNewFoodItemConnect (name, brandName, servingSize, servingUnit, calories, carbs, fat, protein) {
-    
+
+export async function addNewFoodItemConnect (name, brandName, servingSize, servingUnit, calories, carbs, fat, protein) {    
     return fetch(hostURL + "/database-food/new-item", {
        method: "POST",
        body: JSON.stringify({

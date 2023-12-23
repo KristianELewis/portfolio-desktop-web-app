@@ -92,7 +92,7 @@ export async function uploadNewProfilePicture (userID, file, password) {
     let formData = new FormData();
     formData.append('file', file)
     formData.append('password', password)
-    return fetch(hostURL + `/user/${userID}/upload-profile-picture`, {
+    return fetch(hostURL + `/user/${userID}/profile-picture`, {
         method: "PATCH",
         body : formData,
         headers: {
@@ -113,7 +113,7 @@ used in EditUser.jsx
 ------------------------------------------------------------------------------------*/
 export async function deleteProfilePicture (userID, password) {
 
-    return fetch(hostURL + `/user/${userID}/delete-profile-picture`, {
+    return fetch(hostURL + `/user/${userID}/profile-picture`, {
         method: "DELETE",
         headers: {
             "Authorization": password
