@@ -1,8 +1,8 @@
 import React, {useContext} from 'react'
 
-import { programContext } from '../../Context';
+import { programContext, windowWidthContext } from '../../Context';
 
-import SoundBoard from './components/SoundBoard'
+//import SoundBoard from './components/SoundBoard'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import TopBarButtons from '../../topBarComponents/TopBarButtons';
@@ -12,7 +12,8 @@ Mayube I could make use of the IsFocused thing for keyboard events
 const PianoSynthJS = () => {
 
     const programInfo = useContext(programContext);
-    const { file, id, name, handlePointerDown, doubleClickResize, handleExit } = programInfo;
+    const { file, id, name, handlePointerDown, doubleClickResize, handleExit, inFocus } = programInfo;
+    const { windowPositioningInUse, }= useContext(windowWidthContext)
 
     const handlePointerDownTopBar = (e) => {
         handlePointerDown(e)
@@ -29,8 +30,13 @@ const PianoSynthJS = () => {
             
                 <TopBarButtons program = {2} handleExit = {handleExit} preventPositioning = {preventPositioning}/>
             </Paper>
-            <Paper elevation = {0} style = {{height: "100%", overflow: 'auto', borderRadius : "0 0 10px 10px"}}>
-                <SoundBoard/>
+            <Paper elevation = {0} style = {{position : "relative", height: "100%", borderRadius : "0 0 10px 10px" }} >
+                {windowPositioningInUse && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>}
+                
+                {/*Anything that uses iframes should have this to allow for refocusing */}
+                {!inFocus && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>}
+                <iframe src="https://kristianlewis.com/PianoSynthJS/" height = {"100%"} width = {"100%"} style = {{borderRadius : "0 0 10px 10px", border : "none"}}></iframe>
+                {/*<SoundBoard/>*/}
             </Paper>
         </div>
     )

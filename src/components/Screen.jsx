@@ -22,6 +22,11 @@ import metaData from '../metaData';
             -Maybe Ill do that when I make a light mode
 
 
+
+    -------------------------------------------------------------------
+
+    This needs to be reorganized
+
 ======================================================================*/
 const darkTheme = createTheme({
     palette: {
@@ -321,6 +326,7 @@ function Screen() {
                             key = {program.id}
                             id = {program.id}
                             zLevel = {program.zLevel}
+                            currentZLevel = {currentZLevel.current - 1}
                             name = {program.name}
                             file = {program.file}
                             screenWidth = {screenDimensions.width - outerBorderWidth}

@@ -25,7 +25,7 @@ const PdfReader = () => {
 
     const { windowPositioningInUse, }= useContext(windowWidthContext)
     const programInfo = useContext(programContext);
-    const { file, id, name, handlePointerDown, doubleClickResize, handleExit } = programInfo;
+    const { file, id, name, handlePointerDown, doubleClickResize, handleExit, inFocus } = programInfo;
 
     //MENU ITEMS
     const [filesAnchor, setFilesAnchor] = useState(null);
@@ -113,6 +113,8 @@ const PdfReader = () => {
                         justifyContent : "center",
                         alignItems : "center"
                         }}>
+                    {/*This is not an iframe but it still behaves like one */}
+                    {!inFocus && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>}
                     {file && <object type="application/pdf" data = {file.data} height = {"100%"} width = {"100%"}></object>}
                     {/*file && <iframe src = {file.data} height = {"100%"} width = {"100%"} style = {{boxSizing : "border-box"}}></iframe>*/}
                 </Paper>

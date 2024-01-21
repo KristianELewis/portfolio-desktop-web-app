@@ -28,7 +28,10 @@ const Window = (props) => {
         windowPositioningInUse, 
         quickAccessList, 
         addToQuickAccessList, 
-        removeFromQuickAccessList
+        removeFromQuickAccessList,
+        currentZLevel,
+        zLevel
+
     } = props;
 
     /*=======================================================
@@ -272,6 +275,11 @@ const Window = (props) => {
         })})
     }
 
+    let inFocus = false;
+
+    if(currentZLevel === zLevel){
+        inFocus = true;
+    }
     return (
         <div className = "window"
             onPointerDown = {focusWindow}
@@ -282,7 +290,7 @@ const Window = (props) => {
                 top : position.top + "px",
                 height: position.height + "px",
                 width: position.width + "px",
-                zIndex : props.zLevel,
+                zIndex : zLevel,
                 border : "solid #313131 1px",
                 borderRadius : "10px"
         }}>
@@ -300,7 +308,7 @@ const Window = (props) => {
                     addToQuickAccessList : addToQuickAccessList, 
                     removeFromQuickAccessList : removeFromQuickAccessList
                     }}>
-                <programContext.Provider value = {{id: id, file : file, name : name, handlePointerDown : handlePointerDown, doubleClickResize : doubleClickResize, handleExit : handleExit}}>
+                <programContext.Provider value = {{id: id, file : file, name : name, handlePointerDown : handlePointerDown, doubleClickResize : doubleClickResize, handleExit : handleExit, inFocus : inFocus}}>
                     {program}
                     {/*chooseProgram()*/}
                 </programContext.Provider>
