@@ -16,9 +16,11 @@ const metaData = [
     {
         name : "PianoSynthJS",
         info : ["This is a simple Piano Synthesizer.\n\nBefore you can start playing the piano, you need at least one \"Sound\". Click on \"Add New Sound\".",
-                "After clicking on \"Add New Sound\" you should see a box with the words \"Sine Wave\".\n\nClicking on this will open the sound's settings. From here you can change the Octave, Volume, and Wave Type of that sound.",
-                "Clicking play will play the sound continuously for testing purposes.\n\nTo play a single note simply click on a key on the piano.\n\nYou can also click on the \"Click to use keyboard\" section to use your keyboard."],
-        defaultDimensions : {defaultWidth: 370, defaultHeight : 700},
+                "After clicking on \"Add New Sound\" you can change the sound's Octave, Volume, and Wave Type.\n\nYou can have multiple sounds, clicking on a sound will let you change its settings.",
+                "Clicking play will play the sound continuously for testing purposes.\n\nTo play a single note simply click on a key on the piano.\n\nIf the program is currently in focus and your mouse is over the window, you can also use your keyboard.",
+                "If you're on mobile and you can't hear anything, make sure your phone isn't on vibrate or mute.\n\nA standalone version can be found at the link below (will open a new tab)."
+            ],
+        defaultDimensions : {defaultWidth: 430, defaultHeight : 572},
     },
     {
         name : "Calculator",

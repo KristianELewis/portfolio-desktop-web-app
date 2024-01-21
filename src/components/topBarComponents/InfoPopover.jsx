@@ -93,6 +93,21 @@ const InfoPopover = (props) => {
                         Stand Alone Version
                 </a> : <></>}
 
+                {/*This needs to change */}
+                {program === 2 && currentPage === pages? <a 
+                    href="https://kristianlewis.com/PianoSynthJS" 
+                    target = "_blank" 
+                    style = {{
+                        textAlign : "center",
+                        padding : "7px",
+                        color : "white",
+                        fontSize : "15px",
+                        paddingLeft : "32px",
+                        "&:visited": { color : "white" }
+
+                    }}>
+                        Stand Alone Version
+                </a> : <></>}
                 <div style = {{width : "200px", display : "flex", justifyContent :"space-between"}}>
                     <IconButton size = "small" onClick = {handleBackwardButton} sx = {{borderRadius : "5px"}} disabled = {currentPage === 1 ? true : false}><ChevronLeftIcon/></IconButton>
                     <Typography className = "noUserSelection" sx={{ p: 1, fontSize : "14px", display : "inline-block" }}>Page {currentPage} of {pages}</Typography>
