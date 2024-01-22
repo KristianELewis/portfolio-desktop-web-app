@@ -6,6 +6,10 @@
     -FileManagement has a few things todo, they are described in its explanation
 
     -This should be split up some more. The actual TextEditor should be moved into its own file. The lazy loading shoudl be moved into this file and taken out of window
+
+
+
+    From What I remember this was sort of hacked together quickly. I should review it. Maybe after I have a more solid file system
 ===========================================================================*/
 
 

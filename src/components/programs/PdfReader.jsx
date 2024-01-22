@@ -13,8 +13,7 @@ import TopBarButtons from '../topBarComponents/TopBarButtons';
 
 TODO
 
-for now I will just use an iframe, It seems to work well. Just need to put a transparent div in front of the iframe when moving or resizing 
-
+I want to make my own pdf reader at some point. Using one of the pdf libraries. Instead of relying on the browsers built in pdf reader which has many issues.
 ========================================================================*/
 
 const PdfReader = () => {
@@ -116,7 +115,6 @@ const PdfReader = () => {
                     {/*This is not an iframe but it still behaves like one */}
                     {!inFocus && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>}
                     {file && <object type="application/pdf" data = {file.data} height = {"100%"} width = {"100%"}></object>}
-                    {/*file && <iframe src = {file.data} height = {"100%"} width = {"100%"} style = {{boxSizing : "border-box"}}></iframe>*/}
                 </Paper>
             </div>
         </div>

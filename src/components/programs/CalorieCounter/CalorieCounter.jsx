@@ -1,4 +1,4 @@
-import React, {lazy, Suspense, useContext} from 'react'
+import React, { useContext } from 'react'
 import { windowWidthContext, programContext } from '../../Context';
 
 
@@ -6,28 +6,26 @@ import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import TopBarButtons from '../../topBarComponents/TopBarButtons';
 
-//Will need to remove this
-//const App = lazy(() => import('./src/App'))
-
-//At the moment, I am just copying and pasting the source folder into this project.
-//There are probably other ways to do it, something about packing and using npm, but I don't really want to worry about managing 
-//dependencie versions between the two projects like that right now. Just need to make it work after pasting it in and make a few minor adjustments
-
 //Honestly using an Iframe works the best. It's the easiest to update, and its the most lightweight probably
 //At ssome point, if there is already one open, clicking on the shortcut will just bring that program into focus
 //What should happen if they no longer have internet though? what happens then? can I check for that or something
 //Need to add in that "iscurrently resizing" or whatever I used for the old pdf reader
-//cookies are in issue in iframes
 
+//cookies are in issue in iframes.
+//Are they though? I wrote this before, but I'm not sure its an issue anymore.
+//I think it actually was a issue when it wasn't an Iframe. Now I think the cookies work better.
+
+//Pretty sure I will never use this now. Get rid of it when I get rid of the other media query stuff
+/*
 function mediaQueryDecider(width, minWidth) {
     if (width > minWidth) {
         return true;
     }
     return false;
 }
+*/
 
-//need to make it so there is only one instance of the calorie counter running at the same time
-//Actually not sure about this anymore
+//I originally thought it might be a good Idea to have only one instance of the Calorie Counting app running at once
 
 const CalorieCounter = (props) => {
 
@@ -37,12 +35,7 @@ const CalorieCounter = (props) => {
     const media700W = mediaQueryDecider(width, 700);
     const media600W = mediaQueryDecider(width, 600);
     const media500W = mediaQueryDecider(width, 500);
-*/
-    //this can probably be re arranged differently, but for now this works
-    
-    //info button should allow the user to navigate to the standalone version
-    //need minimum height and widths
-
+    */
 
     const programInfo = useContext(programContext);
 
@@ -64,24 +57,13 @@ const CalorieCounter = (props) => {
                 <TopBarButtons program = {0} handleExit = {handleExit} preventPositioning = {preventPositioning}/>
             </Paper>
             <Paper elevation = {0} style = {{height: "100%", borderRadius : "0 0 10px 10px"}}>
-                {/*whats going on with all these divs? this was because of the backdrops I think 
-                
-                    Once the transition to iframes is done and there's no issues I need to clean this file up.
-                */}
+                {/*It may be the a good idea to combine the two transparent divs into one */}
                 {!inFocus && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>}
                 {windowPositioningInUse && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>}
                 <iframe src="https://kristianlewis.com/caloriecounter/" height = {"100%"} width = {"100%"} style = {{borderRadius : "0 0 10px 10px", border : "none"}}></iframe>
-{/*               <div style = {{display: "flex", placeItems: "center",  minHeight: "100%", position : "relative"}}>
-                    <div style = {{ margin : "auto", textAlign : "center", userSelect: "none"}}>
-                        <Suspense>
-                            <App media700W = {media700W} media600W = {media600W} media500W = {media500W}/>
-                        </Suspense>
-                    </div>
-                </div>*/}
             </Paper>
         </div>
     )
 }
 
 export default CalorieCounter;
-

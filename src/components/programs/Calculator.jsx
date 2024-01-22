@@ -4,6 +4,8 @@ Just need a calculator for the sake of having one at the moment
 
 This is fine for now but at some point I want to have it mirror the gnome calculator
 
+Not sure if I really care about changing this at all
+
 ===================================================*/
 import React, {useState, useContext} from 'react'
 import { programContext } from '../Context';
@@ -37,7 +39,6 @@ const Calculator = () => {
     const [displayScreen, setDisplayScreen] = useState({value : "", isThereAPoint : false});
     const [previousValue, setPreviousValue] = useState("");
     const [operation, setOperation] = useState("");
-    //const [isThereAPoint, setIsThereAPoint] = useState(false);
 
     const clearDisplay = () => {
         setDisplayScreen({value : "", isThereAPoint : false})

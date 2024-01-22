@@ -1,5 +1,5 @@
 import React, {useState, useContext, useRef} from 'react'
-import { windowWidthContext, programContext, processManagmentContext } from '../Context';
+import { programContext, processManagmentContext } from '../Context';
 
 import Paper from '@mui/material/Paper'
 import Menu from '@mui/material/Menu';
@@ -12,8 +12,7 @@ import TopBarButtons from '../topBarComponents/TopBarButtons';
 
 TODO
 
-Need to add magnify glass and clicking for zooming in an out.
-Using zoom in files for now
+Doesn't work well on mobile
 ========================================================================*/
 const loadImgDimensions = (file) => {
     if(file !== null){
@@ -24,12 +23,10 @@ const loadImgDimensions = (file) => {
     }
 }
 const ImageViewer = () => {
-
     //CONTEXT, PROPS, INTIALIZATION
     const processManagmentInfo = useContext(processManagmentContext);
-    const {editProgram, addProgram} = processManagmentInfo;
+    const {addProgram} = processManagmentInfo;
 
-    const { windowPositioningInUse, }= useContext(windowWidthContext)
     const programInfo = useContext(programContext);
     const { file, id, name, handlePointerDown, doubleClickResize, handleExit } = programInfo;
 
@@ -49,8 +46,7 @@ const ImageViewer = () => {
         e.stopPropagation()
     }
 
-
-    /*
+    /*=====================================================================
         This is to get scrollwheel and clicking for zoom to work
         probably could do with tweaking.
         This likely nonfunctional on mobile
@@ -59,7 +55,7 @@ const ImageViewer = () => {
         The wheel scrolling needed to be done like this to do prevent default to preevent scrolling up and down the screen
 
         Not sure how I will manage to do it with touch yet
-    */
+    =====================================================================*/
 
     const [ctrlPressed, setCtrlPressed] = useState(false)
     const keyDownFunction = (e) => {
@@ -147,7 +143,6 @@ const ImageViewer = () => {
         -Explanation in text editor
 
     ===========================================================================*/
-
     const [currentFolderId, setCurrentFolderId] = useState(null)
 
     const requestCanceler = () => {
@@ -196,37 +191,31 @@ const ImageViewer = () => {
                 <Typography noWrap sx = {{width : "100%", textAlign : "center", userSelect : "none", justifySelf: "center"}}>{name}</Typography>
                 <TopBarButtons program = {4} handleExit = {handleExit} preventPositioning = {preventPositioning}/>
             </Paper>
-                {/*is this really necessary here? */}
-                {/*windowPositioningInUse && <div style = {{position: "absolute", backgroundColor: "transparent", height : "100%", width: "100%", boxSizing : "border-box"}}></div>*/}
-                {/*This is the inner window */}
-                <Paper 
-                    onClick = {handleImageClick}
-                    onMouseEnter = {handleMouseEnter}
-                    onMouseLeave = {handleMouseLeave}
-                    
-                    elevation = {0} 
-                    sx = {{
-                        width : "100%", 
-                        height : "100%", 
-                        boxSizing : "border-box", 
-                        borderRadius : "0 0 10px 10px", 
-                        overflow : "auto",
-                        display : "flex",
-                        justifyContent : "center",
-                        alignItems : "center",
-                        cursor : (ctrlPressed) ? "zoom-out" : "zoom-in"
-                        }}>
-                        {/*more flex box that could probably be changed to something else */}
-                        {file && <img 
-
-                                src = {file.data.src} 
-                                height = {imgDimensions.height * magnificationLevel} 
-                                width = {imgDimensions.width * magnificationLevel} 
-                                />}
-                </Paper> 
-                {/* Probably a way to reduce the size of the image but save proportions
-                    then center in the middle
-                */}
+            {/*This is the inner window */}
+            <Paper 
+                onClick = {handleImageClick}
+                onMouseEnter = {handleMouseEnter}
+                onMouseLeave = {handleMouseLeave}
+                
+                elevation = {0} 
+                sx = {{
+                    width : "100%", 
+                    height : "100%", 
+                    boxSizing : "border-box", 
+                    borderRadius : "0 0 10px 10px", 
+                    overflow : "auto",
+                    display : "flex",
+                    justifyContent : "center",
+                    alignItems : "center",
+                    cursor : (ctrlPressed) ? "zoom-out" : "zoom-in"
+                    }}>
+                    {/*more flex box that could probably be changed to something else */}
+                    {file && <img 
+                            src = {file.data.src} 
+                            height = {imgDimensions.height * magnificationLevel} 
+                            width = {imgDimensions.width * magnificationLevel} 
+                            />}
+            </Paper> 
         </div>
     )
 }

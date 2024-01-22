@@ -12,6 +12,14 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Popover from '@mui/material/Popover';
 
+/*=====================================================================
+
+TODO
+
+This needs to change and needs a complete review.
+This is extremely hacked together from different parts of the file manager.
+
+=====================================================================*/
 const Desktop = (props) => {
     const {
         desktopFolder, 

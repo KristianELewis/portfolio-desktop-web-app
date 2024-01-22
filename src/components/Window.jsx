@@ -11,7 +11,16 @@ import PianoSynthJS from './programs/PianoSynthJS/PianoSynthJS';
 const TextEditor = lazy(() => import('./programs/TextEditor'));
 
 import { windowWidthContext, fileContext, programContext } from './Context';
-import { resizeBottom,resizeLeft, resizeRight, resizeTop, defaultDimensions } from './windowSizeFunctions';
+import { resizeBottom, resizeLeft, resizeRight, resizeTop, defaultDimensions } from './windowSizeFunctions';
+
+
+/*==========================================================================
+
+TODO
+
+So many props being passed. This needs a seriosu revision after file manager/system and the screen has been revised
+
+==========================================================================*/
 
 const Window = (props) => {
     const {
@@ -197,6 +206,7 @@ const Window = (props) => {
         RESIZING
         Mostly of it's in windowSizeFunctions
         Cleaner, maybe could be refactored some more. Not sure about the e.preventDefault. I have to test if thats need.
+        Refactor again?
     =================================================*/
 
     const handleResizeRight = (e) => {

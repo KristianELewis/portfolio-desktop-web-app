@@ -17,6 +17,9 @@ const LoginScreen = (props) => {
         There's definitely a better way to do this, but this works for now
 
         I hate this
+
+
+        Clearly very hacked together. I should spend a few days making this look better and also be less hacky
     */
 
     useEffect(() => {

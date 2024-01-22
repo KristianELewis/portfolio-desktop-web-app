@@ -78,6 +78,7 @@ const InfoPopover = (props) => {
                 >
                 <Typography className = "noUserSelection" sx={{ p: 1, width: "200px", fontSize : "14px", whiteSpace: "pre-wrap" }}>{content[currentPage-1]}</Typography>
                 
+                {/*Not sure I like this at all. Probably it would be better if this was part of the meta data instead*/}
                 {program === 0 ? <a 
                     href="https://kristianlewis.com/caloriecounter" 
                     target = "_blank" 
@@ -92,8 +93,6 @@ const InfoPopover = (props) => {
                     }}>
                         Stand Alone Version
                 </a> : <></>}
-
-                {/*This needs to change */}
                 {program === 2 && currentPage === pages? <a 
                     href="https://kristianlewis.com/PianoSynthJS" 
                     target = "_blank" 
