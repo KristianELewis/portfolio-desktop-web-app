@@ -2,8 +2,11 @@
 
 TODO
 
-    -In the future the top bar path should have each folder as a clickable element. Then the program will traverse to that folder
     -Probably I should remove the dark theme here and put it further up. Also remove the dark theme from calorie counter
+
+    Don't know how relevant that last comment is.
+    This needs to be broken up into a few different components
+    Desktop can use those components instead of the horrible way its done now
 
 ========================================================================*/
 
@@ -35,6 +38,23 @@ import { processManagmentContext, programContext, windowWidthContext } from '../
 import TopBarButtons from '../../topBarComponents/TopBarButtons';
 
 const FileManager = () => {
+
+    //Double Click functionality.
+    //I don't think it needs to be state. Would work better with a useRef. State would be diffcult to return a value an ensure its been reset before the use click on it
+    //Maybe change this to currently clicked/focused or something, and have it highlight the background on a single click
+    const doubleClick = useRef({target: null, time : 0})
+    const handleDoubleClick = (target) => {
+        const newTime = Date.now();
+        if(doubleClick.current.target === target && (newTime - doubleClick.current.time < 500))
+        {
+            doubleClick.current = {target : target, time : newTime}
+            return true;
+        }
+        else{
+            doubleClick.current = {target : target, time : newTime}
+            return false;
+        }
+    }
 
     //used for preventing unwanted repositions
     const preventPositioning = (e) =>{
@@ -649,6 +669,7 @@ const FileManager = () => {
                                     FileSystem = {FileSystem}
                                     setFileSystemState = {setFileSystemState}
                                     addToQuickAccessList = {addToQuickAccessList}
+                                    handleDoubleClick = {handleDoubleClick}
                                     />
                             )
                         })}
@@ -676,6 +697,7 @@ const FileManager = () => {
                                     programHandler = {programHandler}
                                     fileManagerId = {id}
                                     setFileSystemState = {setFileSystemState}
+                                    handleDoubleClick = {handleDoubleClick}
                                     />
                             )
                         })}

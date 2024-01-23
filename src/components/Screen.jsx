@@ -86,7 +86,11 @@ function useWindowSize() {
   }
 
 function Screen() {
+
+    //Should be moved elsewhere
     const [loggedIn, setLoggedIn] = useState(false);
+    //thought about putting double click functionality in here. I might do that in the future and combine the double click functionality of the top bar with files/folders double click
+
 
     //const [file, setFile] = useState(null);
     //defaulFileSystem was here with no parenthesis before, was an accident I assume

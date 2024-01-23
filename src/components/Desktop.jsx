@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 
 //components
 import FolderComp from './programs/FileManager/FolderComp'
@@ -28,8 +28,26 @@ const Desktop = (props) => {
         removeProgram,
         editProgramFileManager,
         setFileSystemState,
-        addToQuickAccessList
+        addToQuickAccessList,
      } = props
+
+
+
+     const doubleClick = useRef({target: null, time : 0})
+     const handleDoubleClick = (target) => {
+         const newTime = Date.now();
+         if(doubleClick.current.target === target && (newTime - doubleClick.current.time < 500))
+         {
+             doubleClick.current = {target : target, time : newTime}
+             return true;
+         }
+         else{
+             doubleClick.current = {target : target, time : newTime}
+             return false;
+         }
+     }
+
+
     /*==================================================================
 
     context menu
@@ -366,6 +384,7 @@ const Desktop = (props) => {
                                 traverse = {handleFolderClick}
                                 setFileSystemState = {setFileSystemState}
                                 addToQuickAccessList = {addToQuickAccessList}
+                                handleDoubleClick ={handleDoubleClick}
                                 />
                         )
                     })}
@@ -393,6 +412,7 @@ const Desktop = (props) => {
                             programHandler = {null}
                             fileManagerId = {null}
                             setFileSystemState = {setFileSystemState}
+                            handleDoubleClick = {handleDoubleClick}
                             />
                     )
                 })}

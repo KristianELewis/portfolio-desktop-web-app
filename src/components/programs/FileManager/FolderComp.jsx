@@ -7,7 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 
 const Folder = (props) => {
-    const { traverse, file, FileSystem, setFileSystemState, addToQuickAccessList } = props;
+    const { traverse, file, FileSystem, setFileSystemState, addToQuickAccessList, handleDoubleClick } = props;
     const {id, name, type, fullPath} = file
     const [isHovering, setIsHovering] = useState(false);
 
@@ -72,7 +72,9 @@ const Folder = (props) => {
 
 
     const handleClick = () => {
-        traverse(id);
+        if (handleDoubleClick(file)){
+            traverse(id);
+        }
     }
     const handleMouseEnter = () => {
         setIsHovering(true)

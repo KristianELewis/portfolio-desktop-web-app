@@ -41,7 +41,8 @@ const FileComp = (props) => {
         acceptableType, 
         programHandler,
         fileManagerId,
-        setFileSystemState
+        setFileSystemState,
+        handleDoubleClick
         } = props;
 
     const {id, name, type} = file
@@ -176,17 +177,19 @@ const FileComp = (props) => {
 
     ===========================================================================*/
     const handleClick = () => {
-        if(version === "Standalone"){ //If this is a standalone file manager it should just add a new program
-            addProgram(type, file)
-        }
-        else if (version === "SetBackground" && acceptableType === type){
-            programHandler(type, file);
-            removeProgram(fileManagerId);
-        }
-        else if(acceptableType === type) //If this filetype is compatible with the calling program
-        {
-            programHandler(type, file);
-            editProgramFileManager(requestID, fileManagerId, file)
+        if(handleDoubleClick(file)){
+            if(version === "Standalone"){ //If this is a standalone file manager it should just add a new program
+                addProgram(type, file)
+            }
+            else if (version === "SetBackground" && acceptableType === type){
+                programHandler(type, file);
+                removeProgram(fileManagerId);
+            }
+            else if(acceptableType === type) //If this filetype is compatible with the calling program
+            {
+                programHandler(type, file);
+                editProgramFileManager(requestID, fileManagerId, file)
+            }
         }
     }
 
