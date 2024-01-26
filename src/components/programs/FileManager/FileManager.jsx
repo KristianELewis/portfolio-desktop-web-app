@@ -18,8 +18,8 @@ import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import Paper from '@mui/material/Paper'
 
+import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -33,6 +33,8 @@ import Path from './components/Path'
 import QuickAccess from './components/QuickAccess';
 import FolderComp from './components/FolderComp';
 import FileComp from './components/FileComp';
+import NewSimpleMenu from './components/NewSimpleMenu';
+import NewComplexFile from './components/NewComplexFile';
 
 import { processManagmentContext, programContext, windowWidthContext } from '../../Context'
 import TopBarButtons from '../../topBarComponents/TopBarButtons';
@@ -244,28 +246,17 @@ const FileManager = () => {
     ---------------------------------------------------------------------------------
     ===============================================================================*/
     const [modalState, setModalState] = useState({open : false, type : null})
+    //If handleNewClick is given an invalid type it breaks. Should never happen, but something to remember for potential changes/refactors
+    const handleNewClick = (type) => {
+        handleClose(); //Closes the context menu
+        setModalState({open : true, type : type})
+    }
 
-    const newFolderModal = () => {
-        handleClose();
-        setModalState({open : true, type : "Folder"})
-    }
-    const newTXTModal = () => {
-        handleClose();
-        setModalState({open : true, type : "TXT"})
-    }
-    const newPDFModal = () => {
-        handleClose();
-        setModalState({open : true, type : "PDF"})
-    }
-    const newImageModal = () => {
-        handleClose();
-        setModalState({open : true, type : "IMAGE"})
-    }
-    const handleNewFolderClose =() => {
+    const handleNewFolderClose = () => {
         setModalState({open : false, type : null})
         addNewFolder()
     }
-    const handleNewTXTClose =() => {
+    const handleNewTXTClose = () => {
         setModalState({open : false, type : null})
         addNewTxtFile()
     }
@@ -274,7 +265,7 @@ const FileManager = () => {
         addNewPDFFile();
         setFileSet(false);
     }
-    const handleNewImageClose =() => {
+    const handleNewImageClose = () => {
         setModalState({open : false, type : null})
         addNewImageFile();
         setFileSet(false);
@@ -286,122 +277,71 @@ const FileManager = () => {
         setModalState({open : false, type : null})
     }
     //I can see how this can somewhat easily be refactored to be more generic.
-    //Theres really only two types of modal/backdrops. Files that just need names, and files that require user upload
+    //Theres really only two types of modal/backdrops. Files that just need names, and files that require user upload'
+    console.log(modalState)
     const chooseModalType = () => {
         if(modalState.type === "Folder")
         {
             return( 
-                <>
-                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onPointerDown = {handlePointerDown}>
-                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
-                    <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}> New Folder</p>
-                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {handleNewFolderClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
-                </Paper>
-                <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
-                    <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>Folder Name</p>
-                    <TextField size = "small" fullWidth value = {folderNameInput} onChange = {handleFolderNameInputChange} inputProps = {{style : {height : "16px"}}}></TextField>
-                </div>
-                </>
+                <NewSimpleMenu 
+                    handlePointerDown = {handlePointerDown}
+                    name = {"Folder"}
+                    folderNameInput = {folderNameInput}
+                    handleFolderNameInputChange = {handleFolderNameInputChange}
+                    handleNewFolderClose = {handleNewFolderClose}
+                    preventPositioning = {preventPositioning}
+                    cancelBackdrop = {cancelBackdrop}
+                />
             )
         }
         else if(modalState.type === "TXT")
         {
             return( 
-                <>
-                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onPointerDown = {handlePointerDown}>
-                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
-                    <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}> New Text File</p>
-                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {handleNewTXTClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
-                </Paper>
-                <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
-                    <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>Text File Name</p>
-                    <TextField size = "small" fullWidth value = {folderNameInput} onChange = {handleFolderNameInputChange} inputProps = {{style : {height : "16px"}}}></TextField>
-                </div>
-                </>
+                <NewSimpleMenu 
+                    handlePointerDown = {handlePointerDown}
+                    name = {"Text File"}
+                    folderNameInput = {folderNameInput}
+                    handleFolderNameInputChange = {handleFolderNameInputChange}
+                    handleNewFolderClose = {handleNewTXTClose}
+                    preventPositioning = {preventPositioning}
+                    cancelBackdrop = {cancelBackdrop}
+                />
             )
         }
         else if(modalState.type === "PDF")
         {
             return( 
-                <>
-                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onPointerDown = {handlePointerDown}>
-                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
-                    <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}> New PDF File</p>
-                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {handleNewPDFClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
-                </Paper>
-                <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
-                    <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>PDF File Name</p>
-                    <TextField size = "small" fullWidth value = {folderNameInput} onChange = {handleFolderNameInputChange} inputProps = {{style : {height : "16px"}}}></TextField>
-                    <div style = {{display: "flex", justifyContent: "space-between", alignItems : "center", marginTop : "10px"}}>
-                        <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>File Downloader</p>
-                        <Button
-                            variant="contained"
-                            component="label"
-                            size = "small"
-                            sx = {{textTransform : "none", maxWidth : "150px"}}
-                            >
-                            <Typography sx = {{ fontSize : "14px"}} noWrap>{fileSet ? uploadFile.name : "Download File" /*disabled = {deleteChecked}*/}</Typography>
-                            <input
-                                type="file"
-                                accept = "application/pdf"
-                                onChange = {(e) => {
-                                    if(e.target.files.length < 1){
-                                        setFileSet(false);
-                                        setUploadFile(null);
-                                    }
-                                    else{
-                                        setFileSet(true);
-                                        setUploadFile(e.target.files[0]);
-                                    }
-                                }}
-                                hidden
-                            />
-                        </Button>
-                    </div>
-                </div>
-                </>
+                <NewComplexFile
+                    handlePointerDown = {handlePointerDown}
+                    name = {"PDF File"}
+                    folderNameInput = {folderNameInput}
+                    handleFolderNameInputChange = {handleFolderNameInputChange}
+                    handleClose = {handleNewPDFClose}
+                    preventPositioning = {preventPositioning}
+                    cancelBackdrop = {cancelBackdrop}
+                    fileSet = {fileSet}
+                    uploadFile = {uploadFile}
+                    setFileSet = {setFileSet}
+                    setUploadFile = {setUploadFile}
+                />
             )
         }
         else if(modalState.type === "IMAGE")
         {
             return( 
-                <>
-                <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onPointerDown = {handlePointerDown}>
-                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
-                    <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}>New Image File</p>
-                    <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {handleNewImageClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
-                </Paper>
-                <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
-                    <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>New Image Name</p>
-                    <TextField size = "small" fullWidth value = {folderNameInput} onChange = {handleFolderNameInputChange} inputProps = {{style : {height : "16px"}}}></TextField>
-                    <div style = {{display: "flex", justifyContent: "space-between", alignItems : "center", marginTop : "10px"}}>
-                        <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>File Downloader</p>
-                        <Button
-                            variant="contained"
-                            component="label"
-                            size = "small"
-                            sx = {{textTransform : "none", maxWidth : "150px"}}
-                            >
-                            <Typography sx = {{ fontSize : "14px"}} noWrap>{fileSet ? uploadFile.name : "Download File" /*disabled = {deleteChecked}*/}</Typography>
-                            <input
-                                type = "file"
-                                accept = "image/*"
-                                onChange = {(e) => {
-                                    if(e.target.files.length < 1){
-                                        setFileSet(false);
-                                        setUploadFile(null);
-                                    }
-                                    else{
-                                        setFileSet(true);
-                                        setUploadFile(e.target.files[0]);
-                                    }
-                                }}
-                                hidden
-                            />
-                        </Button>
-                    </div>
-                </div>
-                </>
+                <NewComplexFile
+                    handlePointerDown = {handlePointerDown}
+                    name = {"Image"}
+                    folderNameInput = {folderNameInput}
+                    handleFolderNameInputChange = {handleFolderNameInputChange}
+                    handleClose = {handleNewImageClose}
+                    preventPositioning = {preventPositioning}
+                    cancelBackdrop = {cancelBackdrop}
+                    fileSet = {fileSet}
+                    uploadFile = {uploadFile}
+                    setFileSet = {setFileSet}
+                    setUploadFile = {setUploadFile}
+                />
             )
         }
         else if(modalState.type === null)
@@ -716,19 +656,18 @@ const FileManager = () => {
                     : undefined
                 }
             >
-                <MenuItem onClick={newFolderModal}>New Folder</MenuItem>
-                <MenuItem onClick={newTXTModal}>New Text File</MenuItem>
-                <MenuItem onClick={newPDFModal}>New PDF File</MenuItem>
-                <MenuItem onClick={newImageModal}>New Image File</MenuItem>
+                <MenuItem onClick={() => {handleNewClick("Folder")}}>New Folder</MenuItem>
+                <MenuItem onClick={() => {handleNewClick("TXT")}}>New Text File</MenuItem>
+                <MenuItem onClick={() => {handleNewClick("PDF")}}>New PDF File</MenuItem>
+                <MenuItem onClick={() => {handleNewClick("IMAGE")}}>New Image File</MenuItem>
             </Menu>
-
+            {/* Didn't see the point of Modal, and it was harder to use */}
+            <Backdrop open = {modalState.open} sx = {{position : "absolute"}}>
+                <Paper sx = {{minWidth : "350px", maxWidth : "350px", margin : "auto", textAlign : "center"}}>
+                    {modalContents}
+                </Paper>
+            </Backdrop>
         </div>
-        {/* Didn't see the point of Modal, and it was harder to use */}
-        <Backdrop open = {modalState.open} sx = {{position : "absolute"}}>
-            <Paper sx = {{minWidth : "350px", maxWidth : "350px", margin : "auto", textAlign : "center"}}>
-                {modalContents}
-            </Paper>
-        </Backdrop>
         </>
     )
 }
