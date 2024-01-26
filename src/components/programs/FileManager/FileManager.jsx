@@ -12,18 +12,10 @@ TODO
 
 import React, {useState, useContext, useRef, useEffect} from 'react'
 
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
 import Paper from '@mui/material/Paper'
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import Backdrop from '@mui/material/Backdrop';
 
 import { fileContext } from '../../Context';
 
@@ -33,8 +25,8 @@ import Path from './components/Path'
 import QuickAccess from './components/QuickAccess';
 import FolderComp from './components/FolderComp';
 import FileComp from './components/FileComp';
-import NewSimpleMenu from './components/NewSimpleMenu';
-import NewComplexFile from './components/NewComplexFile';
+
+import AddFileMenu from './components/AddFileMenu';
 
 import { processManagmentContext, programContext, windowWidthContext } from '../../Context'
 import TopBarButtons from '../../topBarComponents/TopBarButtons';
@@ -66,7 +58,6 @@ const FileManager = () => {
     const { addProgram, editProgram, removeProgram, editProgramFileManager } = useContext(processManagmentContext)
     const programInfo = useContext(programContext);
 
-
     const {height} = useContext(windowWidthContext)
     //The top bar has a height of 49px at the moment
     //the content height must be height - 49
@@ -90,11 +81,10 @@ const FileManager = () => {
             null,
       );
     };
-    const handleClose = () => {
+    const handleCloseContextMenu = () => {
       setContextMenu(null);
     };
     /* End of material ui demo stuff -----------------------------------*/
-
 
     /*========================================
 
@@ -116,11 +106,6 @@ const FileManager = () => {
     const [backList, setBackList] = useState([]);
     const [forwardList, setForwardList] = useState([]);
 
-    const [folderNameInput, setFolderNameInput] = useState("");
-    const handleFolderNameInputChange = (e) => {
-        setFolderNameInput(e.target.value)
-    }
-
     const {
         FileSystem, 
         fileSystemState, 
@@ -130,26 +115,14 @@ const FileManager = () => {
         removeFromQuickAccessList
     } = useContext(fileContext)
 
-    //these can be condensed
-    const [uploadFile, setUploadFile] = useState(null);
-    const [fileSet, setFileSet] = useState(false);
-
     const currentFolder = useRef(FileSystem)
     //Hmmm these values are FileSystem except on e is currentFolder. This should be fixed
     //Maybe i can improve starting location functionality and have this use that as its default state
     //Do I even need this state here?
     const [currentFolderView, setCurrentFolderView] = useState({name: FileSystem.name, fullPath: currentFolder.current.fullPath, children : FileSystem.children});
     
-  
     /*
-        Not sure if this is the best way to implement a filesystem.
-
-        In my mind, the filesystem isn't immutable, and it isnt tied to rendering
-
-        oh no, i need state
-
         this is a temporary fix, I should probably do this differently
-
         If Im basically using a flag for rerender, do I need the currentFolderView state at all?
     */
     useEffect(() => {
@@ -176,184 +149,6 @@ const FileManager = () => {
     {
         //console.log("Not Dirty")
     }
-    /*===============================================================================
-
-        ADDING NEW FILES AND FOLDERS
-
-        -So much of this is generic and the same, This can be cutdown for sure
-            -This is low priority at the moment but it should be done before any more file types are added
-    
-    ===============================================================================*/
-    const addNewFolder = () => {
-        if (folderNameInput !== ""){
-            currentFolder.current.addNewFolder(folderNameInput);
-            //is this part right here really necessary? is Setting the fileSystemState enough?
-            setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
-            setFileSystemState((prevState) => {return prevState * -1})
-        }
-        setFolderNameInput("");
-    }
-    const addNewTxtFile = () => {
-        if (folderNameInput !== ""){
-            //I have to figure something else out about this. File types and process types should be separated
-            const data = [
-                {
-                    type: 'paragraph',
-                    children: [{ text: '' }],
-                },
-            ]
-            currentFolder.current.addNewFile(folderNameInput, "Text Editor", data);
-            setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
-            setFileSystemState((prevState) => {return prevState * -1})
-        }
-        setFolderNameInput("");
-    }
-    const addNewPDFFile = () => {
-        if (folderNameInput !== "" && uploadFile){
-            const data = URL.createObjectURL(uploadFile)
-            //I have to figure something else out about this. File types and process types should be separated
-            currentFolder.current.addNewFile(folderNameInput, "PDF Viewer", data);
-            setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
-            setFileSystemState((prevState) => {return prevState * -1})
-        }
-        setFolderNameInput("");
-    }
-
-    async function getDimensions (dataURL) {
-        return new Promise(resolve => {
-            let img = new Image;
-            img.onload = () => {
-                resolve({height : img.height, width : img.width})
-            }
-            img.src = dataURL;
-        })
-    }
-    const addNewImageFile = () => {
-        if (folderNameInput !== "" && uploadFile){
-            const url = URL.createObjectURL(uploadFile)
-            getDimensions(url).then( results => {
-                const data = {src : url, dimensions : results}
-                //I have to figure something else out about this. File types and process types should be separated
-                currentFolder.current.addNewFile(folderNameInput, "Image Viewer", data);
-                setCurrentFolderView({name: currentFolder.current.name, fullPath: currentFolder.current.fullPath, children : currentFolder.current.children})
-                setFileSystemState((prevState) => {return prevState * -1})
-            })
-        }
-        setFolderNameInput("");
-    }
-    
-/*===============================================================================
-    ---------------------------------------------------------------------------------
-    ===============================================================================*/
-    const [modalState, setModalState] = useState({open : false, type : null})
-    //If handleNewClick is given an invalid type it breaks. Should never happen, but something to remember for potential changes/refactors
-    const handleNewClick = (type) => {
-        handleClose(); //Closes the context menu
-        setModalState({open : true, type : type})
-    }
-
-    const handleNewFolderClose = () => {
-        setModalState({open : false, type : null})
-        addNewFolder()
-    }
-    const handleNewTXTClose = () => {
-        setModalState({open : false, type : null})
-        addNewTxtFile()
-    }
-    const handleNewPDFClose =() => {
-        setModalState({open : false, type : null})
-        addNewPDFFile();
-        setFileSet(false);
-    }
-    const handleNewImageClose = () => {
-        setModalState({open : false, type : null})
-        addNewImageFile();
-        setFileSet(false);
-    }
-    const cancelBackdrop = () => {
-        setUploadFile(null);
-        setFileSet(false);
-        setFolderNameInput("");
-        setModalState({open : false, type : null})
-    }
-    //I can see how this can somewhat easily be refactored to be more generic.
-    //Theres really only two types of modal/backdrops. Files that just need names, and files that require user upload'
-    console.log(modalState)
-    const chooseModalType = () => {
-        if(modalState.type === "Folder")
-        {
-            return( 
-                <NewSimpleMenu 
-                    handlePointerDown = {handlePointerDown}
-                    name = {"Folder"}
-                    folderNameInput = {folderNameInput}
-                    handleFolderNameInputChange = {handleFolderNameInputChange}
-                    handleNewFolderClose = {handleNewFolderClose}
-                    preventPositioning = {preventPositioning}
-                    cancelBackdrop = {cancelBackdrop}
-                />
-            )
-        }
-        else if(modalState.type === "TXT")
-        {
-            return( 
-                <NewSimpleMenu 
-                    handlePointerDown = {handlePointerDown}
-                    name = {"Text File"}
-                    folderNameInput = {folderNameInput}
-                    handleFolderNameInputChange = {handleFolderNameInputChange}
-                    handleNewFolderClose = {handleNewTXTClose}
-                    preventPositioning = {preventPositioning}
-                    cancelBackdrop = {cancelBackdrop}
-                />
-            )
-        }
-        else if(modalState.type === "PDF")
-        {
-            return( 
-                <NewComplexFile
-                    handlePointerDown = {handlePointerDown}
-                    name = {"PDF File"}
-                    folderNameInput = {folderNameInput}
-                    handleFolderNameInputChange = {handleFolderNameInputChange}
-                    handleClose = {handleNewPDFClose}
-                    preventPositioning = {preventPositioning}
-                    cancelBackdrop = {cancelBackdrop}
-                    fileSet = {fileSet}
-                    uploadFile = {uploadFile}
-                    setFileSet = {setFileSet}
-                    setUploadFile = {setUploadFile}
-                />
-            )
-        }
-        else if(modalState.type === "IMAGE")
-        {
-            return( 
-                <NewComplexFile
-                    handlePointerDown = {handlePointerDown}
-                    name = {"Image"}
-                    folderNameInput = {folderNameInput}
-                    handleFolderNameInputChange = {handleFolderNameInputChange}
-                    handleClose = {handleNewImageClose}
-                    preventPositioning = {preventPositioning}
-                    cancelBackdrop = {cancelBackdrop}
-                    fileSet = {fileSet}
-                    uploadFile = {uploadFile}
-                    setFileSet = {setFileSet}
-                    setUploadFile = {setUploadFile}
-                />
-            )
-        }
-        else if(modalState.type === null)
-        {
-            return( 
-                <div width = {"100px"}>
-
-                </div>
-            )
-        }
-    }
-    const modalContents = chooseModalType();
 
     /*===============================================================================
     ---------------------------------------------------------------------------------
@@ -523,9 +318,7 @@ const FileManager = () => {
         <div style = {{height: "100%", position: "relative", display: "flex", flexDirection : "column", width : "100%"}}>
             {/* flex really necesarry here? */}
             {/*=======================================================
-            
             TOP BAR
-
             =======================================================*/}
             <Paper elevation = {2} sx = {{ flexGrow: 0, display : "flex", alignItems : "center", padding : "5px", borderBottom : "rgb(18, 18, 18) solid 1px", borderRadius : "10px 10px 0 0"}} onPointerDown = {handlePointerDownTopBar}>
                 <IconButton size = "small" onClick = {handleBackwardButton} onPointerDown = {preventPositioning} sx = {{borderRadius : "5px"}} disabled = {backList.length === 0 ? true : false}><ChevronLeftIcon/></IconButton>
@@ -542,9 +335,7 @@ const FileManager = () => {
                 <TopBarButtons program = {1} handleExit = {fileManagerClose} preventPositioning = {preventPositioning}/>
             </Paper>
             {/*=======================================================
-                
                 MAIN CONTENT
-
 
                 I need to fix the "middle window" nonsense in window
                 Overflow for left an right is broken, the widths arent growing correctly
@@ -645,28 +436,16 @@ const FileManager = () => {
                 </Paper>
             </div>
 
-            {/*From the material ui demo */}
-            <Menu
-                open={contextMenu !== null}
-                onClose={handleClose}
-                anchorReference="anchorPosition"
-                anchorPosition={
-                contextMenu !== null
-                    ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
-                    : undefined
-                }
-            >
-                <MenuItem onClick={() => {handleNewClick("Folder")}}>New Folder</MenuItem>
-                <MenuItem onClick={() => {handleNewClick("TXT")}}>New Text File</MenuItem>
-                <MenuItem onClick={() => {handleNewClick("PDF")}}>New PDF File</MenuItem>
-                <MenuItem onClick={() => {handleNewClick("IMAGE")}}>New Image File</MenuItem>
-            </Menu>
-            {/* Didn't see the point of Modal, and it was harder to use */}
-            <Backdrop open = {modalState.open} sx = {{position : "absolute"}}>
-                <Paper sx = {{minWidth : "350px", maxWidth : "350px", margin : "auto", textAlign : "center"}}>
-                    {modalContents}
-                </Paper>
-            </Backdrop>
+            <AddFileMenu 
+                currentFolder = {currentFolder}
+                setCurrentFolderView = {setCurrentFolderView}
+                setFileSystemState = {setFileSystemState}
+                contextMenu = {contextMenu}
+                handleCloseContextMenu = {handleCloseContextMenu}
+                handlePointerDown = {handlePointerDown}
+                preventPositioning = {preventPositioning}
+            />
+
         </div>
         </>
     )

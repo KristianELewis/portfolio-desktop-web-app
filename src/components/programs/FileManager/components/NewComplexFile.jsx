@@ -5,6 +5,29 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
+
+
+
+const NewSimpleMenu = (props) => {
+
+    const {handlePointerDown, name, folderNameInput, handleFolderNameInputChange, handleNewFolderClose, preventPositioning, cancelBackdrop} = props;
+
+
+    return (
+        <>
+        <Paper elevation = {3} sx = {{display : "flex", justifyContent : "space-between", alignItems : "center"}} onPointerDown = {handlePointerDown}>
+            <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {cancelBackdrop} sx = {{textTransform: 'none', marginLeft : "7px", marginTop : "7px", marginBottom : "7px"}}>Cancel</Button>
+            <p style = {{margin : "10px", marginBottom : "10px", userSelect : "none"}}> New {name}</p>
+            <Button size = "small" variant = "contained" onPointerDown = {preventPositioning} onClick = {handleNewFolderClose} sx = {{textTransform: 'none', marginRight : "7px", marginTop : "7px", marginBottom : "7px"}}>Create</Button>
+        </Paper>
+        <div style = {{textAlign : "left", padding : "16px", width : "100%"}}>
+            <p style = {{marginTop : "0px", marginBottom : "2px", fontSize : "14px"}}>{name} Name</p>
+            <TextField size = "small" fullWidth value = {folderNameInput} onChange = {handleFolderNameInputChange} inputProps = {{style : {height : "16px"}}}></TextField>
+        </div>
+        </>
+    )
+}
+
 const NewComplexFile = (props) => {
 
     const {handlePointerDown, name, folderNameInput, handleFolderNameInputChange, handleClose, preventPositioning, cancelBackdrop, fileSet, uploadFile, setFileSet, setUploadFile} = props;
@@ -28,10 +51,11 @@ const NewComplexFile = (props) => {
                     size = "small"
                     sx = {{textTransform : "none", maxWidth : "150px"}}
                     >
+                    {/*I use fileSet because I can't set the file to null until after the file has been created. Which can cause issues */}
                     <Typography sx = {{ fontSize : "14px"}} noWrap>{fileSet ? uploadFile.name : "Download File" /*disabled = {deleteChecked}*/}</Typography>
                     <input
                         type="file"
-                        accept = "application/pdf"
+                        accept = {name === "PDF File" ? "application/pdf" : "image/*"}
                         onChange = {(e) => {
                             if(e.target.files.length < 1){
                                 setFileSet(false);
