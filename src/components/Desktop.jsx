@@ -1,8 +1,8 @@
 import React, {useState, useRef} from 'react'
 
 //components
-import FolderComp from './programs/FileManager/FolderComp'
-import FileComp from './programs/FileManager/FileComp'
+import FolderComp from './programs/FileManager/components/FolderComp'
+import FileComp from './programs/FileManager/components/FileComp'
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';

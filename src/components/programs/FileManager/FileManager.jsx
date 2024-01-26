@@ -29,10 +29,10 @@ import { fileContext } from '../../Context';
 
 //import { Folder, File } from './fileSystem';
 
-import Path from './Path'
-import QuickAccess from './QuickAccess';
-import FolderComp from './FolderComp';
-import FileComp from './FileComp';
+import Path from './components/Path'
+import QuickAccess from './components/QuickAccess';
+import FolderComp from './components/FolderComp';
+import FileComp from './components/FileComp';
 
 import { processManagmentContext, programContext, windowWidthContext } from '../../Context'
 import TopBarButtons from '../../topBarComponents/TopBarButtons';
